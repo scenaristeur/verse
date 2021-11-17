@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
@@ -10,6 +11,8 @@
     </div>
     <router-view/>
     <small><i>0.0.1 - modele</i></small>
+    {{session}}
+      <Synchro />
   </div>
 </template>
 <script>
@@ -17,7 +20,19 @@ export default {
   name: "Notes",
   components: {
     'Login': () => import('@/components/Login'),
+    'Synchro': () => import('@/components/Synchro'),
   },
+  created(){
+    this.$checkSession()
+    this.$store.dispatch('cats/getCats');
+
+  },
+  computed:{
+    session:{
+      get () { return this.$store.state.solid.session },
+      set (/*value*/) { /*this.updateTodo(value)*/ }
+    }
+  }
 }
 </script>
 <style>

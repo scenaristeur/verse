@@ -60,6 +60,7 @@ export default {
     async save() {
       console.log(this.cat)
       this.cat.modele = this.modele
+      this.cat.updated = Date.now()
       await this.$store.dispatch('cats/saveCat', this.cat);
       console.log('back');
       this.$router.go(-1);
@@ -70,7 +71,7 @@ export default {
       return this.$store.state.cats.cats;
     },
     options() {
-      let opts = this.$store.state.cats.cats.map(c => {return{value: c.id, text: c.name+" ("+c.modele+")"}})
+      let opts = this.$store.state.cats.cats.map(c => {return{value: c, text: c.name+" ("+c.modele+")"}})
       return opts;
     }
   },

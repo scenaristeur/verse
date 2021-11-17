@@ -10,6 +10,7 @@ const actions = {
 
 const mutations = {
   setPod(state,p){
+    console.log("pod",p)
     state.pod = p
   },
   setSession(state, s){

@@ -1,7 +1,7 @@
 <template>
   <span class="login">
 
-    <div v-if="!isLoggedIn" class="d-flex align-items-center">
+    <div v-if="session == null || session.isLoggedIn == false" class="d-flex align-items-center">
       <b-form-group>
 
         <!-- <b-dropdown id="dropdown-login"
@@ -100,12 +100,12 @@ export default {
       }
     },
     logout(){
-      this.$logout({restore: this.restore})
+      this.$logout()
     }
   },
   computed:{
-    isLoggedIn:{
-      get () { return this.$store.state.solid.session != null && this.$store.state.solid.session.info.isLoggedIn },
+    session:{
+      get () { return this.$store.state.solid.session },
       set (/*value*/) { /*this.updateTodo(value)*/ }
     },
     state() {

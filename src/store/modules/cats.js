@@ -1,7 +1,8 @@
 import idb from '@/api/idb';
 
 const state = () => ({
-  cats:[]
+  cats:[],
+  verses : []
 })
 
 const actions = {
@@ -22,6 +23,9 @@ const actions = {
 }
 
 const mutations = {
+  setVerses (state, v){
+    state.verses = v
+  },
 }
 
 export default {
