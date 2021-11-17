@@ -7,7 +7,7 @@
           <label :for="`field-${f.label}`"><code>{{ f.label }}</code>:</label>
         </b-col>
         <b-col sm="9">
-          <b-form-input v-model="thing[f.label]" :id="`field-${f.label}`" :type="f.type"></b-form-input>
+          <b-form-input v-model="cat[f.label]" :id="`field-${f.label}`" :type="f.type"></b-form-input>
         </b-col>
       </b-row>
       <b-button @click="save">Save</b-button>
@@ -20,7 +20,7 @@ export default {
   name: "Edit",
   data() {
     return {
-      thing:null,
+      cat:null,
       fields: [
         {'label': 'name', type: 'text'},
         {'label': 'content', type: 'text'},
@@ -42,16 +42,16 @@ export default {
   created() {
     console.log("params",this.$route.params)
     console.log("route",this.$route)
-    if(this.$route.params.thing) {
-      this.thing = this.$route.params.thing;
+    if(this.$route.params.cat) {
+      this.cat = this.$route.params.cat;
     } else {
-      this.thing = { name:'', age: 0 };
+      this.cat = { name:'', age: 0 };
     }
   },
   methods: {
     async save() {
-      console.log(this.thing)
-      await this.$store.dispatch('saveCat', this.thing);
+      console.log(this.cat)
+      await this.$store.dispatch('saveCat', this.cat);
       console.log('back');
       this.$router.go(-1);
     }
