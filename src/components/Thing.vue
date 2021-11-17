@@ -1,7 +1,9 @@
 <template>
   <b-card>
     <b-card-title>{{cat.name}}</b-card-title>
-    age: {{cat.age}}
+    <b-card-header>
+    age: {{cat.age}} - {{cat.modele}}
+  </b-card-header>
     <b-card-text>
       {{cat.content}}
     </b-card-text>

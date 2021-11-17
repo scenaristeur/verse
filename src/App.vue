@@ -5,13 +5,21 @@
       <router-link to="/about">About</router-link> |
       <router-link to="/notes">Notes</router-link> |
       <router-link to="/persons">Personnes</router-link> |
-      <router-link to="/projects">Projects</router-link>
+      <router-link to="/projects">Projects</router-link> |
+      <Login />
     </div>
     <router-view/>
     <small><i>0.0.1 - modele</i></small>
   </div>
 </template>
-
+<script>
+export default {
+  name: "Notes",
+  components: {
+    'Login': () => import('@/components/Login'),
+  },
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

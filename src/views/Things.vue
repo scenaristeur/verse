@@ -18,7 +18,7 @@ export default {
     'Thing': () => import('@/components/Thing'),
   },
   created() {
-    this.$store.dispatch('getCats');
+    this.$store.dispatch('cats/getCats');
   },
   methods:{
     addThing(){
@@ -26,8 +26,8 @@ export default {
     },
     async deleteCat(cat) {
       console.log('delete', cat.id);
-      await this.$store.dispatch('deleteCat', cat);
-      this.$store.dispatch('getCats');
+      await this.$store.dispatch('cats/deleteCat', cat);
+      this.$store.dispatch('cats/getCats');
     },
     editCat(cat) {
       console.log('edit', cat.id);
@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     cats() {
-      return this.$store.state.cats;
+      return this.$store.state.cats.cats;
     }
   },
 

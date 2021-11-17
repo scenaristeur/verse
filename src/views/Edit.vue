@@ -60,17 +60,17 @@ export default {
     async save() {
       console.log(this.cat)
       this.cat.modele = this.modele
-      await this.$store.dispatch('saveCat', this.cat);
+      await this.$store.dispatch('cats/saveCat', this.cat);
       console.log('back');
       this.$router.go(-1);
     }
   },
   computed: {
     cats() {
-      return this.$store.state.cats;
+      return this.$store.state.cats.cats;
     },
     options() {
-      let opts = this.$store.state.cats.map(c => {return{value: c.id, text: c.name+" ("+c.modele+")"}})
+      let opts = this.$store.state.cats.cats.map(c => {return{value: c.id, text: c.name+" ("+c.modele+")"}})
       return opts;
     }
   },
