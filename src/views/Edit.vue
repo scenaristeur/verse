@@ -7,10 +7,14 @@
           <label :for="`field-${f.label}`"><code>{{ f.label }}</code>:</label>
         </b-col>
         <b-col sm="9">
-          <b-form-input v-model="cat[f.label]" :id="`field-${f.label}`" :type="f.type"></b-form-input>
+          <b-form-select v-if="f.type=='select'" v-model="cat[f.label]" :options="f.options || options"></b-form-select>
+          <b-form-input v-else v-model="cat[f.label]" :id="`field-${f.label}`" :type="f.type"></b-form-input>
         </b-col>
       </b-row>
       <b-button @click="save">Save</b-button>
+      <!-- {{ cats}}
+      <hr>
+      {{ options}} -->
     </b-container>
   </div>
 </template>
@@ -24,7 +28,9 @@ export default {
       fields: [
         {'label': 'name', type: 'text'},
         {'label': 'content', type: 'text'},
-        {'label': 'age', type: 'number'}
+        {'label': 'age', type: 'number'},
+        {'label': 'property', type: 'select', options: ["one", "two"]},
+        {'label': 'link', type: 'select'},
         // 'text',
         // 'number',
         // 'email',
@@ -36,7 +42,8 @@ export default {
         // 'time',
         // 'range',
         // 'color'
-      ]
+      ],
+
     }
   },
   created() {
@@ -57,7 +64,16 @@ export default {
       console.log('back');
       this.$router.go(-1);
     }
-  }
+  },
+  computed: {
+    cats() {
+      return this.$store.state.cats;
+    },
+    options() {
+      let opts = this.$store.state.cats.map(c => {return{value: c.id, text: c.name+" ("+c.modele+")"}})
+      return opts;
+    }
+  },
 }
 </script>
 
