@@ -23,6 +23,7 @@ export default {
       thing:null,
       fields: [
         {'label': 'name', type: 'text'},
+        {'label': 'content', type: 'text'},
         {'label': 'age', type: 'number'}
         // 'text',
         // 'number',
@@ -50,9 +51,9 @@ export default {
   methods: {
     async save() {
       console.log(this.thing)
-      await this.$store.dispatch('saveThing', this.thing);
+      await this.$store.dispatch('saveCat', this.thing);
       console.log('back');
-      this.$router.push('/');
+      this.$router.go(-1);
     }
   }
 }
