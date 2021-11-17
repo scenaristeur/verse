@@ -8,6 +8,7 @@
       <router-link to="/projects">Projects</router-link>
     </div>
     <router-view/>
+    <small><i>0.0.1 - modele</i></small>
   </div>
 </template>
 

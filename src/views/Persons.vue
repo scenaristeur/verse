@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Things thing="person" />
+    <Things modele="person" />
   </div>
 </template>
 

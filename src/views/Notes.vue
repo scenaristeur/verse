@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Things thing="note" />
+    <Things modele="note" />
   </div>
 </template>
 

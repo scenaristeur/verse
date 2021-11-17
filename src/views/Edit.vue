@@ -1,6 +1,6 @@
 <template>
   <div>
-    Edit
+    Edit {{modele}}
     <b-container fluid>
       <b-row class="my-1" v-for="f in fields" :key="f.label">
         <b-col sm="3">
@@ -40,7 +40,8 @@ export default {
     }
   },
   created() {
-    console.log("params",this.$route.params)
+    console.log("params",this.$route.params.modele)
+    this.modele = this.$route.params.modele
     console.log("route",this.$route)
     if(this.$route.params.cat) {
       this.cat = this.$route.params.cat;
@@ -51,6 +52,7 @@ export default {
   methods: {
     async save() {
       console.log(this.cat)
+      this.cat.modele = this.modele
       await this.$store.dispatch('saveCat', this.cat);
       console.log('back');
       this.$router.go(-1);

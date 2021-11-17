@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2>{{thing}}</h2>
-    <b-button variant="outline-primary" @click="addThing">Add {{thing}}</b-button>
+    <h2>{{modele}}</h2>
+    <b-button variant="outline-primary" @click="addThing">Add {{modele}}</b-button>
     <b-row>
       <b-col v-for="(cat, i) in cats" :key="i">
         <Thing :cat="cat" @delete="deleteCat" @edit="editCat" />
@@ -13,7 +13,7 @@
 <script>
 export default {
   name: "Things",
-  props: ['thing'],
+  props: ['modele'],
   components: {
     'Thing': () => import('@/components/Thing'),
   },
@@ -22,7 +22,7 @@ export default {
   },
   methods:{
     addThing(){
-      this.$router.push({ name: 'edit', thing: this.thing });
+      this.$router.push({ name: 'edit', params: {modele: this.modele} });
     },
     async deleteCat(cat) {
       console.log('delete', cat.id);
