@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/404.html"
   },
   {
-    "revision": "23c4a7226319936fa33c",
+    "revision": "38319c7911afd467c46a",
     "url": "/verse/css/app.7ff7b8b2.css"
   },
   {
@@ -16,7 +16,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/img/logo.82b9c7a5.png"
   },
   {
-    "revision": "7cfaceefa81c2aa4b6f73ef53822ced3",
+    "revision": "886fd1126d90e499925617ffb7be72eb",
     "url": "/verse/index.html"
   },
   {
@@ -24,36 +24,36 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/about.bbfafeca.js"
   },
   {
-    "revision": "23c4a7226319936fa33c",
-    "url": "/verse/js/app.6ada09cc.js"
+    "revision": "38319c7911afd467c46a",
+    "url": "/verse/js/app.7f5101ee.js"
   },
   {
-    "revision": "d4dfd45fada5ab57b73f",
-    "url": "/verse/js/chunk-2d0ac06c.b7fd16ca.js"
+    "revision": "403445ca34b551abaac6",
+    "url": "/verse/js/chunk-2d0ac06c.f1dd43c0.js"
   },
   {
-    "revision": "27f849ca4e16e5c29971",
-    "url": "/verse/js/chunk-2d21b4bd.4efa45f5.js"
+    "revision": "3fcba17481aa14e54bbf",
+    "url": "/verse/js/chunk-2d21b4bd.f0933f7a.js"
   },
   {
     "revision": "c0e117978281a9a45efe",
     "url": "/verse/js/chunk-vendors.957b6221.js"
   },
   {
-    "revision": "f4ab1a109329bc92e837",
-    "url": "/verse/js/edit.59ed3ffa.js"
+    "revision": "c38068ce445906dccab4",
+    "url": "/verse/js/edit.4d4d7f66.js"
   },
   {
-    "revision": "d77c85128de2acabd83b",
-    "url": "/verse/js/notes.a0bc0c99.js"
+    "revision": "1e93a8e64052ec98973f",
+    "url": "/verse/js/notes.e7f60656.js"
   },
   {
-    "revision": "c1be993145d9dc16faa0",
-    "url": "/verse/js/persons.c4a0c1b1.js"
+    "revision": "7cd5664256d001eb20f1",
+    "url": "/verse/js/persons.f706a201.js"
   },
   {
-    "revision": "043949a34eaf53ac201c",
-    "url": "/verse/js/projects.a48327af.js"
+    "revision": "f5526e3d183bf85b79a4",
+    "url": "/verse/js/projects.96b8ccb0.js"
   },
   {
     "revision": "e3c6e8078f8c57e5199db0bf187d1721",
