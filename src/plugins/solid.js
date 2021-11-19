@@ -52,7 +52,63 @@ const plugin = {
     let store = opts.store
     //let sockets = []
 
-    Vue.prototype.$synchronise = async function(cats){
+    Vue.prototype.$synchronise = async function(){
+      await this.$getVerses(store.state.solid.pod)
+      let verses = store.state.cats.verses
+      let cats = store.state.cats.cats
+      console.log(verses, cats)
+
+      for await  (const v of verses){
+        await this.$remoteToLocal(v)
+      }
+      store.dispatch('cats/getCats')
+
+      for (const c of cats){
+        console.log("local",c)
+      }
+
+
+
+
+
+    },
+
+    Vue.prototype.$remoteToLocal = async function(v){
+      let fr = new FileReader();
+      try {
+        const file = await getFile(v.url, { fetch: sc.fetch });
+        fr.onload = async function() {
+          let remote = JSON.parse(this.result)
+          remote.url == undefined ? remote.url = v.url : ""
+          //console.log(v)
+          var index = store.state.cats.cats.findIndex(x => x.url==remote.url);
+          if(index === -1){
+            remote.updated = Date.now()
+            console.log("?? n'existe pas en local", remote)
+            store.dispatch('cats/saveCat', remote)
+            // this.n.nodes.push(n)
+            // let action = {action: "addNode", node: n}
+            // this.$changeGame(this.game, action)
+          }else{
+            console.log("!! existe en local", v)
+
+            // Object.assign(this.network.nodes[index], n)
+            // let action = {action: "updateNode", node: n}
+            // this.$changeGame(this.game, action)
+          }
+          //  return v
+
+        };
+        await fr.readAsText(file);
+
+      } catch (err) {
+        console.log(err, v);
+      }
+
+    }
+
+
+    Vue.prototype.$synchronise1 = async function(cats){
       let path = store.state.solid.pod.storage+'verses/'
       let   fr = new FileReader();
       for (const c of cats){
@@ -182,7 +238,7 @@ const plugin = {
         //   verses.push (await this.$readVerse(u))
         // }
         console.log("verses",verses)
-          store.commit('cats/setVerses',verses)
+        store.commit('cats/setVerses',verses)
       }catch(e){
         console.log(e.message)
         await createContainerAt( verses_folder, { fetch: sc.fetch });
