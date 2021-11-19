@@ -80,7 +80,7 @@ export default {
       this.cat = this.$route.params.cat;
       this.modele = this.cat.modele
     } else {
-      this.cat = { name:'', age: 0 };
+      this.cat = { };
     }
   },
   methods: {
