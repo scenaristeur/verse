@@ -201,6 +201,12 @@ const plugin = {
           {fetch: sc.fetch }
         )
         console.log("deleted",c.url)
+        const index = subscriptions.indexOf(c.url);
+
+        if (index > -1) {
+          subscriptions.splice(index, 1);
+        }
+        this.$getVerses(store.state.solid.pod)
       }
     },
 
@@ -215,29 +221,34 @@ const plugin = {
         let path = store.state.solid.pod.storage+'verses/'
         c.url = path+uuidv4()+'.json'
       }
-      let exist = await getFile(c.url,{fetch: sc.fetch})
-if (c.updated > exist.updated){
+      let exist = null
       try{
-        //c.updated = Date.now()
-        const savedFile = await overwriteFile(
-          c.url,
-          new Blob([JSON.stringify(c)], { type: "application/json" }),
-          { contentType: "application/json", fetch: sc.fetch }
-        );
-        //  console.log(savedFile)
-
-        console.log(`File saved at ${getSourceUrl(savedFile)}`);
-        console.log("exist", exist)
-        //this.$subscribe(c.url)
-
-        //c.url = await getSourceUrl(savedFile)
-        //  console.log(c)
-        //store.dispatch('cats/saveCat', c)
-        oldObject != null ? store.dispatch('cats/deleteCat', oldObject) :  ""
-      }catch(e){
-        console.log(e)
+        exist = await getFile(c.url,{fetch: sc.fetch})
+      } catch(e){
+        console.log("creation")
       }
-    }
+      if (exist == null || c.updated > exist.updated){
+        try{
+          //c.updated = Date.now()
+          const savedFile = await overwriteFile(
+            c.url,
+            new Blob([JSON.stringify(c)], { type: "application/json" }),
+            { contentType: "application/json", fetch: sc.fetch }
+          );
+          //  console.log(savedFile)
+
+          console.log(`File saved at ${getSourceUrl(savedFile)}`);
+          console.log("exist", exist)
+          //this.$subscribe(c.url)
+
+          //c.url = await getSourceUrl(savedFile)
+          //  console.log(c)
+          //store.dispatch('cats/saveCat', c)
+          oldObject != null ? store.dispatch('cats/deleteCat', oldObject) :  ""
+        }catch(e){
+          console.log(e)
+        }
+      }
     },
     Vue.prototype.$getPodInfosFromSession = async function(session){
       // try{
@@ -268,6 +279,7 @@ if (c.updated > exist.updated){
 
     Vue.prototype.$getVerses = async function(pod){
       let verses_folder = pod.storage+'verses/'
+      this.$subscribe(verses_folder)
       let verses = []
       try{
         const dataset = await getSolidDataset( verses_folder, { fetch: sc.fetch });
@@ -350,67 +362,96 @@ if (c.updated > exist.updated){
     Vue.prototype.$subscribe = async function(url){
       console.log("$subscribe", url)
       if(!subscriptions.includes(url)){
-      // let url = path.url
-      //  let app = this
 
-      var wss = "wss://"+url.split('/')[2];
-      //console.log("wss",wss, sockets[wss])
-      let socket = sockets[wss]
-      if (socket == null){
-        //let socket = new WebSocket(websocket, ['solid.0.1.0']);
-        socket = new WebSocket(wss, ['solid-0.1']);
-        console.log("new socket",socket)
-        sockets[wss] = socket
-        console.log("sockets", sockets)
-      }
+        // let url = path.url
+        let app = this
 
-
-      socket.onopen = function() {
-        //console.log("socket open")
-        this.send('sub '+url);
-        console.log("socket sub to ",url)
-        subscriptions.push(url)
-      };
-      socket.onmessage = async function(msg) {
-        //  console.log("message",msg)
-        if (msg.data && msg.data.slice(0, 3) === 'pub') {
-          //  console.log(msg)
-          console.log(msg.data)
-          let res = msg.data.slice(4);
-          console.log(res)
-          if(res.endsWith('/')){
-            console.log("[socket]readcont",res)
-            //let container =  await app.$readContainer({url: res, subscribe: true})
-            //console.log(sockets)
-            // container.resources.forEach((r) => {
-            //   this.send('sub '+r);
-            // });
-          }else{
-            console.log("[socket]must $readResource", res)
-            let fr = new FileReader();
-            try {
-              const file = await getFile(res, { fetch: sc.fetch });
-              fr.onload = async function() {
-                let remote = JSON.parse(this.result)
-                console.log(remote)
-                // remote.url == undefined ? remote.url = res : ""
-                 store.dispatch('cats/saveCat', remote)
-                 store.dispatch('cats/getCats')
-              };
-              await fr.readAsText(file);
-
-            } catch (err) {
-              console.log(err, res);
-            }
-            //  await app.$readResource({url: res, subscribe: true})
+        var wss = "wss://"+url.split('/')[2];
+        //console.log("wss",wss, sockets[wss])
+        let socket = sockets[wss]
+        if (socket == null){
+          //let socket = new WebSocket(websocket, ['solid.0.1.0']);
+          socket = new WebSocket(wss, ['solid-0.1']);
+          console.log("new socket",socket)
+          sockets[wss] = socket
+          console.log("sockets", sockets)
+        }else{
+          if (socket.readyState == 1){
+            socket.send('sub '+url);
+            subscriptions.push(url)
+            console.log("0 socket sub to ",url)
           }
         }
-      }
-    }else{
-      console.log('deja', subscriptions.length)
-    }
 
-}
+
+        socket.onopen = function() {
+          //console.log("socket open")
+          this.send('sub '+url);
+          console.log("socket sub to ",url)
+          subscriptions.push(url)
+        };
+        socket.onmessage = async function(msg) {
+          //  console.log("message",msg)
+          if (msg.data && msg.data.slice(0, 3) === 'pub') {
+            //  console.log(msg)
+            console.log(msg.data)
+            let res = msg.data.slice(4);
+            console.log(res)
+            if(res.endsWith('/')){
+              console.log("[socket]readcont",res)
+              const dataset = await getSolidDataset( res, { fetch: sc.fetch });
+              let versesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
+              //let container =  await app.$readContainer({url: res, subscribe: true})
+              //console.log(sockets)
+              for(const v of versesUrl) {
+                console.log(v, subscriptions.includes(v))
+                console.log(subscriptions)
+                if(!subscriptions.includes(v)){
+                  app.$subscribe(v);
+                  let fr = new FileReader();
+                  try {
+                    const file = await getFile(v, { fetch: sc.fetch });
+                    fr.onload = async function() {
+                      let remote = JSON.parse(this.result)
+                      console.log(remote)
+                      // remote.url == undefined ? remote.url = res : ""
+                      store.dispatch('cats/saveCat', remote)
+                      store.dispatch('cats/getCats')
+                    };
+                    await fr.readAsText(file);
+
+                  } catch (err) {
+                    console.log(err, res);
+                  }
+                }
+
+              }
+            }else{
+              console.log("[socket]must $readResource", res)
+              let fr = new FileReader();
+              try {
+                const file = await getFile(res, { fetch: sc.fetch });
+                fr.onload = async function() {
+                  let remote = JSON.parse(this.result)
+                  console.log(remote)
+                  // remote.url == undefined ? remote.url = res : ""
+                  store.dispatch('cats/saveCat', remote)
+                  store.dispatch('cats/getCats')
+                };
+                await fr.readAsText(file);
+
+              } catch (err) {
+                console.log(err, res);
+              }
+              //  await app.$readResource({url: res, subscribe: true})
+            }
+          }
+        }
+      }else{
+        console.log('deja', subscriptions.length)
+      }
+
+    }
   }
 }
 

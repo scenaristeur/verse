@@ -10,7 +10,12 @@ const actions = {
   async deleteCat(context, cat) {
     console.log('store is being asked to delete '+cat.url);
     await idb.deleteCat(cat);
-    await Vue.prototype.$deleteRemote(cat)
+    try{
+      await Vue.prototype.$deleteRemote(cat)
+    }
+    catch(e){
+      console.log(e)
+    }
   },
   async getCats(context) {
     context.state.cats = [];
@@ -22,7 +27,12 @@ const actions = {
   async saveCat(context, cat) {
     console.log('store is being asked to save '+cat.url);
     await idb.saveCat(cat);
-    await Vue.prototype.$createRemote(cat)
+    try{
+      await Vue.prototype.$createRemote(cat)
+    }
+    catch(e){
+      console.log(e)
+    }
   },
   async rmlocalDB() {
     await idb.deleteDb();
