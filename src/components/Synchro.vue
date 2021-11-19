@@ -6,6 +6,7 @@
     {{verses}} -->
 
     <b-table striped hover :items="cats"></b-table>
+    <b-button @click="rmAll" variant="danger">DANGER : clean all local</b-button>
   </div>
 </template>
 
@@ -13,8 +14,14 @@
 export default {
   name: "Synchro",
   methods:{
-    synchronize(){
-      this.$synchronise(this.cats)
+    async synchronize(){
+      await this.$synchronise(this.cats)
+    },
+    async rmAll(){
+      for (const c of this.cats){
+        await this.$store.dispatch('cats/deleteCat', c)
+      }
+      this.synchronize()
     }
   },
   // watch:{
