@@ -43,6 +43,13 @@ export default {
 			store.delete(cat.url);
 		});
 	},
+	async deleteDb(){
+		try{
+			window.indexedDB.deleteDatabase(DB_NAME)
+		}catch(e){
+			alert(e)
+		}
+	},
 	async getCats() {
 
 		let db = await this.getDb();

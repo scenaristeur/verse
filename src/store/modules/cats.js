@@ -23,6 +23,9 @@ const actions = {
     console.log('store is being asked to save '+cat.url);
     await idb.saveCat(cat);
     await Vue.prototype.$createRemote(cat)
+  },
+  async rmlocalDB() {
+    await idb.deleteDb();
   }
 }
 
