@@ -51,6 +51,7 @@ const plugin = {
   install(Vue, opts = {}) {
     let store = opts.store
     let sockets = []
+    let subscriptions = []
 
     Vue.prototype.$synchronise = async function(){
       console.log("||| synch start")
@@ -214,6 +215,8 @@ const plugin = {
         let path = store.state.solid.pod.storage+'verses/'
         c.url = path+uuidv4()+'.json'
       }
+      let exist = await getFile(c.url,{fetch: sc.fetch})
+if (c.updated > exist.updated){
       try{
         //c.updated = Date.now()
         const savedFile = await overwriteFile(
@@ -224,7 +227,8 @@ const plugin = {
         //  console.log(savedFile)
 
         console.log(`File saved at ${getSourceUrl(savedFile)}`);
-        this.$subscribe(c.url)
+        console.log("exist", exist)
+        //this.$subscribe(c.url)
 
         //c.url = await getSourceUrl(savedFile)
         //  console.log(c)
@@ -233,99 +237,8 @@ const plugin = {
       }catch(e){
         console.log(e)
       }
+    }
     },
-    Vue.prototype.$synchronise1 = async function(cats){
-      let path = store.state.solid.pod.storage+'verses/'
-      let   fr = new FileReader();
-      for (const c of cats){
-        if (c.url != undefined){
-          try {
-            // file is a Blob (see https://developer.mozilla.org/docs/Web/API/Blob)
-            const file = await getFile(
-              c.url,               // File in Pod to Read
-              { fetch: sc.fetch }       // fetch from authenticated session
-            );
-
-            // console.log( `Fetched a ${getContentType(file)} file from ${getSourceUrl(file)}.`);
-            // console.log(`The file is ${isRawData(file) ? "not " : ""}a dataset.`);
-            // console.log(file)
-
-
-            fr.onload = async function() {
-              let remote = JSON.parse(this.result)
-              //console.log("remote, c",remote.updated, c.updated)
-              if (remote.updated > c.updated){
-                console.log("update c, remote > c",remote.updated, c.updated)
-
-                store.dispatch('cats/saveCat', remote)
-              }else if (c.updated > remote.updated)
-              {
-                console.log("update remote, remote < c",remote.updated, c.updated)
-                const savedFile = await overwriteFile(
-                  c.url,
-
-                  new Blob([JSON.stringify(c)], { type: "application/json" }),
-                  { contentType: "application/json", fetch: sc.fetch }
-                );
-                console.log(savedFile)
-                console.log(`File saved at ${getSourceUrl(savedFile)}`);
-                c.url = await getSourceUrl(savedFile)
-                console.log(c)
-                store.dispatch('cats/saveCat', c)
-              }
-              // else{
-              //   console.log("egal")
-              // }
-            };
-            fr.readAsText(file);
-            // try {
-            //   const savedFile = await overwriteFile(
-            //     c.url,                              // URL for the file.
-            //     c,                                       // File
-            //     { contentType: 'application/json', fetch: sc.fetch }    // mimetype if known, fetch from the authenticated session
-            //   );
-            //   console.log(`File saved at ${getSourceUrl(savedFile)}`);
-            //
-            // } catch (error) {
-            //   console.error(error);
-            // }
-          } catch (err) {
-            console.log(err);
-          }
-        }else{
-          //  c.url == undefined ? c.url = path+uuidv4()+'.json' : ""
-          //  console.log(c.url)
-          let fileUrl = path+uuidv4()+'.json'
-          //  try {
-          // const savedFile = await saveFileInContainer(
-          //   path,           // Container URL
-          //   JSON.stringify(c),                         // File
-          //   { slug: filename, contentType: 'application/json', fetch: sc.fetch }
-          // );
-          c.updated = Date.now()
-          const savedFile = await overwriteFile(
-            fileUrl,
-
-            new Blob([JSON.stringify(c)], { type: "application/json" }),
-            { contentType: "application/json", fetch: sc.fetch }
-          );
-          console.log(savedFile)
-          console.log(`File saved at ${getSourceUrl(savedFile)}`);
-          c.url = await getSourceUrl(savedFile)
-          console.log(c)
-          store.dispatch('cats/saveCat', c)
-          // } catch (error) {
-          //   console.error(error);
-          // }
-        }
-
-      }
-      // if (c.url == undefined){
-      //   c.url = path+uuidv4()+'.json'
-      //   console.log(c.url)
-      // }
-    },
-
     Vue.prototype.$getPodInfosFromSession = async function(session){
       // try{
       let pod = {}
@@ -368,14 +281,10 @@ const plugin = {
         for( const v of verses){
           this.$subscribe(v.url)
         }
-
-
       }catch(e){
         console.log(e.message)
         await createContainerAt( verses_folder, { fetch: sc.fetch });
-
       }
-
     },
 
     Vue.prototype.$getPodInfos = async function(pod){
@@ -439,7 +348,8 @@ const plugin = {
       store.commit('solid/setPod', null)
     },
     Vue.prototype.$subscribe = async function(url){
-       console.log("$subscribe", url)
+      console.log("$subscribe", url)
+      if(!subscriptions.includes(url)){
       // let url = path.url
       //  let app = this
 
@@ -450,18 +360,16 @@ const plugin = {
         //let socket = new WebSocket(websocket, ['solid.0.1.0']);
         socket = new WebSocket(wss, ['solid-0.1']);
         console.log("new socket",socket)
-         sockets[wss] = socket
-         console.log("sockets", sockets)
-      }else{
-
-        console.log("socket exist",socket)
+        sockets[wss] = socket
+        console.log("sockets", sockets)
       }
 
 
       socket.onopen = function() {
         //console.log("socket open")
         this.send('sub '+url);
-        //console.log("socket sub to "+app.log)
+        console.log("socket sub to ",url)
+        subscriptions.push(url)
       };
       socket.onmessage = async function(msg) {
         //  console.log("message",msg)
@@ -479,12 +387,30 @@ const plugin = {
             // });
           }else{
             console.log("[socket]must $readResource", res)
+            let fr = new FileReader();
+            try {
+              const file = await getFile(res, { fetch: sc.fetch });
+              fr.onload = async function() {
+                let remote = JSON.parse(this.result)
+                console.log(remote)
+                // remote.url == undefined ? remote.url = res : ""
+                 store.dispatch('cats/saveCat', remote)
+                 store.dispatch('cats/getCats')
+              };
+              await fr.readAsText(file);
+
+            } catch (err) {
+              console.log(err, res);
+            }
             //  await app.$readResource({url: res, subscribe: true})
           }
         }
-      };
+      }
+    }else{
+      console.log('deja', subscriptions.length)
     }
 
+}
   }
 }
 
