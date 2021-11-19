@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import idb from '@/api/idb';
 
 const state = () => ({
@@ -9,6 +10,7 @@ const actions = {
   async deleteCat(context, cat) {
     console.log('store is being asked to delete '+cat.url);
     await idb.deleteCat(cat);
+    await Vue.prototype.$deleteRemote(cat)
   },
   async getCats(context) {
     context.state.cats = [];
@@ -20,6 +22,7 @@ const actions = {
   async saveCat(context, cat) {
     console.log('store is being asked to save '+cat.url);
     await idb.saveCat(cat);
+    await Vue.prototype.$createRemote(cat)
   }
 }
 

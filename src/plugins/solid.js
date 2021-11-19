@@ -14,7 +14,7 @@ import {
   //getStringNoLocaleAll,
   createContainerAt,
   getSourceUrl,
-  //deleteFile,
+  deleteFile,
   //removeThing,
   // removeAll,
   //removeStringNoLocale,
@@ -128,7 +128,7 @@ const plugin = {
           if(c.updated > remote.updated){
             console.log("must update remote", c.updated, remote.updated)
             try{
-                const savedFile = await overwriteFile(
+              const savedFile = await overwriteFile(
                 c.url,
                 new Blob([JSON.stringify(c)], { type: "application/json" }),
                 { contentType: "application/json", fetch: sc.fetch }
@@ -189,7 +189,49 @@ const plugin = {
 
     }
 
+    Vue.prototype.$deleteRemote = async function(c){
+      console.log(c)
+      let del =  confirm("Are you sur you want to delete "+c.name);
+      if (del == true){
 
+        await deleteFile(
+          c.url,
+          {fetch: sc.fetch }
+        )
+        console.log("deleted",c.url)
+      }
+    },
+
+    Vue.prototype.$createRemote = async function(c){
+      let oldObject = null
+
+      if (typeof c.url == "number" ){
+        oldObject = Object.assign({}, {url: c.url});
+      }
+
+      if (typeof c.url == "number" || c.url == undefined ){
+        let path = store.state.solid.pod.storage+'verses/'
+        c.url = path+uuidv4()+'.json'
+      }
+      try{
+        //c.updated = Date.now()
+        const savedFile = await overwriteFile(
+          c.url,
+          new Blob([JSON.stringify(c)], { type: "application/json" }),
+          { contentType: "application/json", fetch: sc.fetch }
+        );
+        //  console.log(savedFile)
+        console.log(`File saved at ${getSourceUrl(savedFile)}`);
+
+
+        //c.url = await getSourceUrl(savedFile)
+        //  console.log(c)
+        //store.dispatch('cats/saveCat', c)
+        oldObject != null ? store.dispatch('cats/deleteCat', oldObject) :  ""
+      }catch(e){
+        console.log(e)
+      }
+    },
     Vue.prototype.$synchronise1 = async function(cats){
       let path = store.state.solid.pod.storage+'verses/'
       let   fr = new FileReader();
