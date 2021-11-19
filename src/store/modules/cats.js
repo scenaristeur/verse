@@ -24,6 +24,7 @@ const actions = {
 
 const mutations = {
   setVerses (state, v){
+    console.log("verses", v)
     state.verses = v
   },
 }

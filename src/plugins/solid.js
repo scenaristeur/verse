@@ -152,8 +152,8 @@ const plugin = {
         pod.webId = session.info.webId
         pod = await this.$getPodInfos(pod)
         store.commit('solid/setPod', pod)
-        let verses = await this.$getVerses(pod)
-        store.commit('cats/setVerses', verses)
+        await this.$getVerses(pod)
+
         if (pod.storage != null){
           //  this.$setCurrentThingUrl(pod.storage)
           //  store.commit('booklice/setPath', pod.storage+'public/bookmarks/')
@@ -177,17 +177,18 @@ const plugin = {
       try{
         const dataset = await getSolidDataset( verses_folder, { fetch: sc.fetch });
         let versesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
-        let verses = versesUrl.map(vu => {return {url: vu}})
+        verses = versesUrl.map(vu => {return {url: vu}})
         // for await (const u of versesUrl){
         //   verses.push (await this.$readVerse(u))
         // }
         console.log("verses",verses)
+          store.commit('cats/setVerses',verses)
       }catch(e){
         console.log(e.message)
         await createContainerAt( verses_folder, { fetch: sc.fetch });
 
       }
-      store.commit('cats/setVerses',verses)
+
     },
 
     Vue.prototype.$getPodInfos = async function(pod){
