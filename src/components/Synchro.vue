@@ -1,9 +1,9 @@
 <template>
   <div v-if="pod != null">
     <b-button @click="synchronize">sync</b-button>
-    {{cats}}
+    <!-- {{cats}}
     <hr>
-    {{verses}}
+    {{verses}} -->
 
     <b-table striped hover :items="cats"></b-table>
   </div>

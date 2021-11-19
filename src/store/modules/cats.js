@@ -7,7 +7,7 @@ const state = () => ({
 
 const actions = {
   async deleteCat(context, cat) {
-    console.log('store is being asked to delete '+cat.id);
+    console.log('store is being asked to delete '+cat.url);
     await idb.deleteCat(cat);
   },
   async getCats(context) {
@@ -18,6 +18,7 @@ const actions = {
     });
   },
   async saveCat(context, cat) {
+    console.log('store is being asked to save '+cat.url);
     await idb.saveCat(cat);
   }
 }

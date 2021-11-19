@@ -53,6 +53,12 @@ const plugin = {
     //let sockets = []
 
     Vue.prototype.$synchronise = async function(){
+      console.log("||| synch start")
+      // verification par url
+      // OK n'existe pas en local -> creation local
+      // existe en local mais pas en distant
+      // existe en local -> comparaison updated et maj
+
       await this.$getVerses(store.state.solid.pod)
       let verses = store.state.cats.verses
       let cats = store.state.cats.cats
@@ -63,41 +69,83 @@ const plugin = {
       }
       store.dispatch('cats/getCats')
 
-      for (const c of cats){
-        console.log("local",c)
+      for await (const c of cats){
+        await this.$localToRemote(c)
+
       }
-
-
-
-
-
+      store.dispatch('cats/getCats')
+      console.log("||| synch end")
     },
 
-    Vue.prototype.$remoteToLocal = async function(v){
+    Vue.prototype.$localToRemote = async function(c){
+
+      var index = store.state.cats.verses.findIndex(x => x.url==c.url);
+      if(index === -1){
+        //  console.log("-- n'existe pas en distant", c)
+        //  console.log(typeof c.url)
+        let oldObject = null
+        if (typeof c.url == "number" ){
+          let path = store.state.solid.pod.storage+'verses/'
+          oldObject = Object.assign({}, {url: c.url});
+          //  console.log("oldObject",oldObject)
+          c.url = path+uuidv4()+'.json'
+        }
+
+        try{
+          c.updated = Date.now()
+          const savedFile = await overwriteFile(
+            c.url,
+
+            new Blob([JSON.stringify(c)], { type: "application/json" }),
+            { contentType: "application/json", fetch: sc.fetch }
+          );
+          //  console.log(savedFile)
+          console.log(`File saved at ${getSourceUrl(savedFile)}`);
+
+
+          c.url = await getSourceUrl(savedFile)
+          //  console.log(c)
+          store.dispatch('cats/saveCat', c)
+          oldObject != null ? store.dispatch('cats/deleteCat', oldObject) :  ""
+        }catch(e){
+          console.log(e)
+        }
+
+
+      }else{
+        //  console.log("## existe en distant", c.url)
+        let v = store.state.cats.verses[index]
+        await this.$checkUpdated(v, c)
+      }
+    },
+
+    Vue.prototype.$checkUpdated = async function(v, c){
       let fr = new FileReader();
       try {
         const file = await getFile(v.url, { fetch: sc.fetch });
         fr.onload = async function() {
           let remote = JSON.parse(this.result)
-          remote.url == undefined ? remote.url = v.url : ""
-          //console.log(v)
-          var index = store.state.cats.cats.findIndex(x => x.url==remote.url);
-          if(index === -1){
-            remote.updated = Date.now()
-            delete remote.id
-            console.log("?? n'existe pas en local", remote)
-            store.dispatch('cats/saveCat', remote)
-            // this.n.nodes.push(n)
-            // let action = {action: "addNode", node: n}
-            // this.$changeGame(this.game, action)
-          }else{
-            console.log("!! existe en local", v)
+          if(c.updated > remote.updated){
+            console.log("must update remote", c.updated, remote.updated)
+            try{
+                const savedFile = await overwriteFile(
+                c.url,
+                new Blob([JSON.stringify(c)], { type: "application/json" }),
+                { contentType: "application/json", fetch: sc.fetch }
+              );
+              //  console.log(savedFile)
+              console.log(`File saved at ${getSourceUrl(savedFile)}`);
+            }catch(e){
+              console.log(e)
+            }
 
-            // Object.assign(this.network.nodes[index], n)
-            // let action = {action: "updateNode", node: n}
-            // this.$changeGame(this.game, action)
+          }else if (remote.updated > c.updated){
+            console.log("updating local")
+            store.dispatch('cats/saveCat', remote)
           }
-          //  return v
+          // else{
+          //   console.log(remote.updated, c.updated)
+          // }
 
         };
         await fr.readAsText(file);
@@ -105,6 +153,39 @@ const plugin = {
       } catch (err) {
         console.log(err, v);
       }
+    },
+
+    Vue.prototype.$remoteToLocal = async function(v){
+      let fr = new FileReader();
+      var index = store.state.cats.cats.findIndex(x => x.url==v.url);
+      if(index === -1){
+        //  console.log("?? n'existe pas en local", v)
+        try {
+          const file = await getFile(v.url, { fetch: sc.fetch });
+          fr.onload = async function() {
+            let remote = JSON.parse(this.result)
+            remote.url == undefined ? remote.url = v.url : ""
+            store.dispatch('cats/saveCat', remote)
+          };
+          await fr.readAsText(file);
+
+        } catch (err) {
+          console.log(err, v);
+        }
+        //store.dispatch('cats/saveCat', v)
+        // this.n.nodes.push(n)
+        // let action = {action: "addNode", node: n}
+        // this.$changeGame(this.game, action)
+      }else{
+        let c= store.state.cats.cats[index]
+        //  console.log("!! existe en local", c.url)
+
+        await this.$checkUpdated(v, c)
+        // Object.assign(this.network.nodes[index], n)
+        // let action = {action: "updateNode", node: n}
+        // this.$changeGame(this.game, action)
+      }
+
 
     }
 

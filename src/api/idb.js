@@ -24,7 +24,7 @@ export default {
 			request.onupgradeneeded = e => {
 				console.log('onupgradeneeded');
 				let db = e.target.result;
-				db.createObjectStore("cats", { autoIncrement: true, keyPath:'id' });
+				db.createObjectStore("cats", { autoIncrement: true, keyPath:'url' });
 			};
 		});
 	},
@@ -40,7 +40,7 @@ export default {
 			};
 
 			let store = trans.objectStore('cats');
-			store.delete(cat.id);
+			store.delete(cat.url);
 		});
 	},
 	async getCats() {

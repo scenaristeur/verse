@@ -25,12 +25,12 @@ export default {
       this.$router.push({ name: 'edit', params: {modele: this.modele} });
     },
     async deleteCat(cat) {
-      console.log('delete', cat.id);
+      console.log('delete', cat.url);
       await this.$store.dispatch('cats/deleteCat', cat);
       this.$store.dispatch('cats/getCats');
     },
     editCat(cat) {
-      console.log('edit', cat.id);
+      console.log('edit', cat.url);
       this.$router.push({ name: 'edit', params: {cat: cat} });
     }
   },
