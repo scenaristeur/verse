@@ -19,6 +19,15 @@ npm run build
 ```
 npm run lint
 ```
+# activitystreams context
+https://www.npmjs.com/package/activitystreams-context
+https://github.com/jasnell/activitystreams-context
+
+# ou activitystream objects
+- https://github.com/jasnell/activitystrea.ms
+
+
+
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

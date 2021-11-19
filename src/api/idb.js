@@ -24,7 +24,7 @@ export default {
 			request.onupgradeneeded = e => {
 				console.log('onupgradeneeded');
 				let db = e.target.result;
-				db.createObjectStore("cats", { autoIncrement: true, keyPath:'url' });
+				db.createObjectStore("cats", { keyPath:'url' });
 			};
 		});
 	},

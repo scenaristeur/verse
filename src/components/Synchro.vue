@@ -5,7 +5,7 @@
     <hr>
     {{verses}} -->
 
-    <b-table striped hover :items="cats"></b-table>
+    <b-table striped hover small sticky-header :items="cats"></b-table>
     <b-button @click="rmlocalDB" size="sm" variant="danger">DANGER : RM LOCAL DB</b-button>
   </div>
 </template>

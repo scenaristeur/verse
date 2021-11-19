@@ -2,17 +2,21 @@
   <div id="app">
 
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
+      <!-- <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link> | -->
       <router-link to="/notes">Notes</router-link> |
       <router-link to="/persons">Personnes</router-link> |
       <router-link to="/projects">Projects</router-link> |
+      <router-link to="/groups">Groups</router-link> |
+      <router-link to="/agents">Agents</router-link> |
+      <router-link to="/spaces">Spaces</router-link> |
+      <router-link to="/schemas">Schemas</router-link>
       <Login />
     </div>
     <router-view/>
     <small><i>0.0.1 - modele</i></small>
     {{session}}
-      <Synchro />
+    <Synchro />
   </div>
 </template>
 <script>

@@ -42,6 +42,11 @@
 </template>
 
 <script>
+// import {default as jsonld_context} from 'activitystreams-context'
+// console.log("context",jsonld_context)
+// import {default  as as} from 'activitystrea.ms';
+
+import { v4 as uuidv4 } from 'uuid';
 export default {
   name: "Edit",
   data() {
@@ -80,7 +85,41 @@ export default {
       this.cat = this.$route.params.cat;
       this.modele = this.cat.modele
     } else {
-      this.cat = { };
+       this.cat = { }
+     //  this.cat = {
+     //  "@context": [
+     //    "https://www.w3.org/ns/activitystreams",
+     //    {
+     //      // "oa": "http://www.w3.org/ns/oa#",
+     //      // "prov": "http://www.w3.org/ns/prov#",
+     //      "dcterms": "http://purl.org/dc/terms/",
+     //      "dcterms:created": {
+     //        "@id": "dcterms:created",
+     //        "@type": "xsd:dateTime"
+     //      }
+     //    }
+     //  ],
+     //    "@type": "Note",
+     //    "name": "",
+     //    "attributedTo": {
+     //      "id": "http://joe.website.example/",
+     //      "type": "Person",
+     //      "name": "Joe Smith"
+     //    },
+     //    "dcterms:created": "2015-01-01T00:00:59Z",
+     // "dcterms:creator": { "@id": "http://example.org/#eric" },
+     //    "published": "2014-08-21T12:34:56Z"
+     //  }
+
+      // Create a simple activity
+// as.create().
+//   actor('acct:sally@example.org').
+//   object('http://www.example.org/post').
+//   prettyWrite((err,doc) => {
+//     if (err) throw err;
+//     console.log("as test",doc);
+//   });
+
     }
   },
   methods: {
@@ -98,25 +137,32 @@ export default {
     },
     async save() {
       console.log(this.cat)
-      this.cat.modele = this.modele
-      this.cat.updated = Date.now()
-      await this.$store.dispatch('cats/saveCat', this.cat);
-      console.log('back');
-      this.$router.go(-1);
-    }
-  },
-  computed: {
-    cats() {
-      return this.$store.state.cats.cats;
+      let id = uuidv4()
+      this.cat['@id'] == undefined ? this.cat['@id'] = id : ""
+      if (this.cat.url == undefined){
+
+          let path = this.$store.state.solid.pod.storage != undefined ? this.$store.state.solid.pod.storage+'verses/' : "verses/"
+          this.cat.url = path+id+'.json'
+        }
+        this.cat.modele = this.modele
+        this.cat.updated = Date.now()
+        await this.$store.dispatch('cats/saveCat', this.cat);
+        console.log('back');
+        this.$router.go(-1);
+      }
     },
-    options() {
-      let opts = this.$store.state.cats.cats.map(c => {return{value: {url:c.url, name:c.name}, text: c.name+" ("+c.modele+")"}})
-      return opts;
-    }
-  },
-}
-</script>
+    computed: {
+      cats() {
+        return this.$store.state.cats.cats;
+      },
+      options() {
+        let opts = this.$store.state.cats.cats.map(c => {return{value: {url:c.url, name:c.name}, text: c.name+" ("+c.modele+")"}})
+        return opts;
+      }
+    },
+  }
+  </script>
 
-<style>
+  <style>
 
-</style>
+  </style>

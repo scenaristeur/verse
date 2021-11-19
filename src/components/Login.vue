@@ -88,7 +88,7 @@ export default {
       console.log("change", this.other)
       if (this.other != undefined && this.other.length != undefined)  {
         this.issuer = this.other
-        this.login()
+        this.login(this.issuer)
       }
     },
     login(issuer){

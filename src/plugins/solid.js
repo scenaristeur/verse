@@ -50,7 +50,7 @@ import { v4 as uuidv4 } from 'uuid';
 const plugin = {
   install(Vue, opts = {}) {
     let store = opts.store
-    //let sockets = []
+    let sockets = []
 
     Vue.prototype.$synchronise = async function(){
       console.log("||| synch start")
@@ -65,6 +65,7 @@ const plugin = {
       console.log(verses, cats)
 
       for await  (const v of verses){
+
         await this.$remoteToLocal(v)
       }
       store.dispatch('cats/getCats')
@@ -84,7 +85,7 @@ const plugin = {
         //  console.log("-- n'existe pas en distant", c)
         //  console.log(typeof c.url)
         let oldObject = null
-        if (typeof c.url == "number" ){
+        if (!c.url.startsWith(store.state.solid.pod.storage) ){
           let path = store.state.solid.pod.storage+'verses/'
           oldObject = Object.assign({}, {url: c.url});
           //  console.log("oldObject",oldObject)
@@ -205,11 +206,11 @@ const plugin = {
     Vue.prototype.$createRemote = async function(c){
       let oldObject = null
 
-      if (typeof c.url == "number" ){
+      if (!c.url.startsWith(store.state.solid.pod.storage)){
         oldObject = Object.assign({}, {url: c.url});
       }
 
-      if (typeof c.url == "number" || c.url == undefined ){
+      if (!c.url.startsWith(store.state.solid.pod.storage) || c.url == undefined ){
         let path = store.state.solid.pod.storage+'verses/'
         c.url = path+uuidv4()+'.json'
       }
@@ -221,8 +222,9 @@ const plugin = {
           { contentType: "application/json", fetch: sc.fetch }
         );
         //  console.log(savedFile)
-        console.log(`File saved at ${getSourceUrl(savedFile)}`);
 
+        console.log(`File saved at ${getSourceUrl(savedFile)}`);
+        this.$subscribe(c.url)
 
         //c.url = await getSourceUrl(savedFile)
         //  console.log(c)
@@ -363,6 +365,11 @@ const plugin = {
         // }
         console.log("verses",verses)
         store.commit('cats/setVerses',verses)
+        for( const v of verses){
+          this.$subscribe(v.url)
+        }
+
+
       }catch(e){
         console.log(e.message)
         await createContainerAt( verses_folder, { fetch: sc.fetch });
@@ -430,6 +437,52 @@ const plugin = {
       await session.logout()
       store.commit('solid/setSession',null)
       store.commit('solid/setPod', null)
+    },
+    Vue.prototype.$subscribe = async function(url){
+       console.log("$subscribe", url)
+      // let url = path.url
+      //  let app = this
+
+      var wss = "wss://"+url.split('/')[2];
+      //console.log("wss",wss, sockets[wss])
+      let socket = sockets[wss]
+      if (socket == null){
+        //let socket = new WebSocket(websocket, ['solid.0.1.0']);
+        socket = new WebSocket(wss, ['solid-0.1']);
+        console.log("new socket",socket)
+         sockets[wss] = socket
+         console.log("sockets", sockets)
+      }else{
+
+        console.log("socket exist",socket)
+      }
+
+
+      socket.onopen = function() {
+        //console.log("socket open")
+        this.send('sub '+url);
+        //console.log("socket sub to "+app.log)
+      };
+      socket.onmessage = async function(msg) {
+        //  console.log("message",msg)
+        if (msg.data && msg.data.slice(0, 3) === 'pub') {
+          //  console.log(msg)
+          console.log(msg.data)
+          let res = msg.data.slice(4);
+          console.log(res)
+          if(res.endsWith('/')){
+            console.log("[socket]readcont",res)
+            //let container =  await app.$readContainer({url: res, subscribe: true})
+            //console.log(sockets)
+            // container.resources.forEach((r) => {
+            //   this.send('sub '+r);
+            // });
+          }else{
+            console.log("[socket]must $readResource", res)
+            //  await app.$readResource({url: res, subscribe: true})
+          }
+        }
+      };
     }
 
   }
