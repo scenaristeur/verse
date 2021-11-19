@@ -3,9 +3,11 @@
     <h2>{{modele}}</h2>
     <b-button variant="outline-primary" @click="addThing">Add {{modele}}</b-button>
     <b-row>
-      <b-col v-for="(cat, i) in cats" :key="i">
+      <div v-for="(cat, i) in cats" :key="i">
+      <b-col v-if="cat.modele == modele">
         <Thing :cat="cat" @delete="deleteCat" @edit="editCat" />
       </b-col>
+    </div>
     </b-row>
   </div>
 </template>
