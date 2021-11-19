@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["spaces"],{1250:function(n,e,c){"use strict";c.r(e);var t=function(){var n=this,e=n.$createElement,c=n._self._c||e;return c("div",[c("Things",{attrs:{modele:"space"}})],1)},s=[],a=(c("d3b7"),c("3ca3"),c("ddb0"),{name:"Spaces",components:{Things:function(){return c.e("chunk-2d0ac06c").then(c.bind(null,"187f"))}}}),u=a,l=c("2877"),i=Object(l["a"])(u,t,s,!1,null,null,null);e["default"]=i.exports}}]);
+//# sourceMappingURL=spaces.580ac887.js.map
