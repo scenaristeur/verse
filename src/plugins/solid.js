@@ -84,6 +84,7 @@ const plugin = {
           var index = store.state.cats.cats.findIndex(x => x.url==remote.url);
           if(index === -1){
             remote.updated = Date.now()
+            delete remote.id
             console.log("?? n'existe pas en local", remote)
             store.dispatch('cats/saveCat', remote)
             // this.n.nodes.push(n)
