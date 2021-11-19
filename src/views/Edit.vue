@@ -8,6 +8,14 @@
         </b-col>
         <b-col sm="9">
           <b-form-select v-if="f.type=='select'" v-model="cat[f.label]" :options="f.options || options"></b-form-select>
+          <b-form-textarea
+          v-else-if="f.type=='textarea'"
+          id="textarea"
+          v-model="cat[f.label]"
+          placeholder="..."
+          rows="3"
+          max-rows="6"
+          ></b-form-textarea>
           <b-form-input v-else v-model="cat[f.label]" :id="`field-${f.label}`" :type="f.type"></b-form-input>
         </b-col>
       </b-row>
@@ -31,6 +39,9 @@ export default {
         {'label': 'age', type: 'number'},
         {'label': 'property', type: 'select', options: ["one", "two"]},
         {'label': 'link', type: 'select'},
+        {'label': 'watch', type: 'select'},
+        {'label': 'send', type: 'select'},
+         {'label': 'action', type: 'textarea'},
         // 'text',
         // 'number',
         // 'email',

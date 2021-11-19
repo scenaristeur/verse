@@ -2,7 +2,7 @@
   <b-card>
     <b-card-title>{{cat.name}}</b-card-title>
     <b-card-header>
-    age: {{cat.age}} - {{cat.modele}}
+
   </b-card-header>
     <b-card-text>
       {{cat.content}}
@@ -11,7 +11,7 @@
     <b-button size="sm" variant="danger" @click="$emit('delete',cat)">Delete</b-button>
     <b-button size="sm" @click="$emit('edit',cat)">Edit</b-button>
 
-    <b-card-footer>{{cat.modele}}</b-card-footer>
+    <b-card-footer>[[dendrites- watch]]{{cat.modele}}[[axione - send]]</b-card-footer>
   </b-card>
 </template>
 
