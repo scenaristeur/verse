@@ -35,7 +35,18 @@
 
     </b-button-toolbar> -->
     <b-button @click="showFieldModal(p)" variant="outline-primary">+</b-button>
-    {{ p.values}}
+    <!-- {{ p.values}} -->
+    <b-list-group>
+      <b-list-group-item v-for="(v,i) in p.values" :key="i">
+        <span v-if="v.type == 'text'">{{v.value}}</span>
+        <div v-else-if="v.type == 'textarea'">
+          <pre>{{v.value}}</pre>
+        </div>
+        <NodeLite v-else-if="v.type == 'node'" :node="v" />
+        <div v-else>{{v}}</div>
+
+      </b-list-group-item>
+    </b-list-group>
 
     <!-- <b-form-input id="name" v-model="node.name" required /> -->
   </b-col>
@@ -64,7 +75,7 @@
 </b-row>
 
 <b-modal id="fieldModal" size="xl" :title="node.name+' -> '+currentProp.name">
-{{ currentProp}}
+  {{ currentProp}}
   <b-tabs content-class="mt-3">
     <b-tab title="text" active @click="fieldType = 'text'">
       <b-form-input
@@ -79,13 +90,10 @@
       rows="3"
       max-rows="6"
       @change="addNewValue"
-    ></b-form-textarea>
+      ></b-form-textarea>
     </b-tab>
     <b-tab title="node" @click="fieldType = 'node'">
-      <b-form-input
-      v-model="newvalue"
-      placeholder="new node todo"
-      @change="addNewValue"/>
+      <NodeSelector :currentProp.sync="currentProp"/>
     </b-tab>
     <b-tab title="link" @click="fieldType = 'link'">
       <b-form-input
@@ -101,7 +109,7 @@
       rows="3"
       max-rows="6"
       @change="addNewValue"
-    ></b-form-textarea>
+      ></b-form-textarea>
     </b-tab>
   </b-tabs>
 </b-modal>
@@ -113,6 +121,10 @@
 
 export default {
   name: "Edit",
+  components: {
+    'NodeSelector': () => import('@/components/NodeSelector'),
+    'NodeLite': () => import('@/components/NodeLite'),
+  },
   data() {
     return {
       node:null,
@@ -163,6 +175,6 @@ export default {
       this.currentProp.values.push(val)
       this.newvalue = ""
     }
-  }
+  },
 };
 </script>

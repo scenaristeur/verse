@@ -15,7 +15,7 @@
       <!-- <Login /> -->
     </div>
     <router-view/>
-    <small><i>0.0.2 - nodes idb</i></small>
+    <small><i>0.0.3 - tagged nodes</i></small>
     <!-- {{session}} -->
     <!-- <Synchro /> -->
   </div>
