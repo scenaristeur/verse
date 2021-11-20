@@ -12,14 +12,7 @@ export default {
   props: ['node'],
   methods:{
     editNode(){
-      this.$router.push("path").catch(error => {
-                    this.$router.push('/');
-        if (error.name != "NavigationDuplicated") {
-
-          throw error;
-        }
-      });
-      this.$router.push({ name: 'edit', params: {node: this.liteNode} });
+        this.$router.push({ name: 'edit', params: {node: this.liteNode} });
     }
   },
   computed: {

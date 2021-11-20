@@ -75,7 +75,7 @@
 </b-row>
 
 <b-modal id="fieldModal" size="xl" :title="node.name+' -> '+currentProp.name">
-  {{ currentProp}}
+  <!-- {{ currentProp}} -->
   <b-tabs content-class="mt-3">
     <b-tab title="text" active @click="fieldType = 'text'">
       <b-form-input
