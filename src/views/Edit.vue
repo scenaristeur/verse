@@ -24,21 +24,35 @@
         <label for="name">{{p.name}}</label>
       </b-col>
       <b-col sm="9">
-        {{ p.values}}
+
+ <b-button-toolbar key-nav aria-label="Toolbar with button groups">
+        <!-- <b-button-group size="sm" variant="outline-primary" class="mr-1">
+    <b-button>Save</b-button>
+    <b-button>Cancel</b-button>
+    <b-button @click="fieldType = 'text'">Text</b-button>
+    <b-button @click="fieldType = 'textarea'">TextArea</b-button>
+    <b-button @click="fieldType = 'link'">Link</b-button>
+  </b-button-group> -->
+  <b-dropdown size="sm" class="mx-1" right text="+" variant="outline-primary">
+     <b-dropdown-item @click="fieldType = 'text'">Text</b-dropdown-item>
+     <b-dropdown-item @click="fieldType = 'textarea'">Textarea</b-dropdown-item>
+     <b-dropdown-item @click="fieldType = 'node'">Node</b-dropdown-item>
+     <b-dropdown-item @click="fieldType = 'link'">Link</b-dropdown-item>
+   </b-dropdown>
+ </b-button-toolbar>
+
+ {{ p.values}}
+{{fieldType}}
         <!-- <b-form-input id="name" v-model="node.name" required /> -->
       </b-col>
-
     </b-row>
 
-
-
-    <b-row v-if="field != null">
+    <b-row v-if="field != null" class="mt-3">
       <b-col sm="3">
-        <b-form-input @change="fieldNameChanged" v-model="field.name" required placeholder="field name" />
+        <b-form-input @change="fieldNameChanged" v-model="field.name" required placeholder="property name" />
       </b-col>
       <b-col sm="9">
         <b-button variant="outline-secondary" size="sm" @click="clear_field">X</b-button>
-        <!-- <b-form-input id='value' v-model="field.value" required placeholder="value"/> -->
       </b-col>
     </b-row>
 
@@ -46,8 +60,7 @@
       <b-col>
       </b-col>
       <b-col>
-        <!-- <b-btn variant="outline-primary" size="sm" @click="addProperty">Add property</b-btn> -->
-        <b-btn variant="outline-primary" size="sm" @click="add">+</b-btn>
+        <b-btn variant="outline-primary" size="sm" @click="add">+ add property or link</b-btn>
       </b-col>
     </b-row>
     <b-row>
@@ -66,7 +79,8 @@ export default {
     return {
       node:null,
       field : null,
-      clearing: false
+      clearing: false,
+      fieldType: null
     }
   },
   created() {
@@ -82,16 +96,15 @@ export default {
       this.$router.push('/');
     },
     add(){
-      console.log("add")
-      this.field = {name: "property", value:"val"}
+      this.field = {name: ""}
     },
     fieldNameChanged(field_name){
       console.log(field_name)
       if(this.clearing == false){
         let p = {name: field_name, values: []}
-        this.node.properties.push(p)/* == undefined ? this.node.properties[field_name] = [] : alert(field_name+" already exist")*/
-        console.log(this.node)
-
+        this.node.properties == undefined ? this.node.properties = [] : ""
+        var index = this.node.properties.findIndex(x => x.name==p.name);
+        index === -1 ? this.node.properties.push(p) : alert(p.name+" already exist")
       }
     },
     clear_field(){
@@ -99,7 +112,6 @@ export default {
       this.field = null
       this.clearing = false
     }
-
   }
 };
 </script>
