@@ -1,5 +1,12 @@
 # verse
 
+
+# inspiration vue idb
+- https://www.raymondcamden.com/2019/10/16/using-indexeddb-with-vuejs
+- https://github.com/cfjedimaster/vue-demos/tree/master/idb
+
+
+
 ## Project setup
 ```
 npm install

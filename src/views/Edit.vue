@@ -1,168 +1,52 @@
 <template>
-  <div>
-    Edit {{modele}}
-    <b-container fluid>
-      <b-row class="my-1" v-for="f in fields" :key="f.label">
-        <b-col sm="3">
-          <label :for="`field-${f.label}`"><code>{{ f.label }}</code>:</label>
-        </b-col>
-        <b-col sm="9">
-          <div v-if="f.type=='select'">
-            <span v-for="r in cat[f.label]" :key="r.url">{{r.name}} </span>
-            <b-button v-b-toggle="`collapse-${f.label}`" variant="primary">+</b-button>
-            <b-collapse :id="`collapse-${f.label}`" class="mt-2">
-              <b-card>
-                <b-form-select
-                @change="add(`${f.label}`)"
-                v-model="selected"
-                :options="f.options || options"
-                >
-              </b-form-select>
-            </b-card>
-          </b-collapse>
-        </div>
-
-        <b-form-textarea
-        v-else-if="f.type=='textarea'"
-        id="textarea"
-        v-model="cat[f.label]"
-        placeholder="..."
-        rows="3"
-        max-rows="6"
-        ></b-form-textarea>
-        <b-form-input v-else v-model="cat[f.label]" :id="`field-${f.label}`" :type="f.type"></b-form-input>
-      </b-col>
-    </b-row>
-    <b-button @click="save">Save</b-button>
-    <!-- {{ cats}}
-    <hr>
-    {{ options}} -->
-  </b-container>
-</div>
+      <b-container>
+        <b-row>
+          <b-col sm="3">
+            <label for="name">Name:</label>
+          </b-col>
+          <b-col sm="9">
+            <b-form-input id="name" v-model="node.name" required />
+          </b-col>
+          <b-col sm="3">
+            <label for="age"><code>Age</code>:</label>
+          </b-col>
+          <b-col>
+            <b-form-input
+            id="age"
+             v-model="node.age"
+              required type="number"  />
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+            <b-btn variant="success" @click="save">Save Node</b-btn>
+          </b-col>
+        </b-row>
+      </b-container>
 </template>
 
 <script>
-// import {default as jsonld_context} from 'activitystreams-context'
-// console.log("context",jsonld_context)
-// import {default  as as} from 'activitystrea.ms';
 
-import { v4 as uuidv4 } from 'uuid';
 export default {
   name: "Edit",
   data() {
     return {
-      cat:null,
-      selected: null,
-      fields: [
-        {'label': 'name', type: 'text'},
-        {'label': 'content', type: 'text'},
-        {'label': 'age', type: 'number'},
-        {'label': 'property', type: 'select', options: ["one", "two"]},
-        {'label': 'link', type: 'select'},
-        {'label': 'watch', type: 'select'},
-        {'label': 'send', type: 'select'},
-        {'label': 'action', type: 'textarea'},
-        // 'text',
-        // 'number',
-        // 'email',
-        // 'password',
-        // 'search',
-        // 'url',
-        // 'tel',
-        // 'date',
-        // 'time',
-        // 'range',
-        // 'color'
-      ],
-
+      node:null
     }
   },
   created() {
-    console.log("params",this.$route.params.modele)
-    this.modele = this.$route.params.modele
-    console.log("route",this.$route)
-    if(this.$route.params.cat) {
-      this.cat = this.$route.params.cat;
-      this.modele = this.cat.modele
+    if(this.$route.params.node) {
+      this.node = this.$route.params.node;
     } else {
-       this.cat = { }
-     //  this.cat = {
-     //  "@context": [
-     //    "https://www.w3.org/ns/activitystreams",
-     //    {
-     //      // "oa": "http://www.w3.org/ns/oa#",
-     //      // "prov": "http://www.w3.org/ns/prov#",
-     //      "dcterms": "http://purl.org/dc/terms/",
-     //      "dcterms:created": {
-     //        "@id": "dcterms:created",
-     //        "@type": "xsd:dateTime"
-     //      }
-     //    }
-     //  ],
-     //    "@type": "Note",
-     //    "name": "",
-     //    "attributedTo": {
-     //      "id": "http://joe.website.example/",
-     //      "type": "Person",
-     //      "name": "Joe Smith"
-     //    },
-     //    "dcterms:created": "2015-01-01T00:00:59Z",
-     // "dcterms:creator": { "@id": "http://example.org/#eric" },
-     //    "published": "2014-08-21T12:34:56Z"
-     //  }
-
-      // Create a simple activity
-// as.create().
-//   actor('acct:sally@example.org').
-//   object('http://www.example.org/post').
-//   prettyWrite((err,doc) => {
-//     if (err) throw err;
-//     console.log("as test",doc);
-//   });
-
+      this.node = { name:'', age: 0 };
     }
   },
   methods: {
-    add(field){
-      console.log(typeof this.cat[field], field, this.selected)
-      this.cat[field] ==  undefined ? this.cat[field] = [] : ""
-      //
-      // if (this.cat[field])){
-      //   let new_array = []
-      //   new_array.push(this.cat[field])
-      //   this.cat[field] = new_array
-      // }
-      // console.log(this.cat)
-      this.selected != null ? this.cat[field].push(this.selected) : ""
-    },
-    async save() {
-      console.log(this.cat)
-      let id = uuidv4()
-      this.cat['@id'] == undefined ? this.cat['@id'] = id : ""
-      if (this.cat.url == undefined){
-
-          let path = this.$store.state.solid.pod.storage != undefined ? this.$store.state.solid.pod.storage+'verses/' : "verses/"
-          this.cat.url = path+id+'.json'
-        }
-        this.cat.modele = this.modele
-        this.cat.updated = Date.now()
-        await this.$store.dispatch('cats/saveCat', this.cat);
-        console.log('back');
-        this.$router.go(-1);
-      }
-    },
-    computed: {
-      cats() {
-        return this.$store.state.cats.cats;
-      },
-      options() {
-        let opts = this.$store.state.cats.cats.map(c => {return{value: {url:c.url, name:c.name}, text: c.name+" ("+c.modele+")"}})
-        return opts;
-      }
-    },
+    async save() { console.log(this.node)
+      await this.$store.dispatch('nodes/saveNode', this.node);
+      console.log('back');
+      this.$router.push('/');
+    }
   }
-  </script>
-
-  <style>
-
-  </style>
+};
+</script>
