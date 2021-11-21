@@ -455,14 +455,15 @@ const plugin = {
             console.log(res)
             if(res.endsWith('/')){
               console.log("[socket]readcont",res)
-                  subscriptions = []
+              // subscriptions = []
+              // subscriptions.push(res)
               const dataset = await getSolidDataset( res, { fetch: sc.fetch });
               let versesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
               //let container =  await app.$readContainer({url: res, subscribe: true})
               //console.log(sockets)
               for(const v of versesUrl) {
-              //  console.log(v, subscriptions.includes(v))
-              //  console.log(subscriptions)
+                //  console.log(v, subscriptions.includes(v))
+
 
                 if(!subscriptions.includes(v)){
                   app.$subscribe(v);
@@ -513,7 +514,7 @@ const plugin = {
       }else{
         console.log('deja', subscriptions.length)
       }
-
+     console.log(subscriptions)
     }
   }
 }
