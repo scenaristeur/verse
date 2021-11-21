@@ -225,7 +225,6 @@ const plugin = {
         )
         console.log("deleted",c.url)
         const index = subscriptions.indexOf(c.url);
-
         if (index > -1) {
           subscriptions.splice(index, 1);
         }
@@ -456,6 +455,7 @@ const plugin = {
             console.log(res)
             if(res.endsWith('/')){
               console.log("[socket]readcont",res)
+                  subscriptions = []
               const dataset = await getSolidDataset( res, { fetch: sc.fetch });
               let versesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
               //let container =  await app.$readContainer({url: res, subscribe: true})
@@ -463,6 +463,7 @@ const plugin = {
               for(const v of versesUrl) {
               //  console.log(v, subscriptions.includes(v))
               //  console.log(subscriptions)
+
                 if(!subscriptions.includes(v)){
                   app.$subscribe(v);
                   let fr = new FileReader();
@@ -499,6 +500,11 @@ const plugin = {
 
               } catch (err) {
                 console.log(err, res);
+                const index = subscriptions.indexOf(res);
+                if (index > -1) {
+                  subscriptions.splice(index, 1);
+                }
+                this.$getNodes()
               }
               //  await app.$readResource({url: res, subscribe: true})
             }
