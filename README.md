@@ -1,4 +1,8 @@
 # verse
+/* anyone can create a neurone on his pod and
+neurone code can be executed on a local machine trhrough executor
+neurone can send data to another neurone or watch for certain result of a another neurone
+*/
 
 
 # inspiration vue idb
