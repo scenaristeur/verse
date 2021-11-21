@@ -5,6 +5,22 @@ neurone can send data to another neurone or watch for certain result of a anothe
 */
 
 
+# store a file on your pod like
+
+`
+{"name":"flock","@id":"17388935-eecf-4124-a4c2-b1a5f2f4e86c","url":"https://spoggy-test5.solidcommunity.net/verses/17388935-eecf-4124-a4c2-b1a5f2f4e86c.json","modele":"agent","updated":1637363084386,"action":"console.log('hello boss')\nconsole.log('can catch args'+args)"}
+`
+
+then update executor/index.js with the url of your file
+`let rone_url = "https://spoggy-test5.solidcommunity.net/public/verses/17388935-eecf-4124-a4c2-b1a5f2f4e86c.json"
+`
+execute the code  located in the action key of the json file with
+
+`
+cd executor
+node index.js
+`
+
 # inspiration vue idb
 - https://www.raymondcamden.com/2019/10/16/using-indexeddb-with-vuejs
 - https://github.com/cfjedimaster/vue-demos/tree/master/idb
