@@ -19,6 +19,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "nodes" */ '../views/Nodes.vue')
   },
   {
+    path: '/sync',
+    name: 'Synchro',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "synchro" */ '../views/Synchro.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting

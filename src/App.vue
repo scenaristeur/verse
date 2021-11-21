@@ -2,8 +2,9 @@
   <div id="app">
 
     <div id="nav">
-      <!-- <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> | -->
+      <router-link to="/">H0m€</router-link> |
+      <router-link to="/sync">$y^c</router-link> |
+      <!--      <router-link to="/about">About</router-link> | -->
       <!-- <router-link to="/nodes">Nodes</router-link> | -->
       <!-- <router-link to="/notes">Notes</router-link> |
       <router-link to="/persons">Personnes</router-link> |
@@ -12,11 +13,13 @@
       <router-link to="/agents">Agents</router-link> |
       <router-link to="/spaces">Spaces</router-link> |
       <router-link to="/schemas">Schemas</router-link> -->
-      <!-- <Login /> -->
+      <Login />
     </div>
     <router-view/>
+    <br><br>
+    <hr>
     <small><i>0.0.3 - tagged nodes</i></small>
-    <!-- {{session}} -->
+    {{session}}
     <!-- <Synchro /> -->
   </div>
 </template>
@@ -24,19 +27,19 @@
 export default {
   name: "Notes",
   components: {
-    // 'Login': () => import('@/components/Login'),
+    'Login': () => import('@/components/Login'),
     // 'Synchro': () => import('@/components/Synchro'),
   },
   created(){
-    // this.$checkSession()
+    this.$checkSession()
     // this.$store.dispatch('cats/getCats');
 
   },
   computed:{
-    // session:{
-    //   get () { return this.$store.state.solid.session },
-    //   set (/*value*/) { /*this.updateTodo(value)*/ }
-    // }
+    session:{
+      get () { return this.$store.state.solid.session },
+      set (/*value*/) { /*this.updateTodo(value)*/ }
+    }
   }
 }
 </script>

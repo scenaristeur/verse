@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const state = () => ({
-  nodes:[]
+  nodes:[],
+  remoteNodes : []
 })
 
 const actions = {
@@ -38,15 +39,38 @@ const actions = {
     //   console.log(e)
     // }
   },
+  // async sync(context, pod){
+  // //  console.log('sync',context, pod.neuroneStore)
+  //  Vue.prototype.$synchronise()
+  //   // await context.commit("setRemotes", remotes)
+  //   // console.log("remote",context.state.remoteNodes)
+  //   // for await (const r of await context.state.remoteNodes){
+  //   //   console.log("r",r.id, r.updated, r)
+  //   // }
+  //   //
+  //   // for(const n of context.state.nodes){
+  //   //   console.log("n",n.id,n.updated, n)
+  //   //   var index = context.state.remoteNodes.findIndex(x => x.id==n.id);
+  //   //   if(index === -1){
+  //   //     console.log("n'existe pas en remote",n.id)
+  //   //     Vue.prototype.$create(n)
+  //   //
+  //   //   }else{
+  //   //     console.log("existe en remote",n.id)
+  //   //   }
+  //   // }
+  //
+  //
+  // }
   // async rmlocalDB() {
   //   await idb.deleteDb();
   // }
 }
 
 const mutations = {
-  setVerses (state, v){
-    console.log("verses", v)
-    state.verses = v
+  setRemotes (state, r){
+    console.log("remotes", r)
+    state.remoteNodes = r
   },
 }
 

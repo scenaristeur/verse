@@ -53,61 +53,41 @@ const plugin = {
     let sockets = []
     let subscriptions = []
 
-    Vue.prototype.$synchronize = async function(){
+    Vue.prototype.$synchronise = async function(){
       console.log("||| synch start")
-      store.dispatch('nodes/getNodes')
       // verification par url
       // OK n'existe pas en local -> creation local
       // existe en local mais pas en distant
       // existe en local -> comparaison updated et maj
 
-      await this.$getNodes()
-      let remoteNodes = store.state.nodes.remoteNodes
-      let nodes = store.state.nodes.nodes
-      console.log(remoteNodes, nodes)
+      await this.$getVerses(store.state.solid.pod)
+      let verses = store.state.cats.verses
+      let cats = store.state.cats.cats
+      console.log(verses, cats)
 
-      for await  (const r of remoteNodes){
+      for await  (const v of verses){
 
-        await this.$remoteToLocal(r)
+        await this.$remoteToLocal(v)
       }
-      store.dispatch('nodes/getNodes')
+      store.dispatch('cats/getCats')
 
-      for await (const n of nodes){
-        await this.$localToRemote(n)
+      for await (const c of cats){
+        await this.$localToRemote(c)
 
       }
-      store.dispatch('nodes/getNodes')
+      store.dispatch('cats/getCats')
       console.log("||| synch end")
     },
-    Vue.prototype.$create = async function(n){
-      console.log(store.state.solid.pod.neuroneStore, n)
-      n.url = store.state.solid.pod.neuroneStore+n.id+'.json'
-      console.log(n.url)
-      n.synchronized = Date.now()
-      try{
-        const savedFile = await overwriteFile(
-          n.url,
-          new Blob([JSON.stringify(n, undefined, 2)], { type: "application/json" }),
-          { contentType: "application/json", fetch: sc.fetch }
-        );
-        console.log(`File saved at ${getSourceUrl(savedFile)}`);
-        n.url = await getSourceUrl(savedFile)
-        store.dispatch('nodes/saveNode', n)
-      }catch(e){
-        console.log(e)
-      }
-    }
-
 
     Vue.prototype.$localToRemote = async function(c){
 
-      var index = store.state.nodes.remoteNodes.findIndex(x => x.url==c.url);
+      var index = store.state.cats.verses.findIndex(x => x.url==c.url);
       if(index === -1){
         //  console.log("-- n'existe pas en distant", c)
         //  console.log(typeof c.url)
         let oldObject = null
         if (!c.url.startsWith(store.state.solid.pod.storage) ){
-          let path = store.state.solid.pod.neuroneStore
+          let path = store.state.solid.pod.storage+'verses/'
           oldObject = Object.assign({}, {url: c.url});
           //  console.log("oldObject",oldObject)
           c.url = path+uuidv4()+'.json'
@@ -127,8 +107,8 @@ const plugin = {
 
           c.url = await getSourceUrl(savedFile)
           //  console.log(c)
-          store.dispatch('nodes/saveNode', c)
-          oldObject != null ? store.dispatch('nodes/deleteNode', oldObject) :  ""
+          store.dispatch('cats/saveCat', c)
+          oldObject != null ? store.dispatch('cats/deleteCat', oldObject) :  ""
         }catch(e){
           console.log(e)
         }
@@ -136,7 +116,7 @@ const plugin = {
 
       }else{
         //  console.log("## existe en distant", c.url)
-        let v = store.state.nodes.remoteNodes[index]
+        let v = store.state.cats.verses[index]
         await this.$checkUpdated(v, c)
       }
     },
@@ -179,15 +159,15 @@ const plugin = {
 
     Vue.prototype.$remoteToLocal = async function(v){
       let fr = new FileReader();
-      var index = store.state.nodes.nodes.findIndex(x => x.url==v.url);
+      var index = store.state.cats.cats.findIndex(x => x.url==v.url);
       if(index === -1){
         //  console.log("?? n'existe pas en local", v)
         try {
           const file = await getFile(v.url, { fetch: sc.fetch });
           fr.onload = async function() {
             let remote = JSON.parse(this.result)
-          //  remote.url == undefined ? remote.url = v.url : ""
-            store.dispatch('nodes/savedNode', remote)
+            remote.url == undefined ? remote.url = v.url : ""
+            store.dispatch('cats/saveCat', remote)
           };
           await fr.readAsText(file);
 
@@ -199,7 +179,7 @@ const plugin = {
         // let action = {action: "addNode", node: n}
         // this.$changeGame(this.game, action)
       }else{
-        let c= store.state.nodes.nodes[index]
+        let c= store.state.cats.cats[index]
         //  console.log("!! existe en local", c.url)
 
         await this.$checkUpdated(v, c)
@@ -226,7 +206,7 @@ const plugin = {
         if (index > -1) {
           subscriptions.splice(index, 1);
         }
-        this.$getNodes()
+        this.$getVerses(store.state.solid.pod)
       }
     },
 
@@ -277,9 +257,8 @@ const plugin = {
       if (pod.logged) {
         pod.webId = session.info.webId
         pod = await this.$getPodInfos(pod)
-        pod.neuroneStore == undefined ? pod.neuroneStore = pod.storage+'public/neurones/' : ""
         store.commit('solid/setPod', pod)
-        //  await this.$getVerses(pod)
+        await this.$getVerses(pod)
 
         if (pod.storage != null){
           //  this.$setCurrentThingUrl(pod.storage)
@@ -298,56 +277,25 @@ const plugin = {
       // }
     },
 
-    Vue.prototype.$getRemote = async function(folderUrl){
-      let resources = []
-
+    Vue.prototype.$getVerses = async function(pod){
+      let verses_folder = pod.storage+'verses/'
+      this.$subscribe(verses_folder)
+      let verses = []
       try{
-        const dataset = await getSolidDataset( folderUrl, { fetch: sc.fetch });
-        let resUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
-        resources = await resUrl.map(vu => {return {url: vu}})
-        let fr = new FileReader();
-        for await (let r of resources) {
-          try {
-            const file = await getFile(r.url, { fetch: sc.fetch });
-            fr.onload = async function() {
-              let remote = JSON.parse(this.result)
-              console.log("remotejson", remote);
-              r = await Object.assign(r, remote);
-              console.log(r.id)
-            };
-            await fr.readAsText(file);
-
-          } catch (err) {
-            console.log(err, r);
-          }
-        }
-      }catch(e){
-        console.log(e.message)
-        await createContainerAt( folderUrl, { fetch: sc.fetch });
-      }
-      console.log(resources)
-
-      return resources
-    },
-
-    Vue.prototype.$getNodes = async function(){
-
-      let remotes = []
-      try{
-        const dataset = await getSolidDataset( store.state.solid.pod.neuroneStore, { fetch: sc.fetch });
-        let remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
-        remotes = remotesUrl.map(ru => {return {url: ru}})
+        const dataset = await getSolidDataset( verses_folder, { fetch: sc.fetch });
+        let versesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
+        verses = versesUrl.map(vu => {return {url: vu}})
         // for await (const u of versesUrl){
         //   verses.push (await this.$readVerse(u))
         // }
-        console.log("remotes",remotes)
-        store.commit('nodes/setRemotes',remotes)
-        // for( const v of verses){
-        //   this.$subscribe(v.url)
-        // }
+        console.log("verses",verses)
+        store.commit('cats/setVerses',verses)
+        for( const v of verses){
+          this.$subscribe(v.url)
+        }
       }catch(e){
         console.log(e.message)
-        await createContainerAt( store.state.solid.pod.neuroneStore, { fetch: sc.fetch });
+        await createContainerAt( verses_folder, { fetch: sc.fetch });
       }
     },
 
