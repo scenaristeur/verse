@@ -13,7 +13,10 @@
       <router-link to="/agents">Agents</router-link> |
       <router-link to="/spaces">Spaces</router-link> |
       <router-link to="/schemas">Schemas</router-link> -->
-      <Login />
+
+    <span v-if="isOnline"><Login /></span>
+    <span v-if="isOffline" variant="danger">offline</span>
+
     </div>
     <router-view/>
     <br><br>
