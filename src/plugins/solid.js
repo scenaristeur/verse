@@ -260,7 +260,7 @@ const plugin = {
 
           console.log(`File saved at ${getSourceUrl(savedFile)}`);
           console.log("exist", exist)
-          //this.$subscribe(c.url)
+          this.$subscribe(c.url)
 
           //c.url = await getSourceUrl(savedFile)
           //  console.log(c)
@@ -343,9 +343,9 @@ const plugin = {
         // }
         console.log("remotes",remotes)
         store.commit('nodes/setRemotes',remotes)
-        // for( const v of verses){
-        //   this.$subscribe(v.url)
-        // }
+        for( const v of remotes){
+          this.$subscribe(v.url)
+        }
       }catch(e){
         console.log(e.message)
         await createContainerAt( store.state.solid.pod.neuroneStore, { fetch: sc.fetch });
@@ -468,8 +468,8 @@ const plugin = {
                       let remote = JSON.parse(this.result)
                       console.log(remote)
                       // remote.url == undefined ? remote.url = res : ""
-                      store.dispatch('cats/saveCat', remote)
-                      store.dispatch('cats/getCats')
+                      store.dispatch('nodes/saveNode', remote)
+                      store.dispatch('nodes/getNodes')
                     };
                     await fr.readAsText(file);
 
@@ -488,8 +488,8 @@ const plugin = {
                   let remote = JSON.parse(this.result)
                   console.log(remote)
                   // remote.url == undefined ? remote.url = res : ""
-                  store.dispatch('cats/saveCat', remote)
-                  store.dispatch('cats/getCats')
+                  store.dispatch('nodes/saveNode', remote)
+                  store.dispatch('nodes/getNodes')
                 };
                 await fr.readAsText(file);
 
