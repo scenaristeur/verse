@@ -45,7 +45,7 @@ import {
 import { FOAF, /*LDP,*/ VCARD, /*RDF, AS, RDFS, OWL*/  } from "@inrupt/vocab-common-rdf";
 import { WS } from "@inrupt/vocab-solid-common";
 import * as sc from '@inrupt/solid-client-authn-browser'
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 
 const plugin = {
   install(Vue, opts = {}) {
@@ -101,7 +101,8 @@ const plugin = {
 
     Vue.prototype.$localToRemote = async function(c){
 
-      var index = store.state.nodes.remoteNodes.findIndex(x => x.url==c.url);
+      var index = store.state.nodes.remoteNodes.findIndex(x => x.id==c.id);
+            c.url = store.state.solid.pod.neuroneStore+c.id+'.json'
       if(index === -1){
          console.log("-- n'existe pas en distant", c)
         //  console.log(typeof c.url)
@@ -112,7 +113,7 @@ const plugin = {
         //   //  console.log("oldObject",oldObject)
         //   c.url = path+uuidv4()+'.json'
         // }
-        c.url = store.state.solid.pod.neuroneStore+c.id+'.json'
+
 
         try{
           c.updated = Date.now()
@@ -232,16 +233,17 @@ const plugin = {
     },
 
     Vue.prototype.$createRemote = async function(c){
-      let oldObject = null
+      // let oldObject = null
+      c.url = store.state.solid.pod.neuroneStore+c.id+'.json'
 
-      if (!c.url.startsWith(store.state.solid.pod.storage)){
-        oldObject = Object.assign({}, {url: c.url});
-      }
-
-      if (!c.url.startsWith(store.state.solid.pod.storage) || c.url == undefined ){
-        let path = store.state.solid.pod.storage+'verses/'
-        c.url = path+uuidv4()+'.json'
-      }
+      // if (!c.url.startsWith(store.state.solid.pod.storage)){
+      //   oldObject = Object.assign({}, {url: c.url});
+      // }
+      //
+      // if (!c.url.startsWith(store.state.solid.pod.storage) || c.url == undefined ){
+      //   let path = store.state.solid.pod.storage+'verses/'
+      //   c.url = path+uuidv4()+'.json'
+      // }
       let exist = null
       try{
         exist = await getFile(c.url,{fetch: sc.fetch})
@@ -264,8 +266,8 @@ const plugin = {
 
           //c.url = await getSourceUrl(savedFile)
           //  console.log(c)
-          //store.dispatch('cats/saveCat', c)
-          oldObject != null ? store.dispatch('cats/deleteCat', oldObject) :  ""
+          store.dispatch('nodes/saveNode', c)
+          // oldObject != null ? store.dispatch('cats/deleteCat', oldObject) :  ""
         }catch(e){
           console.log(e)
         }
