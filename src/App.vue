@@ -18,7 +18,8 @@
     <router-view/>
     <br><br>
     <hr>
-    <small><i>0.0.4 - nodes sync</i></small>
+    <small><i>0.0.4 - nodes sync 2</i></small>
+
     {{session}}
     <!-- <Synchro /> -->
   </div>

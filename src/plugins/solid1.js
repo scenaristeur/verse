@@ -55,7 +55,6 @@ const plugin = {
 
     Vue.prototype.$synchronize = async function(){
       console.log("||| synch start")
-      this.$subscribe(store.state.solid.pod.neuroneStore)
       store.dispatch('nodes/getNodes')
       // verification par url
       // OK n'existe pas en local -> creation local
@@ -103,9 +102,9 @@ const plugin = {
     Vue.prototype.$localToRemote = async function(c){
 
       var index = store.state.nodes.remoteNodes.findIndex(x => x.id==c.id);
-      c.url = store.state.solid.pod.neuroneStore+c.id+'.json'
+            c.url = store.state.solid.pod.neuroneStore+c.id+'.json'
       if(index === -1){
-        console.log("-- n'existe pas en distant", c)
+         console.log("-- n'existe pas en distant", c)
         //  console.log(typeof c.url)
         // let oldObject = null
         // if (!c.url.startsWith(store.state.solid.pod.storage) ){
@@ -131,14 +130,14 @@ const plugin = {
           c.url = await getSourceUrl(savedFile)
           //  console.log(c)
           store.dispatch('nodes/saveNode', c)
-          //  oldObject != null ? store.dispatch('nodes/deleteNode', oldObject) :  ""
+        //  oldObject != null ? store.dispatch('nodes/deleteNode', oldObject) :  ""
         }catch(e){
           console.log(e)
         }
 
 
       }else{
-        console.log("## existe en distant", c.url)
+          console.log("## existe en distant", c.url)
         let v = store.state.nodes.remoteNodes[index]
         await this.$checkUpdated(v, c)
       }
@@ -184,12 +183,12 @@ const plugin = {
       let fr = new FileReader();
       var index = store.state.nodes.nodes.findIndex(x => x.url==v.url);
       if(index === -1){
-        console.log("?? n'existe pas en local", v)
+         console.log("?? n'existe pas en local", v)
         try {
           const file = await getFile(v.url, { fetch: sc.fetch });
           fr.onload = async function() {
             let remote = JSON.parse(this.result)
-            //  remote.url == undefined ? remote.url = v.url : ""
+          //  remote.url == undefined ? remote.url = v.url : ""
             store.dispatch('nodes/saveNode', remote)
           };
           await fr.readAsText(file);
@@ -203,7 +202,7 @@ const plugin = {
         // this.$changeGame(this.game, action)
       }else{
         let c= store.state.nodes.nodes[index]
-        console.log("!! existe en local", c.url)
+         console.log("!! existe en local", c.url)
 
         await this.$checkUpdated(v, c)
         // Object.assign(this.network.nodes[index], n)
@@ -461,8 +460,8 @@ const plugin = {
               //let container =  await app.$readContainer({url: res, subscribe: true})
               //console.log(sockets)
               for(const v of versesUrl) {
-              //  console.log(v, subscriptions.includes(v))
-              //  console.log(subscriptions)
+                console.log(v, subscriptions.includes(v))
+                console.log(subscriptions)
                 if(!subscriptions.includes(v)){
                   app.$subscribe(v);
                   let fr = new FileReader();

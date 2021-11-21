@@ -24,7 +24,8 @@ node index.js
 - https://github.com/cfjedimaster/vue-demos/tree/master/idb
 
 
-
+# voir aussi offline storage
+- https://github.com/filrak/vue-offline
 ## Project setup
 ```
 npm install
