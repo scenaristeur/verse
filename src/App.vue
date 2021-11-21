@@ -18,7 +18,7 @@
     <router-view/>
     <br><br>
     <hr>
-    <small><i>0.0.3 - tagged nodes</i></small>
+    <small><i>0.0.3 - nodes sync</i></small>
     {{session}}
     <!-- <Synchro /> -->
   </div>

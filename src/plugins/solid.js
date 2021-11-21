@@ -103,15 +103,16 @@ const plugin = {
 
       var index = store.state.nodes.remoteNodes.findIndex(x => x.url==c.url);
       if(index === -1){
-        //  console.log("-- n'existe pas en distant", c)
+         console.log("-- n'existe pas en distant", c)
         //  console.log(typeof c.url)
-        let oldObject = null
-        if (!c.url.startsWith(store.state.solid.pod.storage) ){
-          let path = store.state.solid.pod.neuroneStore
-          oldObject = Object.assign({}, {url: c.url});
-          //  console.log("oldObject",oldObject)
-          c.url = path+uuidv4()+'.json'
-        }
+        // let oldObject = null
+        // if (!c.url.startsWith(store.state.solid.pod.storage) ){
+        //   let path = store.state.solid.pod.neuroneStore
+        //   oldObject = Object.assign({}, {url: c.url});
+        //   //  console.log("oldObject",oldObject)
+        //   c.url = path+uuidv4()+'.json'
+        // }
+        c.url = store.state.solid.pod.neuroneStore+c.id+'.json'
 
         try{
           c.updated = Date.now()
@@ -128,14 +129,14 @@ const plugin = {
           c.url = await getSourceUrl(savedFile)
           //  console.log(c)
           store.dispatch('nodes/saveNode', c)
-          oldObject != null ? store.dispatch('nodes/deleteNode', oldObject) :  ""
+        //  oldObject != null ? store.dispatch('nodes/deleteNode', oldObject) :  ""
         }catch(e){
           console.log(e)
         }
 
 
       }else{
-        //  console.log("## existe en distant", c.url)
+          console.log("## existe en distant", c.url)
         let v = store.state.nodes.remoteNodes[index]
         await this.$checkUpdated(v, c)
       }
@@ -181,13 +182,13 @@ const plugin = {
       let fr = new FileReader();
       var index = store.state.nodes.nodes.findIndex(x => x.url==v.url);
       if(index === -1){
-        //  console.log("?? n'existe pas en local", v)
+         console.log("?? n'existe pas en local", v)
         try {
           const file = await getFile(v.url, { fetch: sc.fetch });
           fr.onload = async function() {
             let remote = JSON.parse(this.result)
           //  remote.url == undefined ? remote.url = v.url : ""
-            store.dispatch('nodes/savedNode', remote)
+            store.dispatch('nodes/saveNode', remote)
           };
           await fr.readAsText(file);
 
@@ -200,7 +201,7 @@ const plugin = {
         // this.$changeGame(this.game, action)
       }else{
         let c= store.state.nodes.nodes[index]
-        //  console.log("!! existe en local", c.url)
+         console.log("!! existe en local", c.url)
 
         await this.$checkUpdated(v, c)
         // Object.assign(this.network.nodes[index], n)
