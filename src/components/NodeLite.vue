@@ -2,7 +2,7 @@
   <div>
     <!-- {{node}} Lite <hr>
     {{liteNode}} -->
-    <b-button size="sm" variant="info" @click="editNode">{{liteNode.name}}</b-button>
+    <b-button size="sm" variant="info" @click="editNode">{{liteNode['ve:name']}}</b-button>
   </div>
 </template>
 
@@ -12,7 +12,8 @@ export default {
   props: ['node'],
   methods:{
     editNode(){
-        this.$router.push({ name: 'edit', params: {node: this.liteNode} });
+      this.$store.commit('nodes/setCurrentNode', this.liteNode)
+      this.$router.push({ name: 'edit'});
     }
   },
   computed: {

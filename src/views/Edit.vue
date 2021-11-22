@@ -139,14 +139,15 @@ export default {
   created() {
     this.node = this.$store.state.nodes.currentNode ||
     {  "@context": {
-      "as": "https://www.w3.org/ns/activitystreams",
+      "@vocab": "https://www.w3.org/ns/activitystreams",
       "ve": "https://scenaristeur.github.io/verse/",
       "@id": "id",
       "@type": "type"
     },
     "ve:name":'',
     "ve:age": 0 ,
-    "ve:properties": []};
+    "ve:properties": [],
+    test: "test vocab"}
     // if(this.$route.params.node) {
     //   this.node = this.$route.params.node;
     // } else {

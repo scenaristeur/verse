@@ -42,7 +42,7 @@
               :key="option.id"
               @click="onOptionClick({ option, addTag })"
             >
-              {{ option.name }}
+              {{ option['ve:name'] }}
             </b-dropdown-item-button>
             <b-dropdown-text v-if="availableOptions.length === 0">
               There are no nodes available to select
@@ -72,12 +72,12 @@
       availableOptions() {
         const criteria = this.criteria
         // Filter out already selected options
-        const options = this.nodes.filter(opt => this.value.indexOf(opt.name) === -1)
+        const options = this.nodes.filter(opt => this.value.indexOf(opt['ve:name']) === -1)
 
       //  const options = this.options.filter(opt => this.value.indexOf(opt) === -1)
         if (criteria) {
           // Show only options that match criteria
-          return options.filter(opt => opt.name.toLowerCase().indexOf(criteria) > -1);
+          return options.filter(opt => opt['ve:name'].toLowerCase().indexOf(criteria) > -1);
         }
         // Show all options available
         return options
@@ -97,7 +97,7 @@
         console.log(option)
         let n = {id: option.id, type: 'node'}
         this.currentProp.values.push(n)
-        addTag(option.name)
+        addTag(option['ve:name'])
         this.search = ''
       }
     }
