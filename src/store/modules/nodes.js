@@ -5,18 +5,27 @@ import { v4 as uuidv4 } from 'uuid';
 
 const state = () => ({
   nodes:[],
-  remoteNodes : []
+  remoteNodes : [],
+  currentNode: null
 })
 
 const actions = {
   async deleteNode(context, node) {
-    console.log('store is being asked to delete '+node.id);
-    await idb.deleteNode(node);
-    try{
-      await Vue.prototype.$deleteRemote(node)
-    }
-    catch(e){
-      console.log(e)
+    let del =  confirm("Are you sur you want to delete "+node.name);
+    if (del == true){
+      if(context.rootState.solid.pod != null){
+        try{
+          await Vue.prototype.$deleteRemote(node)
+        }
+        catch(e){
+          console.log(e)
+        }
+      }
+      else{
+        console.log("is not connected")
+      }
+      console.log('store is being asked to delete '+node);
+      await idb.deleteNode(node);
     }
   },
   async getNodes(context) {
@@ -30,14 +39,19 @@ const actions = {
     node.id == undefined ? node.id = uuidv4() : ""
     node.created == undefined ? node.created = Date.now() : ""
     node.updated = Date.now()
-    console.log('store is being asked to save '+node.id);
+    if(context.rootState.solid.pod != null){
+      try{
+        node = await Vue.prototype.$createRemote(node)
+      }
+      catch(e){
+        console.log(e)
+      }
+    }
+    else{
+      console.log("is not connected")
+    }
+    console.log('store is being asked to save '+JSON.stringify(node));
     await idb.saveNode(node);
-    try{
-      await Vue.prototype.$createRemote(node)
-    }
-    catch(e){
-      console.log(e)
-    }
   },
   // async sync(context, pod){
   // //  console.log('sync',context, pod.neuroneStore)
@@ -71,6 +85,9 @@ const mutations = {
   setRemotes (state, r){
     console.log("remotes", r)
     state.remoteNodes = r
+  },
+  setCurrentNode (state, n){
+    state.currentNode = n
   },
 }
 

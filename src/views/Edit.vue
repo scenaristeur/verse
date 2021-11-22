@@ -137,15 +137,17 @@ export default {
     }
   },
   created() {
-    if(this.$route.params.node) {
-      this.node = this.$route.params.node;
-    } else {
-      this.node = { name:'', age: 0 , properties: []};
-    }
+    this.node = this.$store.state.nodes.currentNode || { name:'', age: 0 , properties: []};
+    // if(this.$route.params.node) {
+    //   this.node = this.$route.params.node;
+    // } else {
+    //   this.node = { name:'', age: 0 , properties: []};
+    // }
   },
   methods: {
     async save() {
       await this.$store.dispatch('nodes/saveNode', this.node);
+      this.$store.commit('nodes/setCurrentNode', null)
       this.$router.push('/');
     },
     add(){
@@ -176,5 +178,10 @@ export default {
       this.newvalue = ""
     }
   },
+  computed: {
+    currentNode() {
+      return this.$store.state.nodes.currentNode
+    },
+  }
 };
 </script>
