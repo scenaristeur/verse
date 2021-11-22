@@ -90,6 +90,7 @@ const plugin = {
         pod = await this.$getPodInfos(pod)
         pod.neuroneStore == undefined ? pod.neuroneStore = pod.storage+'public/neurones/' : ""
         store.commit('solid/setPod', pod)
+        this.$checkChanges()
         //this.$synchronize()
         //  await this.$getVerses(pod)
 

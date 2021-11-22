@@ -1,18 +1,18 @@
 import {
-  // getSolidDataset,
+  getSolidDataset,
   //getThingAll,
   //getPublicAccess,
   //  getAgentAccess,
   //getSolidDatasetWithAcl,
   //getPublicAccess,
   //getAgentAccess,
-  //getFile,
+  getFile,
   // isRawData,
   // getContentType,
   //saveFileInContainer,
-  // getContainedResourceUrlAll,
+  getContainedResourceUrlAll,
   // getStringNoLocaleAll,
-  // createContainerAt,
+  createContainerAt,
   getSourceUrl,
   deleteFile,
   //removeThing,
@@ -85,6 +85,119 @@ const plugin = {
       //   subscriptions.splice(index, 1);
       // }
       //this.$getNodes()
+    }
+
+    // Vue.prototype.$onLoad = async function( remotes){
+    //   console.log(remotes, this)
+    //   let remote = JSON.parse(this.result)
+    //   console.log(remote)
+    //   remotes.push(remote)
+    // }
+
+    Vue.prototype.$compare = async function(remote){
+      //console.log(remote)
+      //  console.log(remote.id)
+      let local = store.state.nodes.nodes.find(n => n.id == remote.id)
+      console.log(local)
+      if (local == undefined){
+        store.commit('nodes/addNotBoth',{id: remote.id, local: null, remote: remote})
+      }else if(local['ve:updated'] != remote['ve:updated']){
+        store.commit('nodes/addMustUpdate', {id: remote.id, local: local, remote: remote})
+      }
+    }
+
+    Vue.prototype.$checkChanges = async function(){
+      console.log("$checkChanges",store.state.solid.pod.neuroneStore)
+      let plugin = this
+      let remotesUrl = []
+      try{
+        const dataset = await getSolidDataset( store.state.solid.pod.neuroneStore, { fetch: sc.fetch });
+        remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
+        for (const u of remotesUrl){
+          const file = await getFile(u, { fetch: sc.fetch });
+          const reader = new FileReader();
+          reader.onload = async () => {
+            plugin.$compare(JSON.parse(reader.result));
+
+          };
+          reader.onerror = (error) => {
+            console.log(error);
+          };
+          reader.readAsText(file);
+        }
+
+      }catch(e){
+        console.log(e)
+      }
+
+
+      console.log("Phase 2",remotesUrl)
+      for (const local of store.state.nodes.nodes){
+        console.log(local.id, remotesUrl.includes(local['ve:url']))
+        if (!remotesUrl.includes(local['ve:url'])){
+          store.commit('nodes/addNotBoth',{id: local.id, local: local, remote: null})
+        }
+
+      }
+
+    }
+
+    Vue.prototype.$checkChanges1 = async function(){
+      console.log("$checkChanges",store.state.solid.pod.neuroneStore)
+      //let remotes = []
+      try{
+        const dataset = await getSolidDataset( store.state.solid.pod.neuroneStore, { fetch: sc.fetch });
+        let remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
+        // let files = await remotesUrl.map(async function(ru) {return `${await getFile(ru, { fetch: sc.fetch })}`})
+
+        // console.log(`${JSON.parse(files)}`)
+        const filePromises = remotesUrl.map(async function(url) {
+          // Return a promise per file
+          const file = await getFile(url, { fetch: sc.fetch });
+          return new Promise( function(resolve, reject) {
+
+            const reader = new FileReader();
+            reader.onload = async () => {
+              try {
+                //response =
+                // Resolve the promise with the response value
+                resolve(JSON.parse(reader.result));
+              } catch (err) {
+                reject(err);
+              }
+            };
+            reader.onerror = (error) => {
+              reject(error);
+            };
+            reader.readAsText(file);
+          });
+        });
+
+        // Wait for all promises to be resolved
+        const fileInfos = await Promise.all(filePromises);
+        console.log(fileInfos)
+        // var reader = new FileReader();
+        //
+        // for await  (const r of remotes_urls){
+        //   const file = await getFile(r.url, { fetch: sc.fetch });
+        //
+        //   reader.onload = this.$onLoad(remotes);
+        //   reader.readAsText(file);
+        // }
+        // console.log(remotes)
+        // for await (const u of versesUrl){
+        //   verses.push (await this.$readVerse(u))
+        // }
+        // console.log("remotes",remotes)
+        // store.commit('nodes/setRemotes',remotes)
+        // for( const v of urls){
+        //   this.$subscribe(v.url)
+        // }
+      }catch(e){
+        console.log(e.message)
+        await createContainerAt( store.state.solid.pod.neuroneStore, { fetch: sc.fetch });
+      }
+
     }
 
 

@@ -8,6 +8,17 @@
       </b-col>
 
     </b-row>
+    not both :  <b-table small responsive striped hover :items="notBoth" :fields="fields">
+
+      <template #cell(update)="data">
+        {{data}}
+        <!-- <b class="text-info">{{ data.value.last.toUpperCase() }}</b>, <b>{{ data.value.first }}</b> -->
+      </template>
+
+    </b-table>
+    {{JSON.stringify(notBoth)}}<hr>
+    must update :
+    <b-table striped small responsive hover :items="mustUpdate"  :fields="fields"></b-table>{{JSON.stringify(mustUpdate)}}<hr>
   </div>
 </template>
 
@@ -16,6 +27,11 @@ export default {
   name: "Nodes",
   components: {
     'Node': () => import('@/components/Node'),
+  },
+  data(){
+    return{
+      fields: ['id', 'local', 'update', 'remote'],
+    }
   },
   created() {
     this.$store.dispatch('nodes/getNodes');
@@ -39,6 +55,12 @@ export default {
   computed: {
     nodes() {
       return this.$store.state.nodes.nodes;
+    },
+    notBoth() {
+      return this.$store.state.nodes.notBoth;
+    },
+    mustUpdate() {
+      return this.$store.state.nodes.mustUpdate;
     }
   },
 }
@@ -47,3 +69,4 @@ export default {
 <style>
 
 </style>
+notBoth

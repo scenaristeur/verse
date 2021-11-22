@@ -6,7 +6,10 @@ import { v4 as uuidv4 } from 'uuid';
 const state = () => ({
   nodes:[],
   remoteNodes : [],
-  currentNode: null
+  currentNode: null,
+  notBoth : [],
+  mustUpdate : [],
+
 })
 
 const actions = {
@@ -89,6 +92,18 @@ const mutations = {
   setCurrentNode (state, n){
     state.currentNode = n
   },
+  addNotBoth(state, n){
+    var index = state.notBoth.findIndex(x => x.id==n.id);
+    if(index === -1){
+      state.notBoth.push(n)
+    }
+  },
+  addMustUpdate(state, n){
+    var index = state.mustUpdate.findIndex(x => x.id==n.id);
+    if(index === -1){
+      state.mustUpdate.push(n)
+    }
+  }
 }
 
 export default {
