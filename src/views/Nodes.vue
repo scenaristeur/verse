@@ -8,49 +8,70 @@
       </b-col>
 
     </b-row>
-    not both :  <b-table small responsive striped hover :items="notBoth" :fields="fields">
+    <h2>not both</h2>  <b-table small responsive striped hover :items="notBoth" :fields="fields">
 
-      <!-- <template #cell(id)="data">
-      {{data.item.local['ve:name'] || data.item.remote['ve:name']}}
-    </template> -->
+      <template #cell(id)="data">
+        {{data.item.local && data.item.local['ve:name'] || data.item.remote &&data.item.remote['ve:name']}}
+        <hr>
+        {{data.item.id}}
+
+      </template>
+      <template #cell(update)="data">
+        <!-- {{ data.value}}<hr>
+        {{data.item}} -->
+        <b-button-toolbar>
+          <b-button-group class="mx-1">
+            <b-button v-if="data.item.local == null" @click="createLocal(data.item.remote)" variant="success">&laquo;</b-button>
+            <b-button v-if="data.item.remote == null" @click="removeLocal(data.item.local)" variant="danger">X</b-button>
+            <!-- </b-button-group>
+            <b-button-group class="mx-1">
+            <b-button>Edit</b-button>
+            <b-button>Undo</b-button>
+            <b-button>Redo</b-button>
+          </b-button-group>
+          <b-button-group class="mx-1"> -->
+          <b-button v-if="data.item.local == null" @click="removeRemote(data.item.remote)" variant="danger">X</b-button>
+          <b-button v-if="data.item.remote == null" @click="createRemote(data.item.local)" variant="success">&raquo;</b-button>
+        </b-button-group>
+      </b-button-toolbar>
+      <!-- {{data}} -->
+      <!-- <b class="text-info">{{ data.value.last.toUpperCase() }}</b>, <b>{{ data.value.first }}</b> -->
+    </template>
+
+  </b-table>
+  <h2>must update</h2>
+  <b-table striped small responsive hover :items="mustUpdate"  :fields="fields">
+    <template #cell(id)="data">
+      {{data.item.local && data.item.local['ve:name'] || data.item.remote &&data.item.remote['ve:name']}}
+      <hr>
+      {{data.item.id}}
+
+    </template>
     <template #cell(update)="data">
       <!-- {{ data.value}}<hr>
       {{data.item}} -->
       <b-button-toolbar>
         <b-button-group class="mx-1">
-          <b-button v-if="data.item.local == null" @click="createLocal(data.item.remote)" variant="success">&laquo;</b-button>
-          <b-button v-if="data.item.remote == null" @click="removeLocal(data.item.local)" variant="danger">X</b-button>
-          <!-- </b-button-group>
-          <b-button-group class="mx-1">
-          <b-button>Edit</b-button>
-          <b-button>Undo</b-button>
-          <b-button>Redo</b-button>
+          <b-button @click="updateLocal(data.item.remote)">&laquo;</b-button>
+          <b-button @click="updateRemote(data.item.local)">&raquo;</b-button>
         </b-button-group>
-        <b-button-group class="mx-1"> -->
-        <b-button v-if="data.item.local == null" @click="removeRemote(data.item.remote)" variant="danger">X</b-button>
-        <b-button v-if="data.item.remote == null" @click="createRemote(data.item.local)" variant="success">&raquo;</b-button>
-      </b-button-group>
-    </b-button-toolbar>
-    <!-- {{data}} -->
-    <!-- <b class="text-info">{{ data.value.last.toUpperCase() }}</b>, <b>{{ data.value.first }}</b> -->
-  </template>
+      </b-button-toolbar>
+      <!-- {{data}} -->
+      <!-- <b class="text-info">{{ data.value.last.toUpperCase() }}</b>, <b>{{ data.value.first }}</b> -->
+    </template>
 
-</b-table>
-must update :
-<b-table striped small responsive hover :items="mustUpdate"  :fields="fields">
-  <template #cell(update)="data">
-    <!-- {{ data.value}}<hr>
-    {{data.item}} -->
-    <b-button-toolbar>
-      <b-button-group class="mx-1">
-        <b-button >&laquo;</b-button>
-        <b-button >&raquo;</b-button>
-      </b-button-group>
-    </b-button-toolbar>
-    {{data}}
-    <!-- <b class="text-info">{{ data.value.last.toUpperCase() }}</b>, <b>{{ data.value.first }}</b> -->
-  </template>
-</b-table>
+    <template #cell(local)="data">
+      <h5>{{data.item.local['ve:name']}}</h5>
+      <small>{{new Date(data.item.local['ve:updated'])}}</small><br>
+      {{ JSON.stringify(data.item.local, null, 2)}}
+    </template>
+
+    <template #cell(remote)="data">
+      <h5>{{data.item.remote['ve:name']}}</h5>
+      <small>{{new Date(data.item.remote['ve:updated'])}}</small><br>
+        {{ JSON.stringify(data.item.remote, null, 2)}}
+    </template>
+  </b-table>
 </div>
 </template>
 
@@ -94,6 +115,12 @@ export default {
     },
     removeRemote(n){
       console.log("remove remote",n)
+    },
+    updateLocal(n){
+      console.log("update local", n)
+    },
+    updateRemote(n){
+      console.log("update remote", n)
     }
   },
   computed: {
