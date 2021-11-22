@@ -98,7 +98,7 @@ const plugin = {
       //console.log(remote)
       //  console.log(remote.id)
       let local = store.state.nodes.nodes.find(n => n.id == remote.id)
-      console.log(local)
+    //  console.log(local)
       if (local == undefined){
         store.commit('nodes/addNotBoth',{id: remote.id, local: null, remote: remote})
       }else if(local['ve:updated'] != remote['ve:updated']){
@@ -113,12 +113,19 @@ const plugin = {
       try{
         const dataset = await getSolidDataset( store.state.solid.pod.neuroneStore, { fetch: sc.fetch });
         remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
+        //console.log("Phase 2",remotesUrl)
+        for (const local of store.state.nodes.nodes){
+        //  console.log(local.id, remotesUrl.includes(local['ve:url']))
+          if (!remotesUrl.includes(local['ve:url'])){
+            store.commit('nodes/addNotBoth',{id: local.id, local: local, remote: null})
+          }
+        }
+
         for (const u of remotesUrl){
           const file = await getFile(u, { fetch: sc.fetch });
           const reader = new FileReader();
           reader.onload = async () => {
             plugin.$compare(JSON.parse(reader.result));
-
           };
           reader.onerror = (error) => {
             console.log(error);
@@ -129,17 +136,6 @@ const plugin = {
       }catch(e){
         console.log(e)
       }
-
-
-      console.log("Phase 2",remotesUrl)
-      for (const local of store.state.nodes.nodes){
-        console.log(local.id, remotesUrl.includes(local['ve:url']))
-        if (!remotesUrl.includes(local['ve:url'])){
-          store.commit('nodes/addNotBoth',{id: local.id, local: local, remote: null})
-        }
-
-      }
-
     }
 
     Vue.prototype.$checkChanges1 = async function(){

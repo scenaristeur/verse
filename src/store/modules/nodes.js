@@ -98,12 +98,24 @@ const mutations = {
       state.notBoth.push(n)
     }
   },
+  removeNotBoth(state,n){
+    var index = state.notBoth.map(x => {
+      return x.id;
+    }).indexOf(n.id);
+    state.notBoth.splice(index, 1);
+  },
   addMustUpdate(state, n){
     var index = state.mustUpdate.findIndex(x => x.id==n.id);
     if(index === -1){
       state.mustUpdate.push(n)
     }
-  }
+  },
+  removeMustUpdate(state,n){
+    var index = state.mustUpdate.map(x => {
+      return x.id;
+    }).indexOf(n.id);
+    state.mustUpdate.splice(index, 1);
+  },
 }
 
 export default {
