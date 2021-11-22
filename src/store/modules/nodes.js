@@ -37,8 +37,8 @@ const actions = {
   },
   async saveNode(context, node) {
     node.id == undefined ? node.id = uuidv4() : ""
-    node.created == undefined ? node.created = Date.now() : ""
-    node.updated = Date.now()
+    node['ve:created'] == undefined ? node['ve:created'] = Date.now() : ""
+    node['ve:updated'] = Date.now()
     if(context.rootState.solid.pod != null){
       try{
         node = await Vue.prototype.$createRemote(node)

@@ -1,11 +1,11 @@
 <template>
   <b-card>
-    <b-card-title>{{node.name}}</b-card-title>
+    <b-card-title>{{node['ve:name']}}</b-card-title>
     <!-- <b-card-header>
 
   </b-card-header> -->
     <b-card-text>
-      {{node.age}}
+      {{node['ve:age']}}
     </b-card-text>
 
     <b-button size="sm" variant="danger" @click="$emit('delete',node)">Delete</b-button>

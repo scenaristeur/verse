@@ -5,7 +5,7 @@
         <label for="name">Name:</label>
       </b-col>
       <b-col sm="9">
-        <b-form-input id="name" v-model="node.name" required />
+        <b-form-input id="name" v-model="node['ve:name']" required />
       </b-col>
       <b-col sm="3">
         <label for="age"><code>Age</code>:</label>
@@ -13,13 +13,13 @@
       <b-col>
         <b-form-input
         id="age"
-        v-model="node.age"
+        v-model="node['ve:age']"
         required type="number"  />
       </b-col>
     </b-row>
 
 
-    <b-row v-for="p in node.properties" :key="p.name">
+    <b-row v-for="p in node['ve:properties']" :key="p.name">
       <b-col sm="3">
         <label for="name"><code>{{p.name}}</code>:</label>
       </b-col>
@@ -137,7 +137,16 @@ export default {
     }
   },
   created() {
-    this.node = this.$store.state.nodes.currentNode || { name:'', age: 0 , properties: []};
+    this.node = this.$store.state.nodes.currentNode ||
+    {  "@context": {
+      "as": "https://www.w3.org/ns/activitystreams",
+      "ve": "https://scenaristeur.github.io/verse/",
+      "@id": "id",
+      "@type": "type"
+    },
+    "ve:name":'',
+    "ve:age": 0 ,
+    "ve:properties": []};
     // if(this.$route.params.node) {
     //   this.node = this.$route.params.node;
     // } else {
@@ -157,9 +166,9 @@ export default {
       console.log(field_name)
       if(this.clearing == false){
         let p = {name: field_name, values: []}
-        this.node.properties == undefined ? this.node.properties = [] : ""
-        var index = this.node.properties.findIndex(x => x.name==p.name);
-        index === -1 ? this.node.properties.push(p) : alert(p.name+" already exist")
+        this.node['ve:properties'] == undefined ? this.node['ve:properties'] = [] : ""
+        var index = this.node['ve:properties'].findIndex(x => x.name==p.name);
+        index === -1 ? this.node['ve:properties'].push(p) : alert(p.name+" already exist")
       }
     },
     clear_field(){

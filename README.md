@@ -26,6 +26,13 @@ node index.js
 
 # voir aussi offline storage
 - https://github.com/filrak/vue-offline
+
+# jsonld
+// jsonld https://jsfiddle.net/aveltens/d3tzfhjx/
+// https://forum.solidproject.org/t/using-solid-with-json-ld/1641
+
+
+
 ## Project setup
 ```
 npm install

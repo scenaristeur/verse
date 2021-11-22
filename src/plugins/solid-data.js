@@ -54,38 +54,38 @@ const plugin = {
     Vue.prototype.$createRemote = async function(n){
       console.log(store.state.solid.pod)
 
-        console.log(store.state.solid.pod.neuroneStore, n)
-        n.url = store.state.solid.pod.neuroneStore+n.id+'.json'
-        n.synchronized = Date.now()
-        try{
-          const savedFile = await overwriteFile(
-            n.url,
-            new Blob([JSON.stringify(n, undefined, 2)], { type: "application/json" }),
-            { contentType: "application/json", fetch: sc.fetch }
-          );
-          console.log(`File saved at ${getSourceUrl(savedFile)}`);
-          n.url = await getSourceUrl(savedFile)
-          //  store.dispatch('nodes/saveNode', n)
-          return n
-        }catch(e){
-          console.log(e)
-        }
+      console.log(store.state.solid.pod.neuroneStore, n)
+      n['ve:url'] = store.state.solid.pod.neuroneStore+n.id
+      n['ve:synchronized'] = Date.now()
+      try{
+        const savedFile = await overwriteFile(
+          n['ve:url'],
+          new Blob([JSON.stringify(n, undefined, 2)], { type: "application/ld+json" }),
+          { contentType: "application/ld+json", fetch: sc.fetch }
+        );
+        console.log(`File saved at ${getSourceUrl(savedFile)}`);
+        //n.url = await getSourceUrl(savedFile)
+        //  store.dispatch('nodes/saveNode', n)
+        return n
+      }catch(e){
+        console.log(e)
       }
+    }
 
     Vue.prototype.$deleteRemote = async function(n){
-        console.log(n, store.state.solid.pod.neuroneStore)
+      console.log(n, store.state.solid.pod.neuroneStore)
 
-        await deleteFile(
-          n.url,
-          {fetch: sc.fetch }
-        )
-        console.log("deleted",n.url)
-        // const index = subscriptions.indexOf(c.url);
-        // if (index > -1) {
-        //   subscriptions.splice(index, 1);
-        // }
-        //this.$getNodes()
-      }
+      await deleteFile(
+        n['ve:url'],
+        {fetch: sc.fetch }
+      )
+      console.log("deleted",n['ve:url'])
+      // const index = subscriptions.indexOf(c.url);
+      // if (index > -1) {
+      //   subscriptions.splice(index, 1);
+      // }
+      //this.$getNodes()
+    }
 
 
   }
