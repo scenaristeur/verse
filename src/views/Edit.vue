@@ -43,6 +43,9 @@
           <pre>{{v.value}}</pre>
         </div>
         <NodeLite v-else-if="v.type == 'node'" :node="v" />
+        <span v-else-if="v.type == 'link'">
+          <a :href="v.value.href" target="_blank">{{v.value.name}}</a>
+        </span>
         <div v-else>{{v}}</div>
 
       </b-list-group-item>
@@ -97,9 +100,13 @@
     </b-tab>
     <b-tab title="link" @click="fieldType = 'link'">
       <b-form-input
-      v-model="newvalue"
-      placeholder="new link todo"
-      @change="addNewValue"/>
+      v-model="link.name"
+      placeholder="name"
+      />
+      <b-form-input
+      v-model="link.href"
+      placeholder="link"
+      @change="addNewLink"/>
     </b-tab>
     <b-tab title="markdown" disabled @click="fieldType = 'markdown'">
       <b-form-textarea
@@ -133,7 +140,8 @@ export default {
       fieldType: "text",
       show: false,
       currentProp: {},
-      newvalue: null
+      newvalue: null,
+      link: {}
     }
   },
   created() {
@@ -185,7 +193,13 @@ export default {
     addNewValue(){
       let val = {value: this.newvalue,  type: this.fieldType}
       this.currentProp.values.push(val)
-      this.newvalue = ""
+      this.newvalue = null
+    },
+    addNewLink(){
+      //console.log(this.link)
+      let val = {value: this.link,  type: this.fieldType}
+      this.currentProp.values.push(val)
+      this.link = {}
     }
   },
   computed: {

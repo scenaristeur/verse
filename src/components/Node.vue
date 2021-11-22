@@ -4,14 +4,17 @@
     <!-- <b-card-header>
 
   </b-card-header> -->
-    <b-card-text>
-      {{node['ve:age']}}
-    </b-card-text>
+  <b-card-text>
+    {{node['ve:age']}}
+  </b-card-text>
 
-    <b-button size="sm" variant="danger" @click="$emit('delete',node)">Delete</b-button>
-    <b-button size="sm" @click="$emit('edit',node)">Edit</b-button>
+  <b-button size="sm" variant="danger" @click="$emit('delete',node)">Delete</b-button>
+  <b-button size="sm" @click="$emit('edit',node)">Edit</b-button>
 
-    <!-- <b-card-footer>[[dendrites- watch]]{{node.modele}}[[axione - send]]</b-card-footer> -->
+  <b-card-footer>
+      {{node['ve:synchronized']}}
+    <!-- {{new Date(node['ve:synchronized'])}} -->
+    <!--[[dendrites- watch]]{{node.modele}}[[axione - send]]--></b-card-footer>
   </b-card>
 </template>
 
