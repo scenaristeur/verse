@@ -96,23 +96,42 @@
       placeholder="link"
       @change="addNewLink"/>
     </b-tab>
-    <b-tab title="markdown" disabled @click="fieldType = 'markdown'">
-      <b-form-textarea
+    <b-tab title="tiny" @click="fieldType = 'tiny'">
+      <!-- <b-form-textarea
       id="textarea"
       v-model="newvalue"
       placeholder="Enter something..."
       rows="3"
       max-rows="6"
       @change="addNewValue"
-      ></b-form-textarea>
-    </b-tab>
-  </b-tabs>
-</b-modal>
+      ></b-form-textarea> -->
+      <!--     api-key="no-api-key"-->
+      <editor
+
+      v-model="tinycontent"
+      :init="{
+        height: 500,
+        menubar: false,
+        plugins: [
+        'advlist autolink lists link image charmap print preview anchor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar:
+        'undo redo | formatselect | bold italic backcolor | \
+        alignleft aligncenter alignright alignjustify | \
+        bullist numlist outdent indent | removeformat | help'
+        }"
+        />
+      </b-tab>
+    </b-tabs>
+  </b-modal>
 
 </b-container>
 </template>
 
 <script>
+import Editor from '@tinymce/tinymce-vue'
 
 export default {
   name: "Edit",
@@ -120,6 +139,7 @@ export default {
     'NodeSelector': () => import('@/components/NodeSelector'),
     // 'NodeLite': () => import('@/components/NodeLite'),
     'Values': () => import('@/components/Values'),
+    'editor': Editor
   },
   data() {
     return {
@@ -130,7 +150,8 @@ export default {
       show: false,
       currentProp: {},
       newvalue: null,
-      link: {}
+      link: {},
+      tinycontent: ""
     }
   },
   created() {
@@ -189,6 +210,14 @@ export default {
       let val = {value: this.link,  type: this.fieldType}
       this.currentProp.values.push(val)
       this.link = {}
+    },
+    tinyChanged(e,editor){
+      console.log(e, editor)
+    }
+  },
+  watch:{
+    tinycontent(){
+      console.log(this.tinycontent)
     }
   },
   computed: {
