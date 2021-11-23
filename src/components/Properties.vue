@@ -6,7 +6,7 @@
      </b-card-header>
      <b-collapse :id="p.name" visible accordion="my-accordion" role="tabpanel">
        <!-- <b-card-body> -->
-             <Values :values="p.values" />
+             <Values :values="p.values"  v-on:update:values="p.values = $event" />
          <!-- <b-card-text v-for="v in p.values" :key="v">{{v}}</b-card-text> -->
        <!-- </b-card-body> -->
      </b-collapse>
