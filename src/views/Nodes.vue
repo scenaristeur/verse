@@ -1,9 +1,31 @@
 <template>
   <div>
-    <b-button variant="outline-primary" @click="addNode">Add</b-button>
+
+
+    <b-row v-if="nodes.length > 0">
+      <b-col cols="12" md="4">
+        <b-button variant="outline-primary" @click="addNode">Add</b-button>
+        <b-button size="sm" variant="outline-info" @click="order == 'asc' ? order= 'desc' : order = 'asc'">{{order}}</b-button>
+
+      </b-col>
+      <b-col cols="12" md="4">
+
+        <b-input-group class="mb-3">
+
+          <b-form-input v-model="search" placeholder="search"></b-form-input>
+          <b-input-group-append>
+            <!-- <b-button variant="outline-success">Button</b-button> -->
+            <b-button variant="outline-secondary">X</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-col>
+    </b-row>
+
+
+
     <b-row>
 
-      <b-col v-for="(node, i) in nodes" :key="i">
+      <b-col v-for="(node, i) in orderedNodes" :key="i">
         <Node :node="node" @delete="deleteNode" @edit="editNode" />
       </b-col>
 
@@ -81,6 +103,8 @@
 </template>
 
 <script>
+import _ from 'lodash';
+
 export default {
   name: "Nodes",
   components: {
@@ -89,6 +113,8 @@ export default {
   data(){
     return{
       fields: ['id', 'local', 'update', 'remote'],
+      'order' : 'asc',
+      search: ""
     }
   },
   created() {
@@ -139,7 +165,12 @@ export default {
       await this.$store.dispatch('nodes/getNodes')
       await this.$store.commit('nodes/removeMustUpdate', n)
     },
-
+   byKey(key) {
+        return function (o) {
+            var v = parseInt(o[key], 10);
+            return isNaN(v) ? o[key] : v;
+        };
+    }
   },
   computed: {
     nodes() {
@@ -150,12 +181,19 @@ export default {
     },
     mustUpdate() {
       return this.$store.state.nodes.mustUpdate;
+    },
+    orderedNodes: function () {
+      return _.orderBy(this.filteredNodes, this.byKey('ve:age'), this.order)
+    },
+    filteredNodes: function (){
+      return this.search.length == 0 ? this.nodes : this.nodes.filter( n => {
+        return n['ve:name'].toLowerCase().includes(this.search.toLowerCase())
+      })
     }
-  },
+  }
 }
 </script>
 
 <style>
 
 </style>
-notBoth

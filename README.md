@@ -31,7 +31,8 @@ node index.js
 // jsonld https://jsfiddle.net/aveltens/d3tzfhjx/
 // https://forum.solidproject.org/t/using-solid-with-json-ld/1641
 
-
+# vuejs fileter / order
+https://vuejs.org/v2/guide/migration.html#Replacing-the-orderBy-Filter
 
 ## Project setup
 ```
