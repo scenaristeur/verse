@@ -36,20 +36,8 @@
     </b-button-toolbar> -->
     <b-button @click="showFieldModal(p)" variant="outline-primary">+</b-button>
     <!-- {{ p.values}} -->
-    <b-list-group>
-      <b-list-group-item v-for="(v,i) in p.values" :key="i">
-        <span v-if="v.type == 'text'">{{v.value}}</span>
-        <div v-else-if="v.type == 'textarea'">
-          <pre>{{v.value}}</pre>
-        </div>
-        <NodeLite v-else-if="v.type == 'node'" :node="v" />
-        <span v-else-if="v.type == 'link'">
-          <a :href="v.value.href" target="_blank">{{v.value.name}}</a>
-        </span>
-        <div v-else>{{v}}</div>
 
-      </b-list-group-item>
-    </b-list-group>
+    <Values :values="p.values" />
 
     <!-- <b-form-input id="name" v-model="node.name" required /> -->
   </b-col>
@@ -130,7 +118,8 @@ export default {
   name: "Edit",
   components: {
     'NodeSelector': () => import('@/components/NodeSelector'),
-    'NodeLite': () => import('@/components/NodeLite'),
+    // 'NodeLite': () => import('@/components/NodeLite'),
+    'Values': () => import('@/components/Values'),
   },
   data() {
     return {

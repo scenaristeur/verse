@@ -12,9 +12,12 @@
   <b-button size="sm" @click="$emit('edit',node)">Edit</b-button>
 
   <b-card-footer>
-      {{node['ve:synchronized']}}
+      <!-- {{node['ve:properties']}} -->
+
     <!-- {{new Date(node['ve:synchronized'])}} -->
-    <!--[[dendrites- watch]]{{node.modele}}[[axione - send]]--></b-card-footer>
+    <!--[[dendrites- watch]]{{node.modele}}[[axione - send]]-->
+  </b-card-footer>
+  <Properties :node="node" />
   </b-card>
 </template>
 
@@ -29,6 +32,9 @@ class="mb-2" -->
 export default {
   name: "Node",
   props: ['node'],
+  components: {
+    'Properties': () => import('@/components/Properties'),
+  },
 }
 </script>
 

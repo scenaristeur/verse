@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/404.html"
   },
   {
-    "revision": "9e9cdbe1064004f4b87e",
+    "revision": "d571906bc6891851b78a",
     "url": "/verse/css/app.09ffd799.css"
   },
   {
@@ -16,7 +16,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/css/chunk-vendors.57b5595f.css"
   },
   {
-    "revision": "aeeeeba70d12acf10e15bc760557e0c2",
+    "revision": "3dc3e4c9febcc9e2709b0047406ce75d",
     "url": "/verse/index.html"
   },
   {
@@ -28,8 +28,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/agents.2060278a.js"
   },
   {
-    "revision": "9e9cdbe1064004f4b87e",
-    "url": "/verse/js/app.6e4c8ca2.js"
+    "revision": "d571906bc6891851b78a",
+    "url": "/verse/js/app.013c983e.js"
   },
   {
     "revision": "1b7a03f1f44f9e7c82ad",
@@ -44,12 +44,20 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/chunk-2d0ac06c.7ec81c33.js"
   },
   {
+    "revision": "fc24e13dc18822250d54",
+    "url": "/verse/js/chunk-2d0ce7e2.feb720c6.js"
+  },
+  {
+    "revision": "73634937eaaf8f5cf847",
+    "url": "/verse/js/chunk-2d0e9945.8c86007b.js"
+  },
+  {
     "revision": "d36141954fe65dbcaae0",
     "url": "/verse/js/chunk-2d21b4bd.5a2c89e3.js"
   },
   {
-    "revision": "15beb0f94505d8d35b46",
-    "url": "/verse/js/chunk-2d229262.04502de5.js"
+    "revision": "d2d69ee60882a8340506",
+    "url": "/verse/js/chunk-2d229262.90ec0f36.js"
   },
   {
     "revision": "e1f18e5858b96e0f64d9",
@@ -64,16 +72,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/chunk-vendors.ed740f7e.js"
   },
   {
-    "revision": "349917fd360fe2c21272",
-    "url": "/verse/js/edit.8477f2df.js"
+    "revision": "301f8cdeac79d997fa2a",
+    "url": "/verse/js/edit.72a87380.js"
   },
   {
     "revision": "80b453ec068448173b75",
     "url": "/verse/js/groups.b4b85958.js"
   },
   {
-    "revision": "0aa488c48f20cbdc26da",
-    "url": "/verse/js/nodes.5c7d69a9.js"
+    "revision": "51cb54179b60a5392d11",
+    "url": "/verse/js/nodes.1990ce5d.js"
   },
   {
     "revision": "1ceecfa660eb0e365e5f",

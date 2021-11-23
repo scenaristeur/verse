@@ -15,7 +15,7 @@
           <b-form-input v-model="search" placeholder="search"></b-form-input>
           <b-input-group-append>
             <!-- <b-button variant="outline-success">Button</b-button> -->
-            <b-button variant="outline-secondary">X</b-button>
+            <b-button variant="outline-secondary" @click="search=''">X</b-button>
           </b-input-group-append>
         </b-input-group>
       </b-col>
