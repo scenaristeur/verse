@@ -5,7 +5,7 @@
         <label for="name">Name:</label>
       </b-col>
       <b-col sm="9">
-        <b-form-input id="name" v-model="node['ve:name']" required />
+        <b-form-input id="name" v-model="node['ve:name']" autocomplete="off"/>
       </b-col>
       <b-col sm="3">
         <label for="age"><code>Age</code>:</label>

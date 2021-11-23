@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <b-container fluid id="app">
 
-    <div id="nav">
+    <!-- <div id="nav"> -->
       <!-- <router-link to="/">H0m€</router-link> |
       <router-link to="/sync">$y^c</router-link> | -->
       <!--      <router-link to="/about">About</router-link> | -->
@@ -14,10 +14,11 @@
       <router-link to="/spaces">Spaces</router-link> |
       <router-link to="/schemas">Schemas</router-link> -->
 
+<b-row>
       <span v-if="isOnline"><Login /></span>
       <span v-if="isOffline" variant="danger">offline</span>
-
-    </div>
+</b-row>
+    <!-- </div> -->
     <router-view/>
     <br><br>
     <hr>
@@ -26,10 +27,10 @@
     <br>
     <hr>
     <br>
-    <small><i>0.0.4 - filter / order</i></small> | 
+    <small><i>0.0.4 - filter / order</i></small> |
     <small><a href="https://github.com/scenaristeur/verse" target="_blank">source</a></small>
     <!-- <Synchro /> -->
-  </div>
+  </b-container>
 </template>
 <script>
 export default {
