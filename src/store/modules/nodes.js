@@ -20,18 +20,18 @@ const actions = {
     let del =  confirm("Are you sur you want to delete "+node['ve:name']);
     if (del == true){
       if (exclude != "remote"){
-      if(context.rootState.solid.pod != null){
-        try{
-          await Vue.prototype.$deleteRemote(node)
+        if(context.rootState.solid.pod != null){
+          try{
+            await Vue.prototype.$deleteRemote(node)
+          }
+          catch(e){
+            console.log(e)
+          }
         }
-        catch(e){
-          console.log(e)
+        else{
+          console.log("is not connected")
         }
       }
-      else{
-        console.log("is not connected")
-      }
-    }
       if (exclude != "local"){
         console.log('store is being asked to delete '+node.id, node['ve:name']);
         await idb.deleteNode(node);
@@ -53,24 +53,30 @@ const actions = {
     node['ve:created'] == undefined ? node['ve:created'] = Date.now() : ""
     node['ve:updated'] = Date.now()
     if( exclude != "remote"){
-    if(context.rootState.solid.pod != null){
-      try{
-        node = await Vue.prototype.$createRemote(node)
+      if(context.rootState.solid.pod != null){
+        try{
+          node = await Vue.prototype.$createRemote(node)
+        }
+        catch(e){
+          console.log(e)
+        }
       }
-      catch(e){
-        console.log(e)
+      else{
+        console.log("is not connected")
       }
     }
-    else{
-      console.log("is not connected")
-    }
-  }
     if (exclude != "local"){
       console.log('store is being asked to save '+JSON.stringify(node));
       await idb.saveNode(node);
     }
 
   },
+  async clearStore(){
+    let del =  confirm("Do you want to remove all nodes stored on this device ?");
+    if (del == true){
+      await idb.clearStore()
+    }
+  }
   // async sync(context, pod){
   // //  console.log('sync',context, pod.neuroneStore)
   //  Vue.prototype.$synchronise()

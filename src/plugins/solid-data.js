@@ -100,19 +100,16 @@ const plugin = {
 
 
     Vue.prototype.$compare = async function(remote){
-      //console.log(remote)
-      //  console.log(remote.id)
       let local = store.state.nodes.nodes.find(n => n.id == remote.id)
-
       if (local == undefined){
         store.commit('nodes/addNotBoth',{id: remote.id, local: null, remote: remote})
       }else{
         const diff =  diffler(local, remote)
         delete  diff['ve:updated']
         delete  diff['ve:synchronized']
-        console.log("real diff", diff)
+        // console.log("real diff", diff)
         if(Object.entries(diff).length > 0){
-          console.log("diff", diff)
+          // console.log("diff", diff)
           store.commit('nodes/addMustUpdate', {id: remote.id, local: local, remote: remote, difference : diff})
         }
       }

@@ -44,12 +44,27 @@ export default {
 			store.delete(node.id);
 		});
 	},
-	async deleteDb(){
+	async clearStore(){
+		console.log("clear store")
 		try{
-			window.indexedDB.deleteDatabase(DB_NAME)
+			let db = await this.getDb();
+			var transaction = db.transaction(["nodes"], "readwrite");
+			// create an object store on the transaction
+			var objectStore = transaction.objectStore("nodes");
+
+			// Make a request to clear all the data out of the object store
+			var objectStoreRequest = objectStore.clear();
+
+			objectStoreRequest.onsuccess = function(event) {
+				console.log(event)
+				// report the success of our request
+				//note.innerHTML += '<li>Request successful.</li>';
+			};
+			//window.indexedDB.deleteDatabase(DB_NAME)
 		}catch(e){
 			alert(e)
 		}
+		await this.getNodes()
 	},
 	async getNodes() {
 

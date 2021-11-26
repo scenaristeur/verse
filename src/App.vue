@@ -27,7 +27,7 @@
     <br>
     <hr>
     <br>
-    <small><i>0.0.5 - synchro</i></small> |
+    <small><i>0.0.6 - synchro - clear store</i></small> |
     <small><a href="https://github.com/scenaristeur/verse" target="_blank">source</a></small>
     <!-- <Synchro /> -->
   </b-container>
