@@ -4,7 +4,7 @@
      <b-card-header header-tag="header" class="p-1" role="tab">
        <b-button block @click="$root.$emit('bv::toggle::collapse', p.name)" variant="info">{{p.name}}</b-button>
      </b-card-header>
-     <b-collapse :id="p.name" visible accordion="my-accordion" role="tabpanel">
+     <b-collapse :id="p.name" accordion="my-accordion" role="tabpanel">
        <!-- <b-card-body> -->
              <Values :values="p.values"  v-on:update:values="p.values = $event" />
          <!-- <b-card-text v-for="v in p.values" :key="v">{{v}}</b-card-text> -->
