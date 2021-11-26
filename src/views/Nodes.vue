@@ -66,7 +66,7 @@
 
   <div v-if="mustUpdate.length > 0">
     <h2>must update</h2>
-    <b-table striped small responsive hover :items="mustUpdate"  :fields="fields">
+    <b-table striped small responsive hover :items="mustUpdate"  :fields="fields2">
       <template #cell(id)="data">
         {{data.item.local && data.item.local['ve:name'] || data.item.remote &&data.item.remote['ve:name']}}
         <hr>
@@ -86,25 +86,58 @@
         <!-- <b class="text-info">{{ data.value.last.toUpperCase() }}</b>, <b>{{ data.value.first }}</b> -->
       </template>
 
-      <template #cell(local)="data">
-        <h5>{{data.item.local['ve:name']}}</h5>
-        <small>{{new Date(data.item.local['ve:updated'])}}</small><br>
-        {{ JSON.stringify(data.item.local, null, 2)}}
+      <template #cell(difference)="data">
+        <small>
+          <ul>
+            <li v-for="(diff, key) in data.item.difference" :key="key">{{key}} :<br>
+
+              <div v-if="key == 've:properties'">
+                <!-- {{diff}} -->
+                <ul>
+                  <li v-for="(p,i) in diff" :key="i">
+                    <!-- {{p}} -->
+                    <b>local :</b>
+                    <div v-if="p.from != null">
+                      <i>{{p.from.name}}</i>: {{p.from.values}} <br>
+                    </div>
+                    <b>remote:</b>
+                    <div v-if="p.to != null">
+                      <i>{{p.to.name}}</i>: {{p.to.values}}
+                    </div>  
+                  </li>
+                </ul>
+
+              </div>
+              <div v-else>
+                local: {{diff.from}}<br>
+                remote: {{diff.to}}
+              </div>
+            </li>
+          </ul>
+          <!-- {{data.item.difference}} -->
+        </small>
+        <!-- {{ JSON.stringify(data.item.difference, null, 2)}} -->
       </template>
 
-      <template #cell(remote)="data">
-        <h5>{{data.item.remote['ve:name']}}</h5>
-        <small>{{new Date(data.item.remote['ve:updated'])}}</small><br>
-        {{ JSON.stringify(data.item.remote, null, 2)}}
-      </template>
-    </b-table>
-  </div>
+      <!-- <template #cell(local)="data">
+      <h5>{{data.item.local['ve:name']}}</h5>
+      <small>{{new Date(data.item.local['ve:updated'])}}</small><br>
+      {{ JSON.stringify(data.item.local, null, 2)}}
+    </template>
 
-  <b-iconstack font-scale="3"  @click="addNode" class="floating-action-button" type="button">
-    <b-icon stacked icon="circle-fill" variant="warning"></b-icon>
-    <b-icon stacked icon="pencil" scale="0.5" variant="primary"></b-icon>
-    <b-icon stacked icon="circle" variant="info"></b-icon>
-  </b-iconstack>
+    <template #cell(remote)="data">
+    <h5>{{data.item.remote['ve:name']}}</h5>
+    <small>{{new Date(data.item.remote['ve:updated'])}}</small><br>
+    {{ JSON.stringify(data.item.remote, null, 2)}}
+  </template> -->
+</b-table>
+</div>
+
+<b-iconstack font-scale="3"  @click="addNode" class="floating-action-button" type="button">
+  <b-icon stacked icon="circle-fill" variant="warning"></b-icon>
+  <b-icon stacked icon="pencil" scale="0.5" variant="primary"></b-icon>
+  <b-icon stacked icon="circle" variant="info"></b-icon>
+</b-iconstack>
 
 </div>
 </template>
@@ -120,6 +153,7 @@ export default {
   data(){
     return{
       fields: ['id', 'local', 'update', 'remote'],
+      fields2: ['id', 'difference','local', 'update', 'remote'],
       'order' : 'asc',
       search: ""
     }
@@ -144,7 +178,7 @@ export default {
     },
     async createLocal(n){
       console.log("create local",n)
-      await this.$store.dispatch('nodes/saveNode',n)
+      await this.$store.dispatch('nodes/saveNode',n,)
       await this.$store.dispatch('nodes/getNodes')
       await this.$store.commit('nodes/removeNotBoth', n)
     },
@@ -156,18 +190,28 @@ export default {
     },
     async removeLocal(n){
       console.log("remove local",n)
+      n.exclude = "remote"
+      await this.$store.dispatch('nodes/deleteNode',n)
+      await this.$store.dispatch('nodes/getNodes')
+      await this.$store.commit('nodes/removeNotBoth', n)
     },
     async removeRemote(n){
       console.log("remove remote",n)
+      n.exclude = "local"
+      await this.$store.dispatch('nodes/deleteNode',n)
+      await this.$store.dispatch('nodes/getNodes')
+      await this.$store.commit('nodes/removeNotBoth', n)
     },
     async updateLocal(n){
       console.log("update local", n)
+      n.exclude = "remote"
       await this.$store.dispatch('nodes/saveNode',n)
       await this.$store.dispatch('nodes/getNodes')
       await this.$store.commit('nodes/removeMustUpdate', n)
     },
     async updateRemote(n){
       console.log("update remote", n)
+      n.exclude = "local"
       await this.$store.dispatch('nodes/saveNode',n)
       await this.$store.dispatch('nodes/getNodes')
       await this.$store.commit('nodes/removeMustUpdate', n)

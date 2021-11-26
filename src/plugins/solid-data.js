@@ -45,6 +45,7 @@ import {
 // import { WS } from "@inrupt/vocab-solid-common";
 //
 import * as sc from '@inrupt/solid-client-authn-browser'
+import * as diffler from 'diffler'
 
 const plugin = {
   install(Vue, opts = {}) {
@@ -94,15 +95,26 @@ const plugin = {
     //   remotes.push(remote)
     // }
 
+
+
+
+
     Vue.prototype.$compare = async function(remote){
       //console.log(remote)
       //  console.log(remote.id)
       let local = store.state.nodes.nodes.find(n => n.id == remote.id)
-    //  console.log(local)
+
       if (local == undefined){
         store.commit('nodes/addNotBoth',{id: remote.id, local: null, remote: remote})
-      }else if(local['ve:updated'] != remote['ve:updated']){
-        store.commit('nodes/addMustUpdate', {id: remote.id, local: local, remote: remote})
+      }else{
+        const diff =  diffler(local, remote)
+        delete  diff['ve:updated']
+        delete  diff['ve:synchronized']
+        console.log("real diff", diff)
+        if(Object.entries(diff).length > 0){
+          console.log("diff", diff)
+          store.commit('nodes/addMustUpdate', {id: remote.id, local: local, remote: remote, difference : diff})
+        }
       }
     }
 
@@ -115,7 +127,7 @@ const plugin = {
         remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
         //console.log("Phase 2",remotesUrl)
         for (const local of store.state.nodes.nodes){
-        //  console.log(local.id, remotesUrl.includes(local['ve:url']))
+          //  console.log(local.id, remotesUrl.includes(local['ve:url']))
           if (!remotesUrl.includes(local['ve:url'])){
             store.commit('nodes/addNotBoth',{id: local.id, local: local, remote: null})
           }

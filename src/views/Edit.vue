@@ -65,7 +65,7 @@
   </b-col>
 </b-row>
 
-<b-modal id="fieldModal" size="xl" :title="node.name+' -> '+currentProp.name">
+<b-modal id="fieldModal" size="xl" :title="node['ve:name']+' -> '+currentProp.name">
   <!-- {{ currentProp}} -->
   <b-tabs content-class="mt-3">
     <b-tab title="text" active @click="fieldType = 'text'">
@@ -96,16 +96,8 @@
       placeholder="link"
       @change="addNewLink"/>
     </b-tab>
-    <b-tab title="tiny" @click="fieldType = 'tiny'">
-      <!-- <b-form-textarea
-      id="textarea"
-      v-model="newvalue"
-      placeholder="Enter something..."
-      rows="3"
-      max-rows="6"
-      @change="addNewValue"
-      ></b-form-textarea> -->
-      <!--     api-key="no-api-key"-->
+    <!-- <b-tab title="tiny" @click="fieldType = 'tiny'">
+
       <editor
 
       v-model="tinycontent"
@@ -123,7 +115,7 @@
         bullist numlist outdent indent | removeformat | help'
         }"
         />
-      </b-tab>
+      </b-tab> -->
     </b-tabs>
   </b-modal>
 
@@ -131,7 +123,7 @@
 </template>
 
 <script>
-import Editor from '@tinymce/tinymce-vue'
+// import Editor from '@tinymce/tinymce-vue'
 
 export default {
   name: "Edit",
@@ -139,7 +131,7 @@ export default {
     'NodeSelector': () => import('@/components/NodeSelector'),
     // 'NodeLite': () => import('@/components/NodeLite'),
     'Values': () => import('@/components/Values'),
-    'editor': Editor
+    // 'editor': Editor
   },
   data() {
     return {
@@ -151,7 +143,7 @@ export default {
       currentProp: {},
       newvalue: null,
       link: {},
-      tinycontent: ""
+      // tinycontent: ""
     }
   },
   created() {
@@ -211,14 +203,14 @@ export default {
       this.currentProp.values.push(val)
       this.link = {}
     },
-    tinyChanged(e,editor){
-      console.log(e, editor)
-    }
+    // tinyChanged(e,editor){
+    //   console.log(e, editor)
+    // }
   },
   watch:{
-    tinycontent(){
-      console.log(this.tinycontent)
-    }
+    // tinycontent(){
+    //   console.log(this.tinycontent)
+    // }
   },
   computed: {
     currentNode() {
