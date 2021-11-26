@@ -3,11 +3,7 @@
 
 
     <b-row v-if="nodes.length > 0">
-      <b-col cols="12" md="4">
-        <!-- <b-button variant="outline-primary" @click="addNode">Add</b-button> -->
-        <b-button size="sm" variant="outline-info" @click="order == 'asc' ? order= 'desc' : order = 'asc'">{{order}}</b-button>
 
-      </b-col>
       <b-col cols="12" md="4">
 
         <b-input-group class="mb-3">
@@ -18,6 +14,11 @@
             <b-button variant="outline-secondary" @click="search=''">X</b-button>
           </b-input-group-append>
         </b-input-group>
+      </b-col>
+      <b-col cols="12" md="4">
+        <!-- <b-button variant="outline-primary" @click="addNode">Add</b-button> -->
+        <b-button size="sm" variant="outline-info" @click="order == 'asc' ? order= 'desc' : order = 'asc'">{{order}}</b-button>
+
       </b-col>
     </b-row>
 
@@ -103,7 +104,7 @@
                     <b>remote:</b>
                     <div v-if="p.to != null">
                       <i>{{p.to.name}}</i>: {{p.to.values}}
-                    </div>  
+                    </div>
                   </li>
                 </ul>
 
