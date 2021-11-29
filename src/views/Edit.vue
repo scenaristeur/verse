@@ -56,7 +56,7 @@
   <b-col>
   </b-col>
   <b-col>
-    <b-btn variant="outline-primary" size="sm" @click="add">+ add property or link</b-btn>
+    <b-btn variant="outline-primary" size="sm" @click="add">+ add a property or a link</b-btn>
   </b-col>
 </b-row>
 <b-row>

@@ -1,11 +1,14 @@
-
+import Vue from 'vue'
 const state = () => ({
   session: null,
   pod: null,
 })
 
 const actions = {
-
+  async addWorkspace(context, w) {
+    context.state.pod.workspaces.push(w)
+    Vue.prototype.$addWorkspaceToPod(w)
+  },
 }
 
 const mutations = {
@@ -15,7 +18,7 @@ const mutations = {
   },
   setSession(state, s){
     state.session = s
-  },
+  }
 }
 
 export default {

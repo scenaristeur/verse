@@ -22,12 +22,12 @@
     <router-view/>
     <br><br>
     <hr>
-
+<Workspaces />
     {{session}}
     <br>
     <hr>
     <br>
-    <small><i>0.0.7 - source & share</i></small> |
+    <small><i>0.0.9 - workspaces create</i></small> |
     <small><a href="https://github.com/scenaristeur/verse" target="_blank">source</a></small>
     <!-- <Synchro /> -->
   </b-container>
@@ -38,10 +38,11 @@ export default {
   components: {
     'Login': () => import('@/components/Login'),
     'Source': () => import('@/views/Source'),
+    'Workspaces': () => import('@/views/Workspaces'),
     // 'Synchro': () => import('@/components/Synchro'),
   },
   created(){
-    
+
     // not compatible with route.query this.$checkSession()
 
   },
@@ -49,8 +50,8 @@ export default {
 
   },
   watch:{
-    $route(to, from){
-      console.log(this.$route, to, from)
+    $route(){
+      //  console.log(this.$route, to, from)
       if(this.$route.query.source != undefined && this.$route.query.source.length >0){
         this.$processSource(this.$route.query)
       }else{

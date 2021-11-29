@@ -20,12 +20,12 @@ import {
   //removeStringNoLocale,
   //deleteContainer,
   //addStringNoLocale,
-  //setThing,
-  //saveSolidDatasetAt,
+  setThing,
+  saveSolidDatasetAt,
   //createSolidDataset,
-  //createThing,
-  //addUrl,
-  //buildThing,
+  createThing,
+  // addUrl,
+  buildThing,
   overwriteFile,
   // getStringNoLocale,
   // getThing,
@@ -41,7 +41,7 @@ import {
   //getInteger,
   // setDatetime
 } from "@inrupt/solid-client";
-// import { FOAF, /*LDP,*/ VCARD, /*RDF, AS, RDFS, OWL*/  } from "@inrupt/vocab-common-rdf";
+import { /*FOAF,*/ /*LDP,*/ /*VCARD,*/ /*RDF,*/ AS,/* RDFS, OWL*/  } from "@inrupt/vocab-common-rdf";
 // import { WS } from "@inrupt/vocab-solid-common";
 //
 import * as sc from '@inrupt/solid-client-authn-browser'
@@ -50,7 +50,7 @@ import * as diffler from 'diffler'
 const plugin = {
   install(Vue, opts = {}) {
     let store = opts.store
-    console.log(store)
+    //  console.log(store)
 
     Vue.prototype.$createRemote = async function(n){
       console.log(store.state.solid.pod)
@@ -115,6 +115,46 @@ const plugin = {
       }
     }
 
+
+
+    Vue.prototype.$changeWorkspace = async function(space){
+      console.log(space)
+
+    }
+
+    Vue.prototype.$addWorkspaceToPod = async function(s){
+      console.log(s, )
+      let pod = store.state.solid.pod
+      let publicTypeIndexUrl = pod.storage+'settings/publicTypeIndex.ttl'
+      const pti_ds = await getSolidDataset( publicTypeIndexUrl, { fetch: sc.fetch });
+      // pod.workspaces = await getUrlAll(profile, "https://scenaristeur.github.io/verse#space");
+    //  try{
+      //  const dataset = await getSolidDataset( pti_ds, { fetch: sc.fetch });
+        let thing = await  buildThing(createThing({ name: s.name }))
+        .addUrl("http://www.w3.org/ns/solid/terms#forClass", "https://scenaristeur.github.io/verse#Workspace")
+        .addStringNoLocale(AS.name, s.name)
+        .addUrl("http://www.w3.org/ns/solid/terms#instance", s.url)
+        .build();
+        let thingInDs = setThing (pti_ds, thing)
+        let savedThing  = await saveSolidDatasetAt(publicTypeIndexUrl, thingInDs, { fetch: sc.fetch } );
+        console.log("savedThing",savedThing)
+
+        //"https://scenaristeur.github.io/verse#Workspace"
+        //   let profile = await getThing( dataset, pod.webId );
+        // await addUrl(profile, "https://scenaristeur.github.io/verse#space", s.url);
+        // pod.publicTags = await this.$getTags(pod.storage+'public/tags.ttl')
+        // store.commit("vatch/addToNetwork", pod.publicTags)
+        //this.$subscribe(pod.storage)
+        //  console.log("getpodinfos",pod)
+    //  }
+      // catch(e)
+      // {
+      //   console.log("erreur",e, pod)
+      // }
+
+
+    }
+
     Vue.prototype.$checkChanges = async function(){
       console.log("$checkChanges",store.state.solid.pod.neuroneStore)
       let plugin = this
@@ -149,16 +189,16 @@ const plugin = {
 
     Vue.prototype.$processSource = async function(s){
       console.log("Source",s.source)
-    //  let source = {url: s}
+      //  let source = {url: s}
 
 
       const file = await getFile(s.source, { fetch: sc.fetch });
-    //  console.log(file)
+      //  console.log(file)
       const reader = new FileReader();
       reader.onload = async () => {
-      //  console.log(reader.result)
-      let source = JSON.parse(reader.result);
-          store.commit('nodes/setSource',source)
+        //  console.log(reader.result)
+        let source = JSON.parse(reader.result);
+        store.commit('nodes/setSource',source)
       };
       reader.onerror = (error) => {
         console.log(error);

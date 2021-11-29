@@ -1,6 +1,6 @@
 import {
   getSolidDataset,
-  //getThingAll,
+  getThingAll,
   //getPublicAccess,
   //  getAgentAccess,
   //getSolidDatasetWithAcl,
@@ -41,7 +41,7 @@ import {
   //getInteger,
   // setDatetime
 } from "@inrupt/solid-client";
-import { FOAF, /*LDP,*/ VCARD, /*RDF, AS, RDFS, OWL*/  } from "@inrupt/vocab-common-rdf";
+import { FOAF, /*LDP,*/ VCARD, /*RDF,*/ AS, /*RDFS, OWL*/  } from "@inrupt/vocab-common-rdf";
 import { WS } from "@inrupt/vocab-solid-common";
 
 import * as sc from '@inrupt/solid-client-authn-browser'
@@ -90,6 +90,7 @@ const plugin = {
         pod.webId = session.info.webId
         pod = await this.$getPodInfos(pod)
         pod.neuroneStore == undefined ? pod.neuroneStore = pod.storage+'public/neurones/' : ""
+        pod.workspaces == undefined ? pod.workspaces = [] : ""
         store.commit('solid/setPod', pod)
         this.$checkChanges()
         //this.$synchronize()
@@ -119,6 +120,25 @@ const plugin = {
         pod.friends = await getUrlAll(profile, FOAF.knows).map(webId => {return {webId: webId}})
         pod.storage = await getUrl(profile, WS.storage);
         pod.photo = await getUrl(profile, VCARD.hasPhoto);
+        pod.workspaces = []
+
+        let publicTypeIndexUtl = pod.storage+'settings/publicTypeIndex.ttl'
+        const pti_ds = await getSolidDataset( publicTypeIndexUtl, { fetch: sc.fetch });
+        let indexes = await getThingAll(pti_ds)
+        for await (const i of indexes){
+          let types = await getUrlAll(i, "http://www.w3.org/ns/solid/terms#forClass");
+          console.log(types)
+          if(types.includes("https://scenaristeur.github.io/verse#Workspace")){
+            let ws = {}
+            ws.name =  await getStringNoLocale(i, AS.name)
+            ws.url = await getUrl("http://www.w3.org/ns/solid/terms#instance")
+
+
+            pod.workspaces.push(ws)
+          }
+        }
+        //console.log(ws)
+        //  pod.workspaces = await getUrlAll(pti_ds, "http://www.w3.org/ns/solid/terms#forClass", "https://www.w3.org/ns/activitystreams#Collection");
         // pod.publicTags = await this.$getTags(pod.storage+'public/tags.ttl')
         // store.commit("vatch/addToNetwork", pod.publicTags)
         //this.$subscribe(pod.storage)
