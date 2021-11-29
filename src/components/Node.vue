@@ -11,12 +11,10 @@
   <b-button size="sm" variant="danger" @click="$emit('delete',node)">Delete</b-button>
   <b-button size="sm" @click="$emit('edit',node)">Edit</b-button>
 
-  <b-card-footer>
-      <!-- {{node['ve:properties']}} -->
+  <!-- <b-card-footer>
 
-    <!-- {{new Date(node['ve:synchronized'])}} -->
-    <!--[[dendrites- watch]]{{node.modele}}[[axione - send]]-->
-  </b-card-footer>
+    [[dendrites- watch]]{{node.modele}}[[axione - send]]
+  </b-card-footer> -->
   <Properties :node="node" />
   </b-card>
 </template>

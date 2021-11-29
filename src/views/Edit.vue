@@ -5,7 +5,7 @@
         <label for="name">Name:</label>
       </b-col>
       <b-col sm="9">
-        <b-form-input id="name" v-model="node['ve:name']" autocomplete="off"/>
+        <b-form-input id="name" v-model="node['ve:name']" autocomplete="off" autofocus />
       </b-col>
       <b-col sm="3">
         <label for="age"><code>Age</code>:</label>
@@ -61,6 +61,9 @@
 </b-row>
 <b-row>
   <b-col>
+    <b-button  :variant="node['ve:privacy'] == 'public' ? 'warning' : 'outline-success'"
+     @click="node['ve:privacy'] = node['ve:privacy'] == undefined || node['ve:privacy'] == 'public' ? 'private' : 'public'">
+      {{node['ve:privacy']}}</b-button>
     <b-btn variant="success" @click="save">Save Node</b-btn>
   </b-col>
 </b-row>
@@ -143,6 +146,7 @@ export default {
       currentProp: {},
       newvalue: null,
       link: {},
+      privacy: "private"
       // tinycontent: ""
     }
   },
@@ -156,6 +160,7 @@ export default {
     },
     "ve:name":'',
     "ve:age": 0 ,
+    "ve:privacy": 'private',
     "ve:properties": [],
     test: "test vocab"}
     // if(this.$route.params.node) {
@@ -163,6 +168,7 @@ export default {
     // } else {
     //   this.node = { name:'', age: 0 , properties: []};
     // }
+
   },
   methods: {
     async save() {
@@ -203,6 +209,7 @@ export default {
       this.currentProp.values.push(val)
       this.link = {}
     },
+
     // tinyChanged(e,editor){
     //   console.log(e, editor)
     // }

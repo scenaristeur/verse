@@ -21,7 +21,9 @@
 
       </b-col>
     </b-row>
-
+    <div v-else>
+      Use the bottom right pen button to add a node.
+</div>
 
 
     <b-row>
