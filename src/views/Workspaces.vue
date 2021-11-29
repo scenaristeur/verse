@@ -21,7 +21,7 @@
 
     <div v-if="currentWorkspace != null">
       <h1>{{currentWorkspace.name}}</h1>
-
+      <small>{{currentWorkspace.url}}</small>
       <b-row>
 
         <b-col v-for="(node, i) in currentWorkspace.nodes" :key="i">

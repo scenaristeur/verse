@@ -1,21 +1,24 @@
 <template>
   <b-card>
     <b-card-title>{{node['ve:name']}}</b-card-title>
+    <b-button size="sm" variant="danger" @click="$emit('delete',node)">Delete</b-button>
+    <b-button size="sm" @click="$emit('edit',node)">Edit</b-button>
+    <a :href="'https://scenaristeur.github.io/verse?source='+node['ve:url']" target="_blank">
+      <b-button size="sm" variant="outline-primary">
+      <b-icon icon="share-fill" aria-label="Share"></b-icon>
+    </b-button>
+    </a>
+      {{node['ve:age']}}
     <!-- <b-card-header>
 
   </b-card-header> -->
-  <b-card-text>
-    {{node['ve:age']}}
+  <!-- <b-card-text>
 
-  </b-card-text>
 
-  <b-button size="sm" variant="danger" @click="$emit('delete',node)">Delete</b-button>
-  <b-button size="sm" @click="$emit('edit',node)">Edit</b-button>
-  <a :href="'https://scenaristeur.github.io/verse?source='+node['ve:url']" target="_blank">
-    <b-button size="sm" variant="outline-primary">
-    <b-icon icon="share-fill" aria-label="Share"></b-icon>
-  </b-button>
-</a>
+  </b-card-text> -->
+
+
+
 
   <!-- <b-card-footer>
 
