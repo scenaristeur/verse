@@ -42,7 +42,7 @@ import {
   // setDatetime
 } from "@inrupt/solid-client";
 import { FOAF, /*LDP,*/ VCARD, /*RDF,*/ AS, /*RDFS, OWL*/  } from "@inrupt/vocab-common-rdf";
-import { WS } from "@inrupt/vocab-solid-common";
+import { WS, SOLID } from "@inrupt/vocab-solid-common";
 
 import * as sc from '@inrupt/solid-client-authn-browser'
 
@@ -127,13 +127,12 @@ const plugin = {
         let indexes = await getThingAll(pti_ds)
         for await (const i of indexes){
           let types = await getUrlAll(i, "http://www.w3.org/ns/solid/terms#forClass");
-          console.log(types)
+          //console.log(types)
           if(types.includes("https://scenaristeur.github.io/verse#Workspace")){
+            console.log(i)
             let ws = {}
             ws.name =  await getStringNoLocale(i, AS.name)
-            ws.url = await getUrl("http://www.w3.org/ns/solid/terms#instance")
-
-
+            ws.url = await getUrl(i,SOLID.instance)
             pod.workspaces.push(ws)
           }
         }

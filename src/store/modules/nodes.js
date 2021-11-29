@@ -9,7 +9,8 @@ const state = () => ({
   currentNode: null,
   notBoth : [],
   mustUpdate : [],
-  source: null
+  source: null,
+  currentWorkspace: null
 
 })
 
@@ -142,6 +143,9 @@ const mutations = {
     console.log("source", s)
     state.source = s
   },
+  setCurrentWorkspace(state, w){
+    state.currentWorkspace = w
+  }
 }
 
 export default {

@@ -42,7 +42,7 @@ import {
   // setDatetime
 } from "@inrupt/solid-client";
 import { /*FOAF,*/ /*LDP,*/ /*VCARD,*/ /*RDF,*/ AS,/* RDFS, OWL*/  } from "@inrupt/vocab-common-rdf";
-// import { WS } from "@inrupt/vocab-solid-common";
+import { /*WS ,*/ SOLID} from "@inrupt/vocab-solid-common";
 //
 import * as sc from '@inrupt/solid-client-authn-browser'
 import * as diffler from 'diffler'
@@ -119,6 +119,77 @@ const plugin = {
 
     Vue.prototype.$changeWorkspace = async function(space){
       console.log(space)
+      if(space == undefined){
+        store.commit('nodes/setCurrentWorkspace',null)
+        this.$checkChanges()
+      }else{
+
+        //let plugin = this
+        let remotesUrl = []
+        space.nodes = []
+        try{
+          const dataset = await getSolidDataset( space.url, { fetch: sc.fetch });
+          remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
+          //console.log("Phase 2",remotesUrl)
+          // for (const local of store.state.nodes.nodes){
+          //   //  console.log(local.id, remotesUrl.includes(local['ve:url']))
+          //   if (!remotesUrl.includes(local['ve:url'])){
+          //     store.commit('nodes/addNotBoth',{id: local.id, local: local, remote: null})
+          //   }
+          // }
+          const filePromises = remotesUrl.map(async function(url) {
+            // Return a promise per file
+            const file = await getFile(url, { fetch: sc.fetch });
+            return new Promise( function(resolve, reject) {
+
+              const reader = new FileReader();
+              reader.onload = async () => {
+                try {
+                  //response =
+                  // Resolve the promise with the response value
+                  resolve(JSON.parse(reader.result));
+                } catch (err) {
+                  reject(err);
+                }
+              };
+              reader.onerror = (error) => {
+                reject(error);
+              };
+              reader.readAsText(file);
+            });
+          });
+
+          // Wait for all promises to be resolved
+          space.nodes = await Promise.all(filePromises);
+
+          // for (const u of remotesUrl){
+          //   const file = await getFile(u, { fetch: sc.fetch });
+          //   const reader = new FileReader();
+          //   reader.onload = async () => {
+          //     //  plugin.$compare(JSON.parse(reader.result));
+          //     //  console.log(reader.result)
+          //     space.nodes.push(JSON.parse(reader.result))
+          //   };
+          //   reader.onerror = (error) => {
+          //     console.log(error);
+          //   };
+          //   reader.readAsText(file);
+          // }
+          console.log("space",space)
+          let index = store.state.solid.pod.workspaces.findIndex(w => w.url == space.url)
+          console.log(index)
+          if(index === -1){
+            store.state.solid.pod.workspaces.push(space)
+          }else{
+            Object.assign(store.state.solid.pod.workspaces[index], space);
+          }
+          store.commit('nodes/setCurrentWorkspace',space)
+
+        }catch(e){
+          console.log(e)
+        }
+
+      }
 
     }
 
@@ -128,25 +199,25 @@ const plugin = {
       let publicTypeIndexUrl = pod.storage+'settings/publicTypeIndex.ttl'
       const pti_ds = await getSolidDataset( publicTypeIndexUrl, { fetch: sc.fetch });
       // pod.workspaces = await getUrlAll(profile, "https://scenaristeur.github.io/verse#space");
-    //  try{
+      //  try{
       //  const dataset = await getSolidDataset( pti_ds, { fetch: sc.fetch });
-        let thing = await  buildThing(createThing({ name: s.name }))
-        .addUrl("http://www.w3.org/ns/solid/terms#forClass", "https://scenaristeur.github.io/verse#Workspace")
-        .addStringNoLocale(AS.name, s.name)
-        .addUrl("http://www.w3.org/ns/solid/terms#instance", s.url)
-        .build();
-        let thingInDs = setThing (pti_ds, thing)
-        let savedThing  = await saveSolidDatasetAt(publicTypeIndexUrl, thingInDs, { fetch: sc.fetch } );
-        console.log("savedThing",savedThing)
+      let thing = await  buildThing(createThing({ name: s.name }))
+      .addUrl("http://www.w3.org/ns/solid/terms#forClass", "https://scenaristeur.github.io/verse#Workspace")
+      .addStringNoLocale(AS.name, s.name)
+      .addUrl(SOLID.instance, s.url)
+      .build();
+      let thingInDs = setThing (pti_ds, thing)
+      let savedThing  = await saveSolidDatasetAt(publicTypeIndexUrl, thingInDs, { fetch: sc.fetch } );
+      console.log("savedThing",savedThing)
 
-        //"https://scenaristeur.github.io/verse#Workspace"
-        //   let profile = await getThing( dataset, pod.webId );
-        // await addUrl(profile, "https://scenaristeur.github.io/verse#space", s.url);
-        // pod.publicTags = await this.$getTags(pod.storage+'public/tags.ttl')
-        // store.commit("vatch/addToNetwork", pod.publicTags)
-        //this.$subscribe(pod.storage)
-        //  console.log("getpodinfos",pod)
-    //  }
+      //"https://scenaristeur.github.io/verse#Workspace"
+      //   let profile = await getThing( dataset, pod.webId );
+      // await addUrl(profile, "https://scenaristeur.github.io/verse#space", s.url);
+      // pod.publicTags = await this.$getTags(pod.storage+'public/tags.ttl')
+      // store.commit("vatch/addToNetwork", pod.publicTags)
+      //this.$subscribe(pod.storage)
+      //  console.log("getpodinfos",pod)
+      //  }
       // catch(e)
       // {
       //   console.log("erreur",e, pod)
