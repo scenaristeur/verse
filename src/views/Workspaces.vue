@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    Workspaces
+  (Experimental / expert )  Workspaces
     <b-btn v-if="space == null" variant="outline-primary" size="sm" @click="add">+ add a workspace</b-btn>
 
     <b-row v-if="space != null">
