@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/404.html"
   },
   {
-    "revision": "a2c7efa06d07f435ea46",
+    "revision": "7a549ba224d92b2cb0c6",
     "url": "/verse/css/app.09ffd799.css"
   },
   {
@@ -16,11 +16,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/css/chunk-vendors.57b5595f.css"
   },
   {
-    "revision": "ecda979135e3b60e7480",
+    "revision": "ee7470d3aacf4e99f209",
     "url": "/verse/css/nodes.5dc319d7.css"
   },
   {
-    "revision": "95b3db13fede2713405a70315fd922ca",
+    "revision": "d12efe96d1c66197c1919a3966e263fc",
     "url": "/verse/index.html"
   },
   {
@@ -32,8 +32,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/agents.eb7e0abc.js"
   },
   {
-    "revision": "a2c7efa06d07f435ea46",
-    "url": "/verse/js/app.906d0e5b.js"
+    "revision": "7a549ba224d92b2cb0c6",
+    "url": "/verse/js/app.e25df7ba.js"
   },
   {
     "revision": "032bda6cf54f10252df5",
@@ -60,8 +60,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/chunk-2d21b4bd.171f889c.js"
   },
   {
-    "revision": "06a81fb7640cafae1cd2",
-    "url": "/verse/js/chunk-2d229262.a136a928.js"
+    "revision": "17c6d11d1f7c99caddf5",
+    "url": "/verse/js/chunk-2d229262.25a2abf3.js"
   },
   {
     "revision": "329eecd10f88317d516d",
@@ -76,16 +76,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/chunk-vendors.3668f410.js"
   },
   {
-    "revision": "e7a6c3810917ea36e2c5",
-    "url": "/verse/js/edit.165ef249.js"
+    "revision": "663ef8ccfedbc51636b6",
+    "url": "/verse/js/edit.9d1a7bf8.js"
   },
   {
     "revision": "9808be6cf65c4cfa81d1",
     "url": "/verse/js/groups.2b7ba0c7.js"
   },
   {
-    "revision": "ecda979135e3b60e7480",
-    "url": "/verse/js/nodes.ecb1220d.js"
+    "revision": "ee7470d3aacf4e99f209",
+    "url": "/verse/js/nodes.389db9ef.js"
   },
   {
     "revision": "fd81df9c8d196cf36ca5",
