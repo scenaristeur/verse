@@ -156,7 +156,7 @@ export default {
   data(){
     return{
       fields: ['id', 'local', 'update', 'remote'],
-      fields2: ['id', 'difference',/*'local',*/ 'update',/* 'remote'*/],
+      fields2: ['id', 'difference','local', 'update', 'remote'],
       'order' : 'asc',
       search: ""
     }

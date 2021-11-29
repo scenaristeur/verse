@@ -104,6 +104,7 @@ const plugin = {
       if (local == undefined){
         store.commit('nodes/addNotBoth',{id: remote.id, local: null, remote: remote})
       }else{
+        try{
         const diff =  diffler(local, remote)
         delete  diff['ve:updated']
         delete  diff['ve:synchronized']
@@ -112,6 +113,10 @@ const plugin = {
           // console.log("diff", diff)
           store.commit('nodes/addMustUpdate', {id: remote.id, local: local, remote: remote, difference : diff})
         }
+      }catch(e){
+        store.commit('nodes/addMustUpdate', {id: remote.id, local: local, remote: remote})
+
+      }
       }
     }
 
