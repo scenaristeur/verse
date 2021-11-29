@@ -61,9 +61,9 @@
 </b-row>
 <b-row>
   <b-col>
-    <b-button  :variant="node['ve:privacy'] == 'public' ? 'warning' : 'outline-success'"
+    <!-- <b-button  :variant="node['ve:privacy'] == 'public' ? 'warning' : 'outline-success'"
      @click="node['ve:privacy'] = node['ve:privacy'] == undefined || node['ve:privacy'] == 'public' ? 'private' : 'public'">
-      {{node['ve:privacy']}}</b-button>
+      {{node['ve:privacy']}}</b-button> -->
     <b-btn variant="success" @click="save">Save Node</b-btn>
   </b-col>
 </b-row>

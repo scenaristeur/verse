@@ -41,11 +41,8 @@ export default {
     // 'Synchro': () => import('@/components/Synchro'),
   },
   created(){
-    //  this.$checkQueryUrl(this.$route.query.url)
-    //    console.log("QUERY URL",this.$route.query.url)
-    //
-    this.$checkSession()
-    // this.$store.dispatch('cats/getCats');
+    
+    // not compatible with route.query this.$checkSession()
 
   },
   mounted(){
@@ -58,7 +55,7 @@ export default {
         this.$processSource(this.$route.query)
       }else{
         this.$store.commit('nodes/setSource', null)
-
+        this.$checkSession()
       }
     }
   },
