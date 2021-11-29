@@ -153,10 +153,10 @@ const plugin = {
 
 
       const file = await getFile(s.source, { fetch: sc.fetch });
-      console.log(file)
+    //  console.log(file)
       const reader = new FileReader();
       reader.onload = async () => {
-        console.log(reader.result)
+      //  console.log(reader.result)
       let source = JSON.parse(reader.result);
           store.commit('nodes/setSource',source)
       };
