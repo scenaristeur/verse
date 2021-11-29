@@ -73,8 +73,8 @@ const actions = {
 
   },
   async clearStore(){
-    let del =  confirm("Do you want to remove all nodes stored on this device ?");
-    if (del == true){
+    let del =  confirm("Do you want to KEEP all nodes stored on this device ?");
+    if (del == false){
       await idb.clearStore()
     }
   }

@@ -13,7 +13,7 @@
     <router-link to="/agents">Agents</router-link> |
     <router-link to="/spaces">Spaces</router-link> |
     <router-link to="/schemas">Schemas</router-link> -->
-<Source />
+    <Source />
     <b-row>
       <span v-if="isOnline"><Login /></span>
       <span v-if="isOffline" variant="danger">offline</span>
@@ -27,7 +27,7 @@
     <br>
     <hr>
     <br>
-    <small><i>0.0.6 - synchro - clear store</i></small> |
+    <small><i>0.0.7 - source & share</i></small> |
     <small><a href="https://github.com/scenaristeur/verse" target="_blank">source</a></small>
     <!-- <Synchro /> -->
   </b-container>
@@ -43,8 +43,8 @@ export default {
   created(){
     //  this.$checkQueryUrl(this.$route.query.url)
     //    console.log("QUERY URL",this.$route.query.url)
-  //
-
+    //
+    this.$checkSession()
     // this.$store.dispatch('cats/getCats');
 
   },
@@ -58,7 +58,7 @@ export default {
         this.$processSource(this.$route.query)
       }else{
         this.$store.commit('nodes/setSource', null)
-        this.$checkSession()
+
       }
     }
   },
