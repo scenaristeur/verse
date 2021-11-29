@@ -1,6 +1,6 @@
 <template>
-  <b-container>
-  (Experimental / expert )  Workspaces
+  <b-container v-if="pod!=null">
+    (Experimental / expert )  Workspaces
     <b-btn v-if="space == null" variant="outline-primary" size="sm" @click="add">+ add a workspace</b-btn>
 
     <b-row v-if="space != null">
@@ -19,8 +19,18 @@
 
     </b-list-group>
 
+    <div v-if="currentWorkspace != null">
+      <h1>{{currentWorkspace.name}}</h1>
 
-{{ currentWorkspace}}
+      <b-row>
+
+        <b-col v-for="(node, i) in currentWorkspace.nodes" :key="i">
+          <Node :node="node" @delete="deleteNode" @edit="editNode" />
+        </b-col>
+
+      </b-row>
+    </div>
+    <!-- {{ currentWorkspace}} -->
 
     <hr>
   </b-container>
@@ -29,6 +39,9 @@
 <script>
 export default {
   name: "Workspaces",
+  components: {
+    'Node': () => import('@/components/Node'),
+  },
   data(){
     return{
       space : null
@@ -49,6 +62,14 @@ export default {
     use(s){
       console.log("use",s)
       this.$changeWorkspace(s)
+    },
+    editNode(node){
+      console.log('edit', node.id);
+      this.$store.commit('nodes/setCurrentNode', node)
+      this.$router.push({ name: 'edit'});
+    },
+    deleteNode(n){
+      console.log(n)
     }
   },
   computed:{
@@ -58,6 +79,10 @@ export default {
     },
     currentWorkspace:{
       get () { return this.$store.state.nodes.currentWorkspace },
+      set (/*value*/) { /*this.updateTodo(value)*/ }
+    },
+    pod:{
+      get () { return this.$store.state.solid.pod },
       set (/*value*/) { /*this.updateTodo(value)*/ }
     }
   }

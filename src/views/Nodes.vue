@@ -81,8 +81,8 @@
         {{data.item}} -->
         <b-button-toolbar>
           <b-button-group class="mx-1">
-            <b-button @click="updateLocal(data.item.remote)">&laquo;</b-button>
-            <b-button @click="updateRemote(data.item.local)">&raquo;</b-button>
+            <b-button @click="updateLocal(data.item.remote)">&laquo; update local</b-button>
+            <b-button @click="updateRemote(data.item.local)">update remote &raquo;</b-button>
           </b-button-group>
         </b-button-toolbar>
         <!-- {{data}} -->
@@ -156,7 +156,7 @@ export default {
   data(){
     return{
       fields: ['id', 'local', 'update', 'remote'],
-      fields2: ['id', 'difference','local', 'update', 'remote'],
+      fields2: ['id', 'difference',/*'local',*/ 'update',/* 'remote'*/],
       'order' : 'asc',
       search: ""
     }
