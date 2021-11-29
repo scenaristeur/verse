@@ -2,22 +2,22 @@
   <b-container fluid id="app">
 
     <!-- <div id="nav"> -->
-      <!-- <router-link to="/">H0m€</router-link> |
-      <router-link to="/sync">$y^c</router-link> | -->
-      <!--      <router-link to="/about">About</router-link> | -->
-      <!-- <router-link to="/nodes">Nodes</router-link> | -->
-      <!-- <router-link to="/notes">Notes</router-link> |
-      <router-link to="/persons">Personnes</router-link> |
-      <router-link to="/projects">Projects</router-link> |
-      <router-link to="/groups">Groups</router-link> |
-      <router-link to="/agents">Agents</router-link> |
-      <router-link to="/spaces">Spaces</router-link> |
-      <router-link to="/schemas">Schemas</router-link> -->
-
-<b-row>
+    <!-- <router-link to="/">H0m€</router-link> |
+    <router-link to="/sync">$y^c</router-link> | -->
+    <!--      <router-link to="/about">About</router-link> | -->
+    <!-- <router-link to="/nodes">Nodes</router-link> | -->
+    <!-- <router-link to="/notes">Notes</router-link> |
+    <router-link to="/persons">Personnes</router-link> |
+    <router-link to="/projects">Projects</router-link> |
+    <router-link to="/groups">Groups</router-link> |
+    <router-link to="/agents">Agents</router-link> |
+    <router-link to="/spaces">Spaces</router-link> |
+    <router-link to="/schemas">Schemas</router-link> -->
+<Source />
+    <b-row>
       <span v-if="isOnline"><Login /></span>
       <span v-if="isOffline" variant="danger">offline</span>
-</b-row>
+    </b-row>
     <!-- </div> -->
     <router-view/>
     <br><br>
@@ -37,12 +37,30 @@ export default {
   name: "Notes",
   components: {
     'Login': () => import('@/components/Login'),
+    'Source': () => import('@/views/Source'),
     // 'Synchro': () => import('@/components/Synchro'),
   },
   created(){
-    this.$checkSession()
+    //  this.$checkQueryUrl(this.$route.query.url)
+    //    console.log("QUERY URL",this.$route.query.url)
+  //
+
     // this.$store.dispatch('cats/getCats');
 
+  },
+  mounted(){
+
+  },
+  watch:{
+    $route(to, from){
+      console.log(this.$route, to, from)
+      if(this.$route.query.source != undefined && this.$route.query.source.length >0){
+        this.$processSource(this.$route.query)
+      }else{
+        this.$store.commit('nodes/setSource', null)
+        this.$checkSession()
+      }
+    }
   },
   computed:{
     session:{

@@ -147,6 +147,28 @@ const plugin = {
       }
     }
 
+    Vue.prototype.$processSource = async function(s){
+      console.log("Source",s.source)
+    //  let source = {url: s}
+
+
+      const file = await getFile(s.source, { fetch: sc.fetch });
+      console.log(file)
+      const reader = new FileReader();
+      reader.onload = async () => {
+        console.log(reader.result)
+      let source = JSON.parse(reader.result);
+          store.commit('nodes/setSource',source)
+      };
+      reader.onerror = (error) => {
+        console.log(error);
+      };
+      reader.readAsText(file);
+
+
+    }
+
+
     Vue.prototype.$checkChanges1 = async function(){
       console.log("$checkChanges",store.state.solid.pod.neuroneStore)
       //let remotes = []

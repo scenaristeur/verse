@@ -9,6 +9,7 @@ const state = () => ({
   currentNode: null,
   notBoth : [],
   mustUpdate : [],
+  source: null
 
 })
 
@@ -136,6 +137,10 @@ const mutations = {
       return x.id;
     }).indexOf(n.id);
     state.mustUpdate.splice(index, 1);
+  },
+  setSource (state, s){
+    console.log("source", s)
+    state.source = s
   },
 }
 
