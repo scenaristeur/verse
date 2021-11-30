@@ -34,6 +34,10 @@ node index.js
 # vuejs fileter / order
 https://vuejs.org/v2/guide/migration.html#Replacing-the-orderBy-Filter
 
+# editors wysiwyg
+- https://donotebase.github.io/quasar-tiptap/examples/basic
+- https://ckeditor.com/docs/ckeditor5/latest/examples/builds/inline-editor.html
+
 ## Project setup
 ```
 npm install

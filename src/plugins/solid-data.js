@@ -7,8 +7,8 @@ import {
   //getPublicAccess,
   //getAgentAccess,
   getFile,
-  // isRawData,
-  // getContentType,
+  isRawData,
+  getContentType,
   //saveFileInContainer,
   getContainedResourceUrlAll,
   // getStringNoLocaleAll,
@@ -105,22 +105,28 @@ const plugin = {
         store.commit('nodes/addNotBoth',{id: remote.id, local: null, remote: remote})
       }else{
         try{
-        const diff =  diffler(local, remote)
-        delete  diff['ve:updated']
-        delete  diff['ve:synchronized']
-        // console.log("real diff", diff)
-        if(Object.entries(diff).length > 0){
-          // console.log("diff", diff)
-          store.commit('nodes/addMustUpdate', {id: remote.id, local: local, remote: remote, difference : diff})
-        }
-      }catch(e){
-        store.commit('nodes/addMustUpdate', {id: remote.id, local: local, remote: remote})
+          const diff =  diffler(local, remote)
+          delete  diff['ve:updated']
+          delete  diff['ve:synchronized']
+          // console.log("real diff", diff)
+          if(Object.entries(diff).length > 0){
+            // console.log("diff", diff)
+            store.commit('nodes/addMustUpdate', {id: remote.id, local: local, remote: remote, difference : diff})
+          }
+        }catch(e){
+          store.commit('nodes/addMustUpdate', {id: remote.id, local: local, remote: remote})
 
-      }
+        }
       }
     }
 
-
+    Vue.prototype.$getChildren = async function(parent){
+      // console.log(parent)
+      const dataset = await getSolidDataset( parent, { fetch: sc.fetch });
+      let remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
+      // console.log(remotesUrl)
+      return remotesUrl
+    }
 
     Vue.prototype.$changeWorkspace = async function(space){
       console.log(space)
@@ -196,6 +202,47 @@ const plugin = {
 
       }
 
+    }
+
+    Vue.prototype.$getContent = async function(url){
+      console.log(url)
+      try {
+        // file is a Blob (see https://developer.mozilla.org/docs/Web/API/Blob)
+        const file = await getFile(
+          url,               // File in Pod to Read
+          { fetch: sc.fetch }       // fetch from authenticated session
+        );
+
+        console.log( `Fetched a ${getContentType(file)} file from ${getSourceUrl(file)}.`);
+
+
+if(!isRawData(file))
+{
+  const reader = new FileReader();
+  reader.onload = async () => {
+    //  console.log(reader.result)
+    let content = reader.result
+    if (getContentType(file) == 'application+json'){
+      content = JSON.parse(reader.result);
+    }
+
+    store.commit('nodes/setEditorContent',content)
+  };
+  reader.onerror = (error) => {
+    console.log(error);
+  };
+  reader.readAsText(file);
+}else{
+  console.log(`The file is ${isRawData(file) ? "not " : ""}a dataset.`);
+}
+
+
+
+
+        return file
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     Vue.prototype.$addWorkspaceToPod = async function(s){

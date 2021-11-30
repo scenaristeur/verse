@@ -10,7 +10,8 @@ const state = () => ({
   notBoth : [],
   mustUpdate : [],
   source: null,
-  currentWorkspace: null
+  currentWorkspace: null,
+  editorContent: ""
 
 })
 
@@ -145,6 +146,9 @@ const mutations = {
   },
   setCurrentWorkspace(state, w){
     state.currentWorkspace = w
+  },
+  setEditorContent(state, c){
+    state.editorContent = c
   }
 }
 

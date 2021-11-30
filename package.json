@@ -10,6 +10,9 @@
     "postgit": "git push && git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^31.0.0",
+    "@ckeditor/ckeditor5-build-inline": "^31.0.0",
+    "@ckeditor/ckeditor5-vue2": "^1.0.5",
     "@inrupt/solid-client": "^1.16.0",
     "@inrupt/solid-client-authn-browser": "^1.11.2",
     "@inrupt/vocab-common-rdf": "^1.0.3",
@@ -19,7 +22,10 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "diffler": "^2.0.3",
+    "quasar-tiptap": "^1.9.1",
     "register-service-worker": "^1.7.1",
+    "tiptap": "^1.32.2",
+    "tiptap-extensions": "^1.35.2",
     "vue": "^2.6.11",
     "vue-offline": "^2.0.8",
     "vue-router": "^3.2.0",
