@@ -1,6 +1,7 @@
 <template>
   <div>
-    {{storage}}
+  <div v-if="storage != false">
+    <!-- {{storage}} -->
     <b-breadcrumb>
       <!-- <b-breadcrumb-item href="#home">
       <b-icon icon="house-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -11,19 +12,26 @@
     @click="changePath(p)">{{p.text}}</b-breadcrumb-item>
     <!-- <b-breadcrumb-item href="#bar">Bar</b-breadcrumb-item> -->
 
-  </b-breadcrumb>
+
   <div v-if="addingFile">
     <b-form-input  v-model="filename" placeholder="filename.ext"></b-form-input>
     <b-button variant="primary" size="sm" @click="addFile">create</b-button>
     <b-button variant="primary" size="sm" @click="addingFile = false">cancel</b-button>
   </div>
   <div v-else>
-    <b-button variant="primary" size="sm" @click="addingFile = true">+</b-button>
-    <b-form-select v-model="selected" :options="options"></b-form-select>
-  </div>
-  <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
 
-  {{editorContent}}
+    <b-form-select v-model="selected" :options="options">
+    </b-form-select>
+        <b-button variant="primary" size="sm" @click="addingFile = true">+</b-button>
+  </div>
+    </b-breadcrumb>
+  <ckeditor :editor="editor" v-model="editorData" :config="editorConfig" @blur="savedata"></ckeditor>
+
+  <!-- {{editorContent}} -->
+</div>
+<div v-else>
+Please login to update files on your pod
+</div>
 </div>
 </template>
 
@@ -40,7 +48,7 @@ export default {
   data() {
     return {
       editor: InlineEditor, //ClassicEditor,
-      editorData: '<p>Content of the editor.</p>',
+      editorData: '<p>Select a file or create a new one with "+".</p>',
       editorConfig: {
         // The configuration of the editor.
       },
@@ -66,19 +74,42 @@ export default {
     };
   },
   created(){
-    this.path = [
-      {text: "Home",
-      url: this.storage,
-      type: "folder"}
-    ]
-    this.updateOptions(this.storage)
+    console.log("sto", this.storage)
+    if (this.storage != false){
+      this.path = [
+        {text: "Home",
+        url: this.storage,
+        type: "folder"}
+      ]
+      this.updateOptions(this.storage)
+    }
   },
   methods:{
-    addFile(){
+    async savedata(){
+      console.log(this.editorData)
+      console.log(this.selected)
+      let file = {name: this.selected.text, url : this.selected.url}
+      file.content = this.editorData
+      let fileSaved = await this.$updateFile(file)
+      console.log(fileSaved)
+    },
+    async addFile(){
       console.log(this.filename)
-      let last = this.path.pop()
+      let path = []
+      Object.assign(path, this.path)
+      let last = {}
+      while (last.type == undefined || last.type != "folder"){
+        last = path.pop()
+      }
       console.log(last)
       this.addingFile = false
+      let file = {name: this.filename, path: last.url, content: "<h1>"+this.filename+"</h1><small>created : "+Date.now()+"</small>"}
+      let fileSaved = await this.$updateFile(file)
+      console.log(fileSaved)
+
+      let opt = {text: this.filename, type: "file", url: last.url+this.filename}
+      this.selected = opt
+
     },
     changePath(p){
       let index = this.path.findIndex(b => b.url == p.url)
@@ -87,15 +118,16 @@ export default {
     },
     async updateOptions(root){
       let children = await this.$getChildren(root)
-      console.log(children)
+      //  console.log(children)
 
       this.options =  children.map(c => {
         let child = {}
         let parts = c.split('/')
-        console.log(parts)
+        //  console.log(parts)
         if(c.endsWith('/')){
-          child.text = parts[parts.length - 2]+"...";
-          child.value = {type:'folder', url:c, text: child.text}
+          let text = parts[parts.length - 2]+"...";
+          child.value = {type:'folder', url:c, text: text}
+          child.html= "😜"+text
         }else{
           child.text = parts[parts.length - 1];
           child.value = {type: "file", url:c, text: child.text}
@@ -104,8 +136,8 @@ export default {
         return child
 
       })
-      console.log(this.options)
-      console.log(this.path)
+      //  console.log(this.options)
+      //  console.log(this.path)
     },
   },
   watch:{
@@ -118,6 +150,7 @@ export default {
       }else{
         let content = await this.$getContent(this.selected.url)
         console.log(content)
+      //  this.editorData = content
       }
 
     },
@@ -125,12 +158,15 @@ export default {
       console.log(this.editorData)
     },
     storage(){
-      this.path = [
-        {text: "Home",
-        url: this.storage,
-        type: "folder"}
-      ]
-      this.updateOptions(this.storage)
+      if (this.storage != false){
+        this.path = [
+          {text: "Home",
+          url: this.storage,
+          type: "folder"}
+        ]
+        this.updateOptions(this.storage)
+      }
+
     },
     editorContent(){
       this.editorData = this.editorContent
@@ -138,7 +174,7 @@ export default {
   },
   computed: {
     storage() {
-      return this.$store.state.solid.pod.storage
+      return this.$store.state.solid.pod != null && this.$store.state.solid.pod.storage
     },
     editorContent() {
       return this.$store.state.nodes.editorContent

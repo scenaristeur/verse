@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button  :variant="node['ve:type'] == 'html' ? 'ouline-warning' : 'outline-success'"
+    <b-button  :variant="node['ve:type'] == 'html' ? 'outline-warning' : 'outline-success'"
     @click="node['ve:type'] = node['ve:type'] == undefined || node['ve:type'] == 'html' ? 'node' : 'html'">
     {{node['ve:type']}}</b-button>
     <b-container v-if="node['ve:type'] == 'node'">
@@ -128,7 +128,7 @@
 
 </b-container>
 <b-container v-else>
-  html
+
 <!-- <Quasar /> -->
 <CKWysiwyg />
 </b-container>

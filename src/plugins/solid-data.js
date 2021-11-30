@@ -204,6 +204,36 @@ const plugin = {
 
     }
 
+
+    Vue.prototype.$updateFile = async function(f){
+      console.log(f)
+      f.url == undefined ? f.url = f.path+f.name : ""
+      let ext = f.name.split('.')[1]
+      let contentType = "text/html; charset=utf-8"
+      switch (ext) {
+        case "jsonld":
+        contentType = "application/ld+json"
+        break;
+        case "json":
+        contentType = "application/json"
+        break;
+      }
+
+      try{
+        const savedFile = await overwriteFile(
+          f.url,
+          new Blob([f.content], {type: contentType}),
+          { contentType: contentType, fetch: sc.fetch }
+        );
+        console.log(`File saved at ${getSourceUrl(savedFile)}`);
+        //n.url = await getSourceUrl(savedFile)
+        //  store.dispatch('nodes/saveNode', n)
+        return savedFile
+      }catch(e){
+        console.log(e)
+      }
+
+    }
     Vue.prototype.$getContent = async function(url){
       console.log(url)
       try {
@@ -214,27 +244,28 @@ const plugin = {
         );
 
         console.log( `Fetched a ${getContentType(file)} file from ${getSourceUrl(file)}.`);
+        console.log("The file is rawdata "+ `${isRawData(file)}`);
 
-
-if(!isRawData(file))
-{
-  const reader = new FileReader();
-  reader.onload = async () => {
-    //  console.log(reader.result)
-    let content = reader.result
-    if (getContentType(file) == 'application+json'){
-      content = JSON.parse(reader.result);
-    }
-
-    store.commit('nodes/setEditorContent',content)
-  };
-  reader.onerror = (error) => {
-    console.log(error);
-  };
-  reader.readAsText(file);
-}else{
-  console.log(`The file is ${isRawData(file) ? "not " : ""}a dataset.`);
-}
+         if(`${getContentType(file)}` == 'text/html' /*|| `${getContentType(file)}` == "application/ld+json"*/)  {
+          const reader = new FileReader();
+          reader.onload = async () => {
+            //  console.log(reader.result)
+            let content = reader.result
+            // if (getContentType(file) == 'application+json'){
+            //   content = JSON.parse(reader.result);
+            // }
+          //  console.log("content",content)
+            store.commit('nodes/setEditorContent',content)
+          };
+          reader.onerror = (error) => {
+            console.log(error);
+          };
+          reader.readAsText(file);
+        }
+        else{
+          console.log("is a dataset")
+          alert ("i can't read '"+file.url +"' as text or html, use another editor"  )
+        }
 
 
 

@@ -27,7 +27,7 @@
     <br>
     <hr>
     <br>
-    <small><i>0.0.9 - workspaces create - diff</i></small> |
+    <small><i>0.0.10 - html-editor 2</i></small> |
     <small><a href="https://github.com/scenaristeur/verse" target="_blank">source</a></small>
     <!-- <Synchro /> -->
   </b-container>
