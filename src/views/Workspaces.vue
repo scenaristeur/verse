@@ -3,103 +3,115 @@
     <b-row>
       (Experimental / expert )  Collaborate on other Workspaces
       <b-btn v-if="space == null" variant="outline-primary" size="sm" @click="add" class="mx-2">+ add a workspace</b-btn>
-      <b-button variant="outline-primary" size="sm" @click="exploreFriendsWorkspaces(pod.friends)" class="mx-2">todo explore friends</b-button>
-      <span v-if="loading > 0" class="mx-2">Loading : {{loading}}</span>
-    </b-row>
+      <b-button variant="outline-primary" size="sm" @click="exploreFriendsWorkspaces(pod.friends)" class="mx-2">
+        explore {{pod.friends.length}} friends</b-button>
+        <span v-if="loading > 0" class="mx-2">Loading : {{loading}}</span>
+      </b-row>
 
 
-    <b-row v-if="space != null">
-      <b-form-input  v-model="space.name"  placeholder="workspace name" />
-      <b-form-input  v-model="space.url"  placeholder="workspace url" />
-      <b-button @click="cancel" variant="outline-warning">Cancel</b-button>
-      <b-button @click="save" variant="outline-success">Add it</b-button>
-
-    </b-row>
-
-    <b-list-group>
-      <b-list-group-item button @click="use()" variant="success"><b>Default</b> {{pod.storage}}public/neurones/</b-list-group-item>
-      <b-list-group-item v-for="s in workspaces" :key="s.url" button @click="use(s)">
-        <b>{{s.name}}</b> {{s.url}} ({{s.nodes != undefined ? s.nodes.length : "--"}})
-      </b-list-group-item>
-
-    </b-list-group>
-
-    <div v-if="currentWorkspace != null">
-      <h1>{{currentWorkspace.name}}</h1>
-      <small>{{currentWorkspace.url}}</small>
-      <b-row>
-
-        <b-col v-for="(node, i) in currentWorkspace.nodes" :key="i">
-          <Node :node="node" @delete="deleteNode" @edit="editNode" />
-        </b-col>
+      <b-row v-if="space != null">
+        <b-form-input v-model="space.name" placeholder="workspace name" autofocus />
+        <b-form-input v-model="space.url" placeholder="workspace url" />
+        <b-button @click="cancel" variant="outline-warning">Cancel</b-button>
+        <b-button @click="save" variant="outline-success">Add it</b-button>
 
       </b-row>
-    </div>
-    <!-- {{ currentWorkspace}} -->
 
-    <hr>
+      <b-list-group>
+        <b-list-group-item button @click="use()" variant="success"><b>Default</b> {{pod.storage}}public/neurones/</b-list-group-item>
+        <b-list-group-item v-for="s in workspaces" :key="s.url" button @click="use(s)">
+          <b>{{s.name}}</b> {{s.url}} ({{s.nodes != undefined ? s.nodes.length : "--"}})
+        </b-list-group-item>
 
+      </b-list-group>
 
-    <b-card-group columns v-if="friends_pods.length>0">
-      <b-card
-      v-for="fp in friends_pods" :key="fp.webId">
-      <b-card-img-lazy
-      v-if="fp.photo != null"
-      :src="fp.photo"
-      :alt="fp.photo"
-      class="rounded-5"
-      top
-      />
+      <div v-if="currentWorkspace != null">
+        <h1>{{currentWorkspace.name}}</h1>
+        <small>{{currentWorkspace.url}}</small>
+        <b-row>
 
+          <b-col v-for="(node, i) in currentWorkspace.nodes" :key="i">
+            <Node :node="node" @delete="deleteNode" @edit="editNode" />
+          </b-col>
 
-      <b-card-title class="mt-3">
-        {{fp.name}}
-      </b-card-title>
-      <b-card-header>
-        <small>{{fp.webId}}</small>
-      </b-card-header>
-      <b-card-text v-if="(fp.neurones != undefined && fp.neurones.length > 0) || (fp.workspaces != undefined && fp.workspaces.length > 0)">
+        </b-row>
+      </div>
+      <!-- {{ currentWorkspace}} -->
 
-        <!-- {{fp.neurones}} -->
-        <NodeR v-for="(url, i) in fp.neurones" :key="i"
-        :url="url" />
+      <hr>
 
 
-        <!-- {{fp.neurones}} -->
-        <hr>
-        neuroneStore {{fp.neuroneStore}}
-        workspaces {{fp.workspaces}}
-        <!-- This is a wider card with supporting text below as a natural lead-in to additional content.
-        This content is a little bit longer. -->
-      </b-card-text>
-      <b-card-text v-else>
-        {{fp.name}} has no 'Neurone',
+      <b-card-group columns v-if="friends_pods.length>0">
+        <b-card
+        v-for="fp in friends_pods" :key="fp.webId">
+        <b-card-img-lazy
+        v-if="fp.photo != null"
+        :src="fp.photo"
+        :alt="fp.photo"
+        class="mb-3"
+        rounded="circle"
+        top
+        />
+
+
+        <b-card-title >
+          {{fp.name}}
+
+          <b-button
+          v-if="fp.neurones != undefined && fp.neurones.length > 0"
+          size="sm"
+          variant="outline-success"
+          @click="add(fp)">
+          follow
+        </b-button>
+
+        </b-card-title>
+
+        <small><a :href="fp.webId" target="_blank">{{fp.webId.split('/')[2]}}</a></small>
+
         <b-button
-        onclick="alert('invitations are not implemented yet, see source link at the bottom to contribute ;-)')"
-        size="sm" variant="outline-dark"
-        >invite him/her/it to use 'Verse'</b-button>
-        or add
-        <a href="https://spoggy-test5.solidcommunity.net/profile/card#me" target="_blank">
-          Spoggy-test5</a>
+        v-if="fp.friends != undefined && fp.friends.length > 0"
+        size="sm"
+        variant="outline-success"
+        @click="exploreFriendsWorkspaces(fp.friends)">
+        explore {{fp.friends.length}} friends
+      </b-button>
+
+      <b-card-header v-if="(fp.neurones != undefined && fp.neurones.length > 0) || (fp.workspaces != undefined && fp.workspaces.length > 0)">
+
+
+
+      <!-- {{fp.neurones}} -->
+      <NodeR v-for="(url, i) in fp.neurones" :key="i"
+      :url="url" />
+
+
+      <!-- {{fp.neurones}} -->
+      <hr>
+      <!-- neuroneStore {{fp.neuroneStore}} -->
+      workspaces {{fp.workspaces}}
+      <!-- This is a wider card with supporting text below as a natural lead-in to additional content.
+      This content is a little bit longer. -->
+    </b-card-header>
+    <b-card-text v-else>
+      {{fp.name}} has no 'Neurone',
+      <b-button
+      onclick="alert('invitations are not implemented yet, see source link at the bottom to contribute ;-)')"
+      size="sm" variant="outline-dark"
+      >invite him/her/it to use 'Verse'</b-button>
+      <br>or add
+      <a href="https://spoggy-test5.solidcommunity.net/profile/card#me" target="_blank">
+        Spoggy-test5</a>
         to your friends
       </b-card-text>
-      <b-card-footer v-if="fp.friends != undefined && fp.friends.length > 0">
-        <small>
-          <b-button @click="exploreFriendsWorkspaces(fp.friends)">Explore {{fp.friends.length}} friends</b-button>
-          <!-- <ul>
-          <li v-for="f in fp.friends" :key="f.webId">
-          {{f.webId}}
-        </li>
-      </ul> -->
-    </small>
-  </b-card-footer>
-</b-card>
-</b-card-group>
+
+    </b-card>
+  </b-card-group>
 
 
-<!-- <b-row v-if="friends_pods.length>0">
-<p v-for="fp in friends_pods" :key="fp.webId">
-{{fp}}
+  <!-- <b-row v-if="friends_pods.length>0">
+  <p v-for="fp in friends_pods" :key="fp.webId">
+  {{fp}}
 </p>
 
 </b-row> -->
@@ -124,8 +136,14 @@ export default {
     }
   },
   methods: {
-    add(){
-      this.space = {name: ""}
+    add(ws){
+      // this.space = {}
+      if (ws == undefined){
+        this.space = {name: "", url: ""}
+      }else{
+        this.space = {name: ws.name, url: ws.neuroneStore}
+      }
+      // this.$refs.spaceName.focus()
     },
     save(){
       console.log(this.space)

@@ -4,8 +4,8 @@
     {{liteNode}} -->
     <div v-if="loading !=null">{{Loading}}</div>
     <div v-if="neurone != null">
-      <b-button variant="outline-info" size="sm" @click="editNode">{{neurone['ve:name']}}</b-button>
-      <small>{{neurone['ve:age']}}</small><br>
+      <b-button variant="info" size="sm" @click="editNode" class="my-2 mr-2">{{neurone['ve:name']}}</b-button>
+      <small>age: {{neurone['ve:age']}}</small><br>
       <ul v-if="neurone['ve:properties'].length > 0">
         <li v-for="p in neurone['ve:properties']" :key="p.name">
           {{p.name}} ({{p.values.length}})

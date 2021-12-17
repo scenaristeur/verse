@@ -4,6 +4,7 @@
     @click="node['ve:type'] = node['ve:type'] == undefined || node['ve:type'] == 'html' ? 'node' : 'html'">
     {{node['ve:type']}}</b-button>
     <b-container v-if="node['ve:type'] == 'node'">
+
       <b-row>
         <b-col sm="3">
           <label for="name">Name:</label>
@@ -68,7 +69,9 @@
       <!-- <b-button  :variant="node['ve:privacy'] == 'public' ? 'warning' : 'outline-success'"
       @click="node['ve:privacy'] = node['ve:privacy'] == undefined || node['ve:privacy'] == 'public' ? 'private' : 'public'">
       {{node['ve:privacy']}}</b-button> -->
+
       <b-btn variant="success" @click="save">Save Node</b-btn>
+        <Permissions :permissions="permissions" :url="node['ve:url']" />
     </b-col>
   </b-row>
 
@@ -144,6 +147,7 @@ export default {
     'NodeSelector': () => import('@/components/NodeSelector'),
     // 'NodeLite': () => import('@/components/NodeLite'),
     'Values': () => import('@/components/Values'),
+    'Permissions': () => import('@/components/layout/Permissions'),
     // 'Quasar': () => import('@/views/Quasar'),
     'CKWysiwyg': () => import('@/views/CKWysiwyg'),
     // 'editor': Editor
@@ -158,11 +162,12 @@ export default {
       currentProp: {},
       newvalue: null,
       link: {},
-      privacy: "private"
+      // privacy: "private",
+      permissions: null
       // tinycontent: ""
     }
   },
-  created() {
+  async created() {
     this.node = this.$store.state.nodes.currentNode ||
     {  "@context": {
       "@vocab": "https://www.w3.org/ns/activitystreams",
@@ -178,7 +183,7 @@ export default {
     test: "test vocab"}
     console.log("--- hack temporaire du type", this.node['ve:type'])
     this.node['ve:type'] != 'html' ? this.node['ve:type'] = 'node' : ''
-
+    await this.getPermissions()
     // if(this.$route.params.node) {
     //   this.node = this.$route.params.node;
     // } else {
@@ -226,12 +231,20 @@ export default {
       this.currentProp.values.push(val)
       this.link = {}
     },
+    async getPermissions(){
+      this.permissions = this.node['ve:url'] != undefined ? await this.$getPermissions(this.node) : null
+      console.log("PERMISSIONS", this.permissions)
+    }
 
     // tinyChanged(e,editor){
     //   console.log(e, editor)
     // }
   },
   watch:{
+    currentNode(){
+      console.log("CURRENT NODE Changed")
+      this.getPermissions()
+    }
     // tinycontent(){
     //   console.log(this.tinycontent)
     // }

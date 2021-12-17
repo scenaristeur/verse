@@ -163,6 +163,12 @@ const plugin = {
       });
 
     }
+
+    Vue.prototype.$getPermissions = async function(node){
+      let url = node['ve:url']
+      const file = await getFile(url, { fetch: sc.fetch });
+      return file.internal_resourceInfo.permissions
+    }
     Vue.prototype.$changeWorkspace = async function(space){
       console.log(space)
       if(space == undefined){
