@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/404.html"
   },
   {
-    "revision": "9e57bf0feace04efe904",
+    "revision": "79ed31f330a6d506e582",
     "url": "/verse/css/app.09ffd799.css"
   },
   {
@@ -16,11 +16,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/css/chunk-vendors.57b5595f.css"
   },
   {
-    "revision": "992048196b0f89f2c7a4",
+    "revision": "4fcacb16918175c5bea1",
     "url": "/verse/css/nodes.5dc319d7.css"
   },
   {
-    "revision": "93f3882847b011cb98f731cf2491fb57",
+    "revision": "7169cf34a81cd43f0cf8dcaf2d1959ac",
     "url": "/verse/index.html"
   },
   {
@@ -32,8 +32,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/agents.84a55a5a.js"
   },
   {
-    "revision": "9e57bf0feace04efe904",
-    "url": "/verse/js/app.f3c9e639.js"
+    "revision": "79ed31f330a6d506e582",
+    "url": "/verse/js/app.adc520e6.js"
   },
   {
     "revision": "8a8e0e7d97e40807adb3",
@@ -76,8 +76,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/chunk-2d229262.ebb0ede0.js"
   },
   {
-    "revision": "d1a7e92a2cab3822824b",
-    "url": "/verse/js/chunk-c35bc0b2.d272e21d.js"
+    "revision": "54e182b23540406b1186",
+    "url": "/verse/js/chunk-c35bc0b2.a430aa56.js"
   },
   {
     "revision": "dbeb37e322bda862e28a",
@@ -88,16 +88,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/chunk-vendors.57d1f624.js"
   },
   {
-    "revision": "6a4d5e574fcdbb069878",
-    "url": "/verse/js/edit.fe20910a.js"
+    "revision": "4962ff177efa7d8706ab",
+    "url": "/verse/js/edit.7977a874.js"
   },
   {
     "revision": "8e1a4a6429a96e9c4fae",
     "url": "/verse/js/groups.d40e0ed9.js"
   },
   {
-    "revision": "992048196b0f89f2c7a4",
-    "url": "/verse/js/nodes.c8bada61.js"
+    "revision": "4fcacb16918175c5bea1",
+    "url": "/verse/js/nodes.999c13e6.js"
   },
   {
     "revision": "0625796fb32e78c78811",
