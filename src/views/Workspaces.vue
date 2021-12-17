@@ -1,7 +1,12 @@
 <template>
   <b-container v-if="pod!=null">
-    (Experimental / expert )  Workspaces
-    <b-btn v-if="space == null" variant="outline-primary" size="sm" @click="add">+ add a workspace</b-btn>
+    <b-row>
+      (Experimental / expert )  Collaborate on other Workspaces
+      <b-btn v-if="space == null" variant="outline-primary" size="sm" @click="add" class="mx-2">+ add a workspace</b-btn>
+      <b-button variant="outline-primary" size="sm" @click="exploreFriendsWorkspaces" class="mx-2">todo explore friends</b-button>
+      <span v-if="loading > 0" class="mx-2">Loading : {{loading}}</span>
+    </b-row>
+
 
     <b-row v-if="space != null">
       <b-form-input  v-model="space.name"  placeholder="workspace name" />
@@ -12,9 +17,9 @@
     </b-row>
 
     <b-list-group>
-      <b-list-group-item button @click="use()" variant="success">Default</b-list-group-item>
+      <b-list-group-item button @click="use()" variant="success"><b>Default</b> {{pod.storage}}public/neurones/</b-list-group-item>
       <b-list-group-item v-for="s in workspaces" :key="s.url" button @click="use(s)">
-        {{s.name}} / {{s.url}} ({{s.nodes != undefined ? s.nodes.length : "--"}})
+        <b>{{s.name}}</b> {{s.url}} ({{s.nodes != undefined ? s.nodes.length : "--"}})
       </b-list-group-item>
 
     </b-list-group>
@@ -33,6 +38,15 @@
     <!-- {{ currentWorkspace}} -->
 
     <hr>
+    <b-row v-if="friends_pods.length>0">
+      <p v-for="fp in friends_pods" :key="fp.webId">
+        {{fp}}
+      </p>
+
+    </b-row>
+
+
+
   </b-container>
 </template>
 
@@ -44,7 +58,9 @@ export default {
   },
   data(){
     return{
-      space : null
+      space : null,
+      loading: 0,
+      friends_pods: []
     }
   },
   methods: {
@@ -70,6 +86,17 @@ export default {
     },
     deleteNode(n){
       console.log(n)
+    },
+    async exploreFriendsWorkspaces(){
+      this.loading = this.pod.friends.length
+      this.friends_pods = []
+      for (const f of this.pod.friends){
+        let p = await this.$getPodInfos(f)
+        this.friends_pods.push(p)
+        this.loading --
+      }
+      this.loading == 0
+      console.log(this.friends_pods)
     }
   },
   computed:{

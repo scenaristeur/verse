@@ -1,6 +1,6 @@
 <template>
-  <b-container fluid id="app">
-
+  <div id="app">
+    <NavBar />
     <!-- <div id="nav"> -->
     <!-- <router-link to="/">H0m€</router-link> |
     <router-link to="/sync">$y^c</router-link> | -->
@@ -14,15 +14,11 @@
     <router-link to="/spaces">Spaces</router-link> |
     <router-link to="/schemas">Schemas</router-link> -->
     <Source />
-    <b-row>
-      <span v-if="isOnline"><Login /></span>
-      <span v-if="isOffline" variant="danger">offline</span>
-    </b-row>
     <!-- </div> -->
     <router-view/>
     <br><br>
     <hr>
-<Workspaces />
+
     {{session}}
     <br>
     <hr>
@@ -30,16 +26,14 @@
     <small><i>0.0.10 - html- node  bug </i></small> |
     <small><a href="https://github.com/scenaristeur/verse" target="_blank">source</a></small>
     <!-- <Synchro /> -->
-  </b-container>
+  </div>
 </template>
 <script>
 export default {
   name: "App",
   components: {
-    'Login': () => import('@/components/Login'),
     'Source': () => import('@/views/Source'),
-    'Workspaces': () => import('@/views/Workspaces'),
-    // 'Synchro': () => import('@/components/Synchro'),
+    'NavBar': () => import('@/components/layout/NavBar'),
   },
   created(){
 

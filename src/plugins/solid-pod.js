@@ -120,6 +120,7 @@ const plugin = {
         pod.friends = await getUrlAll(profile, FOAF.knows).map(webId => {return {webId: webId}})
         pod.storage = await getUrl(profile, WS.storage);
         pod.photo = await getUrl(profile, VCARD.hasPhoto);
+        pod.neuroneStore == undefined ? pod.neuroneStore = pod.storage+'public/neurones/' : ""
         pod.workspaces = []
 
         let publicTypeIndexUtl = pod.storage+'settings/publicTypeIndex.ttl'
