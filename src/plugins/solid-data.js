@@ -128,6 +128,20 @@ const plugin = {
       return remotesUrl
     }
 
+    Vue.prototype.$getNeurones = async function(path){
+      console.log(path)
+      let dataset = null
+      try{
+        dataset = await getSolidDataset( path, { fetch: sc.fetch });
+        let remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
+        console.log(remotesUrl)
+        return remotesUrl
+      }
+      catch(e){
+        console.log(e)
+      }
+    }
+
     Vue.prototype.$changeWorkspace = async function(space){
       console.log(space)
       if(space == undefined){
@@ -246,7 +260,7 @@ const plugin = {
         console.log( `Fetched a ${getContentType(file)} file from ${getSourceUrl(file)}.`);
         console.log("The file is rawdata "+ `${isRawData(file)}`);
 
-         if(`${getContentType(file)}` == 'text/html' /*|| `${getContentType(file)}` == "application/ld+json"*/)  {
+        if(`${getContentType(file)}` == 'text/html' /*|| `${getContentType(file)}` == "application/ld+json"*/)  {
           const reader = new FileReader();
           reader.onload = async () => {
             //  console.log(reader.result)
@@ -254,7 +268,7 @@ const plugin = {
             // if (getContentType(file) == 'application+json'){
             //   content = JSON.parse(reader.result);
             // }
-          //  console.log("content",content)
+            //  console.log("content",content)
             store.commit('nodes/setEditorContent',content)
           };
           reader.onerror = (error) => {

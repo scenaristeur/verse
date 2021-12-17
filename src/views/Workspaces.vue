@@ -59,28 +59,36 @@
         <small>{{fp.webId}}</small>
       </b-card-header>
       <b-card-text>
-        neuroneStore {{fp.neuroneStore}}
+
+        <!-- {{fp.neurones}} -->
+        <NodeR v-for="(node, i) in fp.neurones" :key="i"
+        :node="node" />
+
+
+        <!-- {{fp.neurones}} -->
         <hr>
+        neuroneStore {{fp.neuroneStore}}
         workspaces {{fp.workspaces}}
         <!-- This is a wider card with supporting text below as a natural lead-in to additional content.
         This content is a little bit longer. -->
       </b-card-text>
-      <b-card-footer>
+      <b-card-footer v-if="fp.friends.length > 0">
         <small>
-          <ul>
-            <li v-for="f in fp.friends" :key="f.webId">
-              {{f.webId}}
-            </li>
-          </ul>
-        </small>
-      </b-card-footer>
-    </b-card>
-  </b-card-group>
+          <b-button>Explore {{fp.friends.length}} friends</b-button>
+          <!-- <ul>
+          <li v-for="f in fp.friends" :key="f.webId">
+          {{f.webId}}
+        </li>
+      </ul> -->
+    </small>
+  </b-card-footer>
+</b-card>
+</b-card-group>
 
 
-  <!-- <b-row v-if="friends_pods.length>0">
-  <p v-for="fp in friends_pods" :key="fp.webId">
-  {{fp}}
+<!-- <b-row v-if="friends_pods.length>0">
+<p v-for="fp in friends_pods" :key="fp.webId">
+{{fp}}
 </p>
 
 </b-row> -->
@@ -95,6 +103,7 @@ export default {
   name: "Workspaces",
   components: {
     'Node': () => import('@/components/Node'),
+    'NodeR': () => import('@/components/NodeR'),
   },
   data(){
     return{
@@ -132,12 +141,13 @@ export default {
       this.friends_pods = []
       for (const f of this.pod.friends){
         let p = await this.$getPodInfos(f)
+        p.neurones = await this.$getNeurones(p.neuroneStore)
         this.friends_pods.push(p)
         this.loading --
       }
       this.loading == 0
       console.log(this.friends_pods)
-    }
+    },
   },
   computed:{
     workspaces:{
