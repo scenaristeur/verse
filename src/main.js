@@ -24,6 +24,9 @@ Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 
+import VueIpfs from './plugins/vue-ipfs'
+Vue.use(VueIpfs)
+
 
 
 Vue.config.productionTip = false

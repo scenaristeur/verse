@@ -38,6 +38,10 @@ https://vuejs.org/v2/guide/migration.html#Replacing-the-orderBy-Filter
 - https://donotebase.github.io/quasar-tiptap/examples/basic
 - https://ckeditor.com/docs/ckeditor5/latest/examples/builds/inline-editor.html
 
+# ipfs
+- https://github.com/ipfs-examples/js-ipfs-examples/blob/master/examples/browser-vue/package.json
+
+
 ## Project setup
 ```
 npm install
