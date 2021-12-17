@@ -38,16 +38,56 @@
     <!-- {{ currentWorkspace}} -->
 
     <hr>
-    <b-row v-if="friends_pods.length>0">
-      <p v-for="fp in friends_pods" :key="fp.webId">
-        {{fp}}
-      </p>
-
-    </b-row>
 
 
+    <b-card-group columns v-if="friends_pods.length>0">
+      <b-card
+      v-for="fp in friends_pods" :key="fp.webId">
+      <b-card-img-lazy
+      v-if="fp.photo != null"
+      :src="fp.photo"
+      :alt="fp.photo"
+      class="rounded-5"
+      top
+      />
 
-  </b-container>
+
+      <b-card-title class="mt-3">
+        {{fp.name}}
+      </b-card-title>
+      <b-card-header>
+        <small>{{fp.webId}}</small>
+      </b-card-header>
+      <b-card-text>
+        neuroneStore {{fp.neuroneStore}}
+        <hr>
+        workspaces {{fp.workspaces}}
+        <!-- This is a wider card with supporting text below as a natural lead-in to additional content.
+        This content is a little bit longer. -->
+      </b-card-text>
+      <b-card-footer>
+        <small>
+          <ul>
+            <li v-for="f in fp.friends" :key="f.webId">
+              {{f.webId}}
+            </li>
+          </ul>
+        </small>
+      </b-card-footer>
+    </b-card>
+  </b-card-group>
+
+
+  <!-- <b-row v-if="friends_pods.length>0">
+  <p v-for="fp in friends_pods" :key="fp.webId">
+  {{fp}}
+</p>
+
+</b-row> -->
+
+
+
+</b-container>
 </template>
 
 <script>
