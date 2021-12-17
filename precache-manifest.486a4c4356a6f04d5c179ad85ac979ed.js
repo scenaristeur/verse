@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/404.html"
   },
   {
-    "revision": "79ed31f330a6d506e582",
+    "revision": "290d27678f4f553b00d1",
     "url": "/verse/css/app.09ffd799.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/css/nodes.5dc319d7.css"
   },
   {
-    "revision": "7169cf34a81cd43f0cf8dcaf2d1959ac",
+    "revision": "21eb8bd3c14b00aa162ef93c9e51b57b",
     "url": "/verse/index.html"
   },
   {
@@ -32,8 +32,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/agents.84a55a5a.js"
   },
   {
-    "revision": "79ed31f330a6d506e582",
-    "url": "/verse/js/app.adc520e6.js"
+    "revision": "290d27678f4f553b00d1",
+    "url": "/verse/js/app.99dc4b46.js"
   },
   {
     "revision": "8a8e0e7d97e40807adb3",
@@ -64,8 +64,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/chunk-2d0e9945.bea13ed4.js"
   },
   {
-    "revision": "884a2328358221772b93",
-    "url": "/verse/js/chunk-2d0f0027.0079143f.js"
+    "revision": "e732d706b36b2bae11ad",
+    "url": "/verse/js/chunk-2d0f0027.24a091b6.js"
   },
   {
     "revision": "dda9820afe930566bc2d",
@@ -74,6 +74,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "6eb7b0f3969d3be115b6",
     "url": "/verse/js/chunk-2d229262.ebb0ede0.js"
+  },
+  {
+    "revision": "8b80ed54a325f7be8c54",
+    "url": "/verse/js/chunk-2d22c8c2.87f228a3.js"
   },
   {
     "revision": "54e182b23540406b1186",
@@ -88,8 +92,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/chunk-vendors.57d1f624.js"
   },
   {
-    "revision": "4962ff177efa7d8706ab",
-    "url": "/verse/js/edit.7977a874.js"
+    "revision": "9569f3c9cfd53ffc3a97",
+    "url": "/verse/js/edit.fa4de7e8.js"
   },
   {
     "revision": "8e1a4a6429a96e9c4fae",
@@ -120,8 +124,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/spaces.27e17abb.js"
   },
   {
-    "revision": "66af94ed3a3b7f5dd3ee",
-    "url": "/verse/js/synchro.2e623bbb.js"
+    "revision": "8a8caac5fb045a535ee7",
+    "url": "/verse/js/synchro.949b4854.js"
   },
   {
     "revision": "e3c6e8078f8c57e5199db0bf187d1721",
