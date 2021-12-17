@@ -73,7 +73,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ## gh-pages
 
 comment the dist folder in the .gitignore file
-
+```
+npm run build
 git add dist -f && git commit -m "Initial dist subtree commit"
 
 npm run git -- init
+```

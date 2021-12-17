@@ -25,6 +25,9 @@
         <b-button variant="primary" size="sm" @click="addingFile = true">+</b-button>
   </div>
     </b-breadcrumb>
+
+<a v-if="selected != null" :href="selected.url" target="_blank">{{selected.text}}</a>
+
   <ckeditor :editor="editor" v-model="editorData" :config="editorConfig" @blur="savedata"></ckeditor>
 
   <!-- {{editorContent}} -->
@@ -89,7 +92,12 @@ export default {
       console.log(this.editorData)
       console.log(this.selected)
       let file = {name: this.selected.text, url : this.selected.url}
-      file.content = this.editorData
+      file.content = `
+      <html>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1.0">
+      `
+      file.content += this.editorData
       let fileSaved = await this.$updateFile(file)
       console.log(fileSaved)
     },
@@ -127,7 +135,7 @@ export default {
         if(c.endsWith('/')){
           let text = parts[parts.length - 2]+"...";
           child.value = {type:'folder', url:c, text: text}
-          child.html= "😜"+text
+          child.html= "📁"+text
         }else{
           child.text = parts[parts.length - 1];
           child.value = {type: "file", url:c, text: child.text}

@@ -26,13 +26,14 @@
 </div>
 
 
-    <b-row>
-
-      <b-col v-for="(node, i) in orderedNodes" :key="i">
-        <Node :node="node" @delete="deleteNode" @edit="editNode" />
-      </b-col>
-
-    </b-row>
+    <b-card-group columns>
+<!-- <b-row>
+      <b-col v-for="(node, i) in orderedNodes" :key="i"> -->
+        <Node v-for="(node, i) in orderedNodes" :key="i"
+         :node="node" @delete="deleteNode" @edit="editNode" />
+      <!-- </b-col>
+</b-row> -->
+    </b-card-group>
     <div v-if="notBoth.length > 0">
       <h2>not both</h2>  <b-table small responsive striped hover :items="notBoth" :fields="fields">
 

@@ -129,8 +129,8 @@
 </b-container>
 <b-container v-else>
 
-<!-- <Quasar /> -->
-<CKWysiwyg />
+  <!-- <Quasar /> -->
+  <CKWysiwyg />
 </b-container>
 </div>
 </template>
@@ -145,7 +145,7 @@ export default {
     // 'NodeLite': () => import('@/components/NodeLite'),
     'Values': () => import('@/components/Values'),
     // 'Quasar': () => import('@/views/Quasar'),
-      'CKWysiwyg': () => import('@/views/CKWysiwyg'),
+    'CKWysiwyg': () => import('@/views/CKWysiwyg'),
     // 'editor': Editor
   },
   data() {
@@ -176,6 +176,9 @@ export default {
     "ve:type": "node",
     "ve:properties": [],
     test: "test vocab"}
+    console.log("--- hack temporaire du type", this.node['ve:type'])
+    this.node['ve:type'] != 'html' ? this.node['ve:type'] = 'node' : ''
+
     // if(this.$route.params.node) {
     //   this.node = this.$route.params.node;
     // } else {
@@ -208,6 +211,7 @@ export default {
     },
     showFieldModal(p){
       console.log(p)
+      this.fieldType= "text"
       this.currentProp = p
       this.$bvModal.show("fieldModal")
     },
