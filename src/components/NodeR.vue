@@ -4,7 +4,7 @@
     {{liteNode}} -->
     <div v-if="loading !=null">{{Loading}}</div>
     <div v-if="neurone != null">
-      <b-button variant="outline-info" size="sm">{{neurone['ve:name']}}</b-button>
+      <b-button variant="outline-info" size="sm" @click="editNode">{{neurone['ve:name']}}</b-button>
       <small>{{neurone['ve:age']}}</small><br>
       <ul v-if="neurone['ve:properties'].length > 0">
         <li v-for="p in neurone['ve:properties']" :key="p.name">
@@ -40,11 +40,16 @@ export default {
       console.log("neurone",this.neurone)
       this.loading = null
       //this.content = await this.neurone.content
-    }
+    },
     // editNode(){
     //   this.$store.commit('nodes/setCurrentNode', this.liteNode)
     //   this.$router.push({ name: 'edit'});
     // }
+
+    editNode(){
+      this.$store.commit('nodes/setCurrentNode', this.neurone)
+      this.$router.push({ name: 'edit'});
+    }
   },
   watch:{
     async url(){
