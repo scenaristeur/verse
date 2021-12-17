@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["remote"],{"89dd":function(e,n,t){"use strict";t.r(n);var c=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("Workspaces")},o=[],r=(t("d3b7"),t("3ca3"),t("ddb0"),{name:"Remote",components:{Workspaces:function(){return t.e("chunk-2d0f0027").then(t.bind(null,"9b19"))}}}),s=r,u=t("2877"),a=Object(u["a"])(s,c,o,!1,null,null,null);n["default"]=a.exports}}]);
+//# sourceMappingURL=remote.e1cc8c36.js.map

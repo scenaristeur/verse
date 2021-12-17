@@ -1,5 +1,5 @@
 <template>
-  <b-alert :show="url != undefined && autorized ==false" variant="warning" class="mt-2">
+  <b-alert :show="url != undefined && autorized ==false && pod != null" variant="warning" class="mt-2">
     You have no explicit 'append/write' permission, to
     <a :href="url" target="_blank"> URL </a><br>
 
@@ -19,17 +19,10 @@
 <script>
 export default {
   name: "Permissions",
-  props: ['permissions', 'url'],
+  props: ['permissions', 'url', 'autorized'],
   computed: {
-    autorized() {
-      if(this.permissions == null){
-        return false
-      }else{
-        return this.permissions.user.append == true ||
-        this.permissions.user.write == true ||
-        this.permissions.public.append == true ||
-        this.permissions.public.write == true
-      }
+    pod() {
+      return this.$store.state.solid.pod
     },
   }
 }

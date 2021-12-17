@@ -19,12 +19,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "nodes" */ '../views/Nodes.vue')
   },
   {
-    path: '/config',
-    name: 'Config',
+    path: '/remote',
+    name: 'Remote',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "synchro" */ '../views/Config.vue')
+    component: () => import(/* webpackChunkName: "remote" */ '../views/Remote.vue')
   },
   {
     path: '/sync',

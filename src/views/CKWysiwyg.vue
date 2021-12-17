@@ -1,40 +1,38 @@
 <template>
   <div>
-  <div v-if="storage != false">
-    <!-- {{storage}} -->
-    <b-breadcrumb>
-      <!-- <b-breadcrumb-item href="#home">
-      <b-icon icon="house-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-      Home
-    </b-breadcrumb-item> -->
-    <b-breadcrumb-item
-    v-for="p in path" :key="p.text"
-    @click="changePath(p)">{{p.text}}</b-breadcrumb-item>
-    <!-- <b-breadcrumb-item href="#bar">Bar</b-breadcrumb-item> -->
+    <div v-if="storage != false">
+      <!-- {{storage}} -->
+      <b-breadcrumb>
+        <!-- <b-breadcrumb-item href="#home">
+        <b-icon icon="house-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+        Home
+      </b-breadcrumb-item> -->
+      <b-breadcrumb-item
+      v-for="p in path" :key="p.text"
+      @click="changePath(p)">{{p.text}}</b-breadcrumb-item>
+      <!-- <b-breadcrumb-item href="#bar">Bar</b-breadcrumb-item> -->
 
 
-  <div v-if="addingFile">
-    <b-form-input  v-model="filename" placeholder="filename.ext"></b-form-input>
-    <b-button variant="primary" size="sm" @click="addFile">create</b-button>
-    <b-button variant="primary" size="sm" @click="addingFile = false">cancel</b-button>
-  </div>
-  <div v-else>
+      <div v-if="addingFile">
+        <b-form-input  v-model="filename" placeholder="filename.ext"></b-form-input>
+        <b-button variant="primary" size="sm" @click="addFile">create</b-button>
+        <b-button variant="primary" size="sm" @click="addingFile = false">cancel</b-button>
+      </div>
+      <div v-else>
 
-    <b-form-select v-model="selected" :options="options">
-    </b-form-select>
+        <b-form-select v-model="selected" :options="options">
+        </b-form-select>
         <b-button variant="primary" size="sm" @click="addingFile = true">+</b-button>
-  </div>
+      </div>
     </b-breadcrumb>
 
-<a v-if="selected != null" :href="selected.url" target="_blank">{{selected.text}}</a>
-
-  <ckeditor :editor="editor" v-model="editorData" :config="editorConfig" @blur="savedata"></ckeditor>
-
-  <!-- {{editorContent}} -->
-</div>
-<div v-else>
-Please login to update files on your pod
-</div>
+    <div v-if="selected != null" >Share your <b><a :href="selected.url" target="_blank">{{selected.text}}</a></b> page.</div>
+      <ckeditor :editor="editor" v-model="editorData" :config="editorConfig" @blur="savedata"></ckeditor>
+    <!-- {{editorContent}} -->
+  </div>
+  <div v-else>
+    Please login to update files on your pod
+  </div>
 </div>
 </template>
 
@@ -111,7 +109,11 @@ export default {
       }
       console.log(last)
       this.addingFile = false
-      let file = {name: this.filename, path: last.url, content: "<h1>"+this.filename+"</h1><small>created : "+Date.now()+"</small>"}
+      let file = {name: this.filename, path: last.url,
+        content: "<h1>"+this.filename+
+        "</h1><br><small>created : "+Date.now()+
+        "<p>CLiCk HERE to mAgiC-eDiT</p>"+
+        "</small><p>this page has been made with the <a href='https://scenaristeur.github.io/verse'>verse app&nbsp;</a></p>"}
       let fileSaved = await this.$updateFile(file)
       console.log(fileSaved)
 
@@ -158,7 +160,7 @@ export default {
       }else{
         let content = await this.$getContent(this.selected.url)
         console.log(content)
-      //  this.editorData = content
+        //  this.editorData = content
       }
 
     },

@@ -1,8 +1,11 @@
 <template>
   <div>
-    <b-button  :variant="node['ve:type'] == 'html' ? 'outline-warning' : 'outline-success'"
+    <b-button  variant="success" class="m-3"
     @click="node['ve:type'] = node['ve:type'] == undefined || node['ve:type'] == 'html' ? 'node' : 'html'">
-    {{node['ve:type']}}</b-button>
+    {{node['ve:type'] == 'node' ? "Switch to Html Edition" : "Switch to Node Edition"}}
+
+
+  </b-button>
     <b-container v-if="node['ve:type'] == 'node'">
 
       <b-row>
@@ -71,7 +74,10 @@
       {{node['ve:privacy']}}</b-button> -->
 
       <b-btn variant="success" @click="save">Save Node</b-btn>
-        <Permissions :permissions="permissions" :url="node['ve:url']" />
+      <Permissions
+      :permissions="permissions"
+      :url="node['ve:url']"
+      :autorized="autorized" />
     </b-col>
   </b-row>
 
@@ -252,6 +258,16 @@ export default {
   computed: {
     currentNode() {
       return this.$store.state.nodes.currentNode
+    },
+    autorized() {
+      if(this.permissions == null){
+        return false
+      }else{
+        return this.permissions.user.append == true ||
+        this.permissions.user.write == true ||
+        this.permissions.public.append == true ||
+        this.permissions.public.write == true
+      }
     },
   }
 };

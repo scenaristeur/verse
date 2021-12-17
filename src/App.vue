@@ -23,7 +23,7 @@
     <br>
     <hr>
     <br>
-    <small><i>0.0.10 - html- node  bug </i></small> |
+    <small><i>0.0.10 - permissions et html </i></small> |
     <small><a href="https://github.com/scenaristeur/verse" target="_blank">source</a></small>
     <!-- <Synchro /> -->
   </div>

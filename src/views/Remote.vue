@@ -1,13 +1,10 @@
 <template>
-  <div>
-    Config
     <Workspaces />
-  </div>
 </template>
 
 <script>
 export default {
-  name: "Config",
+  name: "Remote",
   components: {
     'Workspaces': () => import('@/views/Workspaces'),
   },

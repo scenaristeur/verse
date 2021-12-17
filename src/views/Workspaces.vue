@@ -1,7 +1,7 @@
 <template>
-  <b-container v-if="pod!=null">
-    <b-row>
-      (Experimental / expert )  Collaborate on other Workspaces
+  <b-container v-if="pod!=null" >
+    <b-row class="my-3">
+    <h4>Collaboration & Fork on other Workspaces</h4>
       <b-btn v-if="space == null" variant="outline-primary" size="sm" @click="add" class="mx-2">+ add a workspace</b-btn>
       <b-button variant="outline-primary" size="sm" @click="exploreFriendsWorkspaces(pod.friends)" class="mx-2">
         explore {{pod.friends.length}} friends</b-button>
@@ -69,6 +69,19 @@
 
         <small><a :href="fp.webId" target="_blank">{{fp.webId.split('/')[2]}}</a></small>
 
+
+        <b-card-text v-if="fp.neurones == undefined || fp.neurones.length == 0 || fp.workspaces == undefined || fp.workspaces.length == 0">
+          {{fp.name}} has no 'Neurone',
+          <b-button
+          onclick="alert('invitations are not implemented yet, see source link at the bottom to contribute ;-)')"
+          size="sm" variant="outline-dark"
+          >invite him/her/it to use 'Verse'</b-button>
+          <br>or add
+          <a href="https://spoggy-test5.solidcommunity.net/profile/card#me" target="_blank">
+            Spoggy-test5</a>
+            to your friends
+          </b-card-text>
+
         <b-button
         v-if="fp.friends != undefined && fp.friends.length > 0"
         size="sm"
@@ -93,17 +106,7 @@
       <!-- This is a wider card with supporting text below as a natural lead-in to additional content.
       This content is a little bit longer. -->
     </b-card-header>
-    <b-card-text v-else>
-      {{fp.name}} has no 'Neurone',
-      <b-button
-      onclick="alert('invitations are not implemented yet, see source link at the bottom to contribute ;-)')"
-      size="sm" variant="outline-dark"
-      >invite him/her/it to use 'Verse'</b-button>
-      <br>or add
-      <a href="https://spoggy-test5.solidcommunity.net/profile/card#me" target="_blank">
-        Spoggy-test5</a>
-        to your friends
-      </b-card-text>
+
 
     </b-card>
   </b-card-group>
