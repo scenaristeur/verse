@@ -3,11 +3,16 @@
     <!-- {{node}} Lite <hr>
     {{liteNode}} -->
     <div v-if="loading !=null">{{Loading}}</div>
-    <div v-else>
+    <div v-if="neurone != null">
       <b-button variant="outline-info" size="sm">{{neurone['ve:name']}}</b-button>
       <small>{{neurone['ve:age']}}</small><br>
+      <ul v-if="neurone['ve:properties'].length > 0">
+        <li v-for="p in neurone['ve:properties']" :key="p.name">
+          {{p.name}} ({{p.values.length}})
+        </li>
 
-      ---  {{neurone}} --- ll
+      </ul>
+      <!--  {{neurone}}  -->
     </div>
     <!-- <b-button v-if="liteNode" size="sm" variant="info" @click="editNode">{{liteNode['ve:name']}}</b-button>
     <b-alert v-else show variant="warning">Oh oh, it seems that node with id {{node.id}} as been deleted :-(</b-alert> -->

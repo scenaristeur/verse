@@ -3,7 +3,7 @@
     <b-row>
       (Experimental / expert )  Collaborate on other Workspaces
       <b-btn v-if="space == null" variant="outline-primary" size="sm" @click="add" class="mx-2">+ add a workspace</b-btn>
-      <b-button variant="outline-primary" size="sm" @click="exploreFriendsWorkspaces" class="mx-2">todo explore friends</b-button>
+      <b-button variant="outline-primary" size="sm" @click="exploreFriendsWorkspaces(pod.friends)" class="mx-2">todo explore friends</b-button>
       <span v-if="loading > 0" class="mx-2">Loading : {{loading}}</span>
     </b-row>
 
@@ -58,7 +58,7 @@
       <b-card-header>
         <small>{{fp.webId}}</small>
       </b-card-header>
-      <b-card-text>
+      <b-card-text v-if="(fp.neurones != undefined && fp.neurones.length > 0) || (fp.workspaces != undefined && fp.workspaces.length > 0)">
 
         <!-- {{fp.neurones}} -->
         <NodeR v-for="(url, i) in fp.neurones" :key="i"
@@ -72,9 +72,20 @@
         <!-- This is a wider card with supporting text below as a natural lead-in to additional content.
         This content is a little bit longer. -->
       </b-card-text>
-      <b-card-footer v-if="fp.friends.length > 0">
+      <b-card-text v-else>
+        {{fp.name}} has no 'Neurone',
+        <b-button
+        onclick="alert('invitations are not implemented yet, see source link at the bottom to contribute ;-)')"
+        size="sm" variant="outline-dark"
+        >invite him/her/it to use 'Verse'</b-button>
+        or add
+        <a href="https://spoggy-test5.solidcommunity.net/profile/card#me" target="_blank">
+          Spoggy-test5</a>
+        to your friends
+      </b-card-text>
+      <b-card-footer v-if="fp.friends != undefined && fp.friends.length > 0">
         <small>
-          <b-button>Explore {{fp.friends.length}} friends</b-button>
+          <b-button @click="exploreFriendsWorkspaces(fp.friends)">Explore {{fp.friends.length}} friends</b-button>
           <!-- <ul>
           <li v-for="f in fp.friends" :key="f.webId">
           {{f.webId}}
@@ -136,10 +147,10 @@ export default {
     deleteNode(n){
       console.log(n)
     },
-    async exploreFriendsWorkspaces(){
-      this.loading = this.pod.friends.length
+    async exploreFriendsWorkspaces(friends){
+      this.loading = friends.length
       this.friends_pods = []
-      for (const f of this.pod.friends){
+      for (const f of friends){
         let p = await this.$getPodInfos(f)
         p.neurones = await this.$getNeurones(p.neuroneStore)
         this.friends_pods.push(p)
