@@ -138,10 +138,31 @@ const plugin = {
         return remotesUrl
       }
       catch(e){
-        console.log(e)
+        //console.log(e)
+        return []
       }
     }
+    Vue.prototype.$getNeurone = async function(url){
+      const file = await getFile(url, { fetch: sc.fetch });
+      return new Promise( function(resolve, reject) {
 
+        const reader = new FileReader();
+        reader.onload = async () => {
+          try {
+            //response =
+            // Resolve the promise with the response value
+            resolve(JSON.parse(reader.result));
+          } catch (err) {
+            reject(err);
+          }
+        };
+        reader.onerror = (error) => {
+          reject(error);
+        };
+        reader.readAsText(file);
+      });
+
+    }
     Vue.prototype.$changeWorkspace = async function(space){
       console.log(space)
       if(space == undefined){

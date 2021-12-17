@@ -61,8 +61,8 @@
       <b-card-text>
 
         <!-- {{fp.neurones}} -->
-        <NodeR v-for="(node, i) in fp.neurones" :key="i"
-        :node="node" />
+        <NodeR v-for="(url, i) in fp.neurones" :key="i"
+        :url="url" />
 
 
         <!-- {{fp.neurones}} -->

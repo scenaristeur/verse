@@ -2,7 +2,13 @@
   <div>
     <!-- {{node}} Lite <hr>
     {{liteNode}} -->
-  ---  {{node}} ---
+    <div v-if="loading !=null">{{Loading}}</div>
+    <div v-else>
+      <b-button variant="outline-info" size="sm">{{neurone['ve:name']}}</b-button>
+      <small>{{neurone['ve:age']}}</small><br>
+
+      ---  {{neurone}} --- ll
+    </div>
     <!-- <b-button v-if="liteNode" size="sm" variant="info" @click="editNode">{{liteNode['ve:name']}}</b-button>
     <b-alert v-else show variant="warning">Oh oh, it seems that node with id {{node.id}} as been deleted :-(</b-alert> -->
   </div>
@@ -11,16 +17,38 @@
 <script>
 export default {
   name: "NodeR",
-  props: ['node'],
+  props: ['url'],
+  data(){
+    return{
+      neurone : null,
+      loading: null
+    }
+  },
+  created(){
+    this.init()
+  },
   methods:{
+    async init(){
+      console.log("NODER", this.url)
+      this.loding = "loading"
+      this.neurone = await this.$getNeurone(this.url)
+      console.log("neurone",this.neurone)
+      this.loading = null
+      //this.content = await this.neurone.content
+    }
     // editNode(){
     //   this.$store.commit('nodes/setCurrentNode', this.liteNode)
     //   this.$router.push({ name: 'edit'});
     // }
   },
+  watch:{
+    async url(){
+      await this.init()
+    }
+  },
   computed: {
-    // liteNode() {
-    //   return this.$store.state.nodes.nodes.filter(n => n.id == this.node.id)[0]
+    // node() {
+    //   return this.$getNeurone(this.url)
     // },
   }
 }
