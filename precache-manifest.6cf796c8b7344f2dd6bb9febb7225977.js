@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/404.html"
   },
   {
-    "revision": "dfbd62888dfe083be381",
+    "revision": "c01eb8e5ee6912e0444e",
     "url": "/verse/css/app.09ffd799.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/css/nodes.5dc319d7.css"
   },
   {
-    "revision": "97bc4df2c70b8bafcc8e96c5033e744f",
+    "revision": "41efd775f4abd74d59aa432bc314bfba",
     "url": "/verse/index.html"
   },
   {
@@ -32,8 +32,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/agents.84a55a5a.js"
   },
   {
-    "revision": "dfbd62888dfe083be381",
-    "url": "/verse/js/app.38a0a3ee.js"
+    "revision": "c01eb8e5ee6912e0444e",
+    "url": "/verse/js/app.6674ee0c.js"
   },
   {
     "revision": "8a8e0e7d97e40807adb3",
@@ -52,6 +52,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/chunk-2d0ac06c.412c7138.js"
   },
   {
+    "revision": "2a6f45f69d02a6c915a7",
+    "url": "/verse/js/chunk-2d0b1f67.0df953c7.js"
+  },
+  {
     "revision": "ae5db2d3d478740c23f3",
     "url": "/verse/js/chunk-2d0ce7e2.facc75d3.js"
   },
@@ -64,16 +68,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/chunk-2d0e9945.bea13ed4.js"
   },
   {
-    "revision": "1d5ffe57336c022706f8",
-    "url": "/verse/js/chunk-2d0f0027.e6e710cc.js"
+    "revision": "40d097289d3862418740",
+    "url": "/verse/js/chunk-2d0f0027.9027392a.js"
   },
   {
     "revision": "dda9820afe930566bc2d",
     "url": "/verse/js/chunk-2d21b4bd.96d24bd9.js"
   },
   {
-    "revision": "a1137a80bb7bd1d7bdef",
-    "url": "/verse/js/chunk-2d21d0c6.33d3c37d.js"
+    "revision": "e1fee95bdb9ff86848c0",
+    "url": "/verse/js/chunk-2d21d0c6.6f37c5f1.js"
   },
   {
     "revision": "6eb7b0f3969d3be115b6",
@@ -96,8 +100,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/verse/js/chunk-vendors.57d1f624.js"
   },
   {
-    "revision": "9569f3c9cfd53ffc3a97",
-    "url": "/verse/js/edit.fa4de7e8.js"
+    "revision": "73755692154ac6faf5db",
+    "url": "/verse/js/edit.a1397db9.js"
   },
   {
     "revision": "8e1a4a6429a96e9c4fae",
