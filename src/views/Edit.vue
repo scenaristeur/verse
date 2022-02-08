@@ -176,14 +176,14 @@ export default {
   async created() {
     this.node = this.$store.state.nodes.currentNode ||
     {  "@context": {
-      "@vocab": "https://www.w3.org/ns/activitystreams",
-      "ve": "https://scenaristeur.github.io/verse/",
-      "@id": "id",
-      "@type": "type"
+      "@vocab": "https://www.w3.org/ns/activitystreams#",
+      "ve": "https://scenaristeur.github.io/verse#",
+      "id": "@id",
+      "type": "@type"
     },
-    "ve:name":'',
+    "ve:name":"",
     "ve:age": 0 ,
-    "ve:privacy": 'private',
+    "ve:privacy": "private",
     "ve:type": "node",
     "ve:properties": [],
     test: "test vocab"}

@@ -61,8 +61,10 @@ const plugin = {
       try{
         const savedFile = await overwriteFile(
           n['ve:url'],
-          new Blob([JSON.stringify(n, undefined, 2)], { type: "application/ld+json" }),
-          { contentType: "application/ld+json", fetch: sc.fetch }
+          new Blob([JSON.stringify(n, undefined, 2)], { type: "application/json" }),
+          { contentType: "application/json", fetch: sc.fetch }
+          // new Blob([JSON.stringify(n, undefined, 2)], { type: "application/ld+json" }),
+          // { contentType: "application/ld+json", fetch: sc.fetch }
         );
         console.log(`File saved at ${getSourceUrl(savedFile)}`);
         //n.url = await getSourceUrl(savedFile)
@@ -376,10 +378,13 @@ const plugin = {
           };
           reader.readAsText(file);
         }
-
-      }catch(e){
-        console.log(e)
       }
+      catch(e){
+        console.log(e.message)
+        await createContainerAt( store.state.solid.pod.neuroneStore, { fetch: sc.fetch });
+        alert (store.state.solid.pod.neuroneStore + " has been created, please refresh the page")
+      }
+
     }
 
     Vue.prototype.$processSource = async function(s){
