@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkverse"]=self["webpackChunkverse"]||[]).push([[353],{5155:function(e,n,t){t.r(n),t.d(n,{default:function(){return c}});var s=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",[t("ThingsView",{attrs:{modele:"agent"}})],1)},r=[],u={name:"AgentsView",components:{ThingsView:()=>t.e(774).then(t.bind(t,1774))}},i=u,l=t(1001),a=(0,l.Z)(i,s,r,!1,null,null,null),c=a.exports}}]);
+//# sourceMappingURL=agents.5678ce15.js.map

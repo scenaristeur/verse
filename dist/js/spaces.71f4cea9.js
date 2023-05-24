@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkverse"]=self["webpackChunkverse"]||[]).push([[749],{7962:function(e,n,s){s.r(n),s.d(n,{default:function(){return a}});var t=function(){var e=this,n=e.$createElement,s=e._self._c||n;return s("div",[s("ThingsView",{attrs:{modele:"space"}})],1)},r=[],u={name:"SpacesView",components:{ThingsView:()=>s.e(774).then(s.bind(s,1774))}},i=u,l=s(1001),c=(0,l.Z)(i,t,r,!1,null,null,null),a=c.exports}}]);
+//# sourceMappingURL=spaces.71f4cea9.js.map

@@ -13,7 +13,7 @@
     <router-link to="/agents">Agents</router-link> |
     <router-link to="/spaces">Spaces</router-link> |
     <router-link to="/schemas">Schemas</router-link> -->
-    <Source />
+    <SourceView />
     <!-- </div> -->
     <router-view/>
     <br><br>
@@ -32,7 +32,7 @@
 export default {
   name: "App",
   components: {
-    'Source': () => import('@/views/Source'),
+    'SourceView': () => import('@/views/SourceView'),
     'NavBar': () => import('@/components/layout/NavBar'),
   },
   created(){

@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkverse"]=self["webpackChunkverse"]||[]).push([[371],{1346:function(e,n,s){s.r(n),s.d(n,{default:function(){return o}});var t=function(){var e=this,n=e.$createElement,s=e._self._c||n;return s("div",[s("ThingsView",{attrs:{modele:"person"}})],1)},r=[],u={name:"PersonsView",components:{ThingsView:()=>s.e(774).then(s.bind(s,1774))}},i=u,l=s(1001),c=(0,l.Z)(i,t,r,!1,null,null,null),o=c.exports}}]);
+//# sourceMappingURL=persons.2bdeb4b7.js.map

@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkverse"]=self["webpackChunkverse"]||[]).push([[176],{5674:function(e,n,t){t.r(n),t.d(n,{default:function(){return o}});var r=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",[t("ThingsView",{attrs:{modele:"project"}})],1)},s=[],u={name:"ProjectsView",components:{ThingsView:()=>t.e(774).then(t.bind(t,1774))}},i=u,l=t(1001),c=(0,l.Z)(i,r,s,!1,null,null,null),o=c.exports}}]);
+//# sourceMappingURL=projects.5dd8c8e2.js.map

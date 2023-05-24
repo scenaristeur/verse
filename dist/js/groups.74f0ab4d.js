@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkverse"]=self["webpackChunkverse"]||[]).push([[291],{2001:function(e,n,t){t.r(n),t.d(n,{default:function(){return o}});var r=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",[t("ThingsView",{attrs:{modele:"group"}})],1)},s=[],u={name:"GroupsView",components:{ThingsView:()=>t.e(774).then(t.bind(t,1774))}},i=u,l=t(1001),c=(0,l.Z)(i,r,s,!1,null,null,null),o=c.exports}}]);
+//# sourceMappingURL=groups.74f0ab4d.js.map

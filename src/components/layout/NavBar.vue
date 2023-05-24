@@ -4,7 +4,7 @@
     <router-link to="/" custom v-slot="{ navigate }">
       <b-navbar-brand @click="navigate" @keypress.enter="navigate" role="link">Verse</b-navbar-brand>
     </router-link>
-    <span v-if="isOnline"><Login /></span>
+    <LoginComponent v-if="isOnline" />
     <span v-if="isOffline" variant="danger">offline</span>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -47,7 +47,7 @@
 export default {
   name: "NavBar",
   components: {
-    'Login': () => import('@/components/Login'),
+    'LoginComponent': () => import('@/components/LoginComponent'),
   },
 }
 </script>

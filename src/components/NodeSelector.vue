@@ -96,6 +96,7 @@
       onOptionClick({ option, addTag }) {
         console.log(option)
         let n = {id: option.id, type: 'node'}
+        // eslint-disable-next-line
         this.currentProp.values.push(n)
         addTag(option['ve:name'])
         this.search = ''
