@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkverse"]=self["webpackChunkverse"]||[]).push([[797],{6960:function(e,n,s){s.r(n),s.d(n,{default:function(){return i}});var t=function(){var e=this,n=e.$createElement,s=e._self._c||n;return s("WorkspacesView")},r=[],u={name:"RemoteView",components:{WorkspacesView:()=>s.e(0).then(s.bind(s,8e3))}},c=u,l=s(1001),a=(0,l.Z)(c,t,r,!1,null,null,null),i=a.exports}}]);
+//# sourceMappingURL=remote.7598a767.js.map
